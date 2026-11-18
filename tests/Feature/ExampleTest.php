@@ -16,6 +16,7 @@ class ExampleTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertViewIs('home')
-            ->assertSee(config('app.name'));
+            ->assertSee('Solara Field School')
+            ->assertSee('id="enfoque"', false);
     }
 }

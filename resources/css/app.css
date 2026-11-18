@@ -9,3 +9,12 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+.field-illustration {
+    background:
+        radial-gradient(circle at 65% 31%, #ffc776 0 13%, transparent 13.3%),
+        radial-gradient(ellipse at 24% 118%, #19382f 0 48%, transparent 48.4%),
+        radial-gradient(ellipse at 89% 114%, #45674a 0 49%, transparent 49.4%),
+        radial-gradient(ellipse at 37% 116%, #8a985f 0 59%, transparent 59.4%),
+        linear-gradient(155deg, #a8c0ac, #e9d6a0);
+}
