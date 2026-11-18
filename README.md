@@ -28,3 +28,11 @@ La página inicial está en `resources/views/home.blade.php` y las rutas web est
 ```powershell
 php artisan test
 ```
+
+## Publicación en Cloudflare
+
+La portada pública se puede generar con `npm run build:cloudflare` después de instalar las dependencias con Composer y npm. La salida estática queda en `dist/`.
+
+En Workers Builds, conecta este repositorio al Worker existente, selecciona `main` como rama de producción y usa `composer install --no-interaction --prefer-dist --no-dev && npm run build:cloudflare` como comando de compilación y `npx wrangler deploy` como comando de despliegue. El archivo `wrangler.jsonc` identifica el Worker y su dominio personalizado.
+
+Para cambiar el contenido de [solarafieldschool.com](https://solarafieldschool.com), edita `resources/views/home.blade.php`. Los estilos están en `resources/css/app.css`.

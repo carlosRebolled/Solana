@@ -9,7 +9,7 @@
 </head>
 <body class="bg-[#f7f4e9] text-[#19382f] antialiased">
     <header class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-6 sm:px-10">
-        <a href="{{ route('home') }}" class="flex items-center gap-3 font-bold">
+        <a href="{{ route('home', absolute: false) }}" class="flex items-center gap-3 font-bold">
             <span aria-hidden="true" class="size-5 shrink-0 rounded-full bg-[#da8b3b]"></span>
             Solara Field School
         </a>
