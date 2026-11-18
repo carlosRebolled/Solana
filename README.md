@@ -31,8 +31,6 @@ php artisan test
 
 ## Publicación en Cloudflare
 
-La portada pública se puede generar con `npm run build:cloudflare` después de instalar las dependencias con Composer y npm. La salida estática queda en `dist/`.
+Para editar [solarafieldschool.com](https://solarafieldschool.com), modifica `site/index.html`. El archivo incluye sus propios estilos y se puede abrir directamente en el navegador.
 
-En Workers Builds, conecta este repositorio al Worker existente, selecciona `main` como rama de producción y usa `composer install --no-interaction --prefer-dist --no-dev && npm run build:cloudflare` como comando de compilación y `npx wrangler deploy` como comando de despliegue. El archivo `wrangler.jsonc` identifica el Worker y su dominio personalizado.
-
-Para cambiar el contenido de [solarafieldschool.com](https://solarafieldschool.com), edita `resources/views/home.blade.php`. Los estilos están en `resources/css/app.css`.
+Cloudflare Workers publica la carpeta `site/` desde la rama `main`, con `npx wrangler deploy` como comando de despliegue. Deja vacío el comando de compilación. El archivo `wrangler.jsonc` identifica el Worker y su dominio personalizado.

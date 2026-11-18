@@ -4,7 +4,6 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "build:cloudflare": "npm run build && php scripts/export-site.php",
         "dev": "vite"
     },
     "devDependencies": {
