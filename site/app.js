@@ -3,7 +3,7 @@ import { renderEditorial } from './editorial.js';
 
 const courses = [
     {
-        id: 'campo', title: 'Fundamentos de trabajo de campo', level: 'Inicial', price: 29, image: 'field',
+        id: 'campo', topic: 'field-studies', title: 'Fundamentos de trabajo de campo', level: 'Inicial', price: 29, image: 'field',
         description: 'Convierte una salida en una observación organizada con un registro que puedas consultar después.',
         lessons: [
             ['Antes de salir', 'Define una pregunta que puedas responder con una observación corta.'],
@@ -11,7 +11,7 @@ const courses = [
         ]
     },
     {
-        id: 'biodiversidad', title: 'Observación de biodiversidad', level: 'Intermedio', price: 39, image: 'biodiversity',
+        id: 'biodiversidad', topic: 'biodiversity', title: 'Observación de biodiversidad', level: 'Intermedio', price: 39, image: 'biodiversity',
         description: 'Aprende a describir la diversidad de un lugar y a comparar lo que encuentras en distintos recorridos.',
         lessons: [
             ['Mirar a distintas escalas', 'Compara lo que ves en el suelo con lo que encuentras en el dosel.'],
@@ -19,7 +19,7 @@ const courses = [
         ]
     },
     {
-        id: 'sendero', title: 'Lectura del paisaje', level: 'Inicial', price: 29, image: 'trail',
+        id: 'sendero', topic: 'field-studies', title: 'Lectura del paisaje', level: 'Inicial', price: 29, image: 'trail',
         description: 'Interpreta las señales del terreno para reconocer cómo cambian el agua, la luz y la vegetación.',
         lessons: [
             ['Las pistas del terreno', 'Identifica pendientes y puntos bajos para seguir el recorrido del agua.'],
@@ -166,7 +166,7 @@ function renderCatalog() {
     $('clear-filters').disabled = !term && !level && !topic;
     const matching = courses.filter((course) =>
         (!level || course.level === level)
-        && (!topic || course.id === topic)
+        && (!topic || course.topic === topic)
         && normalize([course.title, course.description, courseText(course).title, courseText(course).description, course.level].join(' ')).includes(term)
     );
 
