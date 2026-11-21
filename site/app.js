@@ -1,3 +1,5 @@
+import { renderEditorial } from './editorial.js';
+
 const courses = [
     {
         id: 'campo', title: 'Fundamentos de trabajo de campo', level: 'Inicial', price: 29, image: 'field',
@@ -88,6 +90,7 @@ function renderLanguage() {
     if ($('course-list')) renderCatalog();
     if ($('featured-course')) renderFeaturedCourse();
     renderDirectories();
+    renderEditorial(language);
     if (activeCourse) renderCourse();
     renderCart();
 }
