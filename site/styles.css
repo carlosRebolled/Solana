@@ -256,3 +256,8 @@ video { display: block; width: 100%; aspect-ratio: 16/9; background: #102c21; bo
 
 .home-page .mobile-menu, .editorial-page .mobile-menu { color:inherit; }
 .editorial-page #cart-count { color:var(--ink); }
+
+@media (min-width:681px) {
+    .editorial-featured .editorial-card-copy { grid-area:1 / 1; }
+    .editorial-featured img { grid-area:1 / 2; }
+}
