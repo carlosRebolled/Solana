@@ -1,8 +1,9 @@
 {
     "name": "wandering-silence-0d34solara-field-school",
     "compatibility_date": "2026-11-18",
-    "workers_dev": true,
-    "assets": { "directory": "./site" },
+    "workers_dev": false,
+    "preview_urls": false,
+    "main": "cloudflare/private-site.js",
     "routes": [
         { "pattern": "solarafieldschool.com", "custom_domain": true }
     ]

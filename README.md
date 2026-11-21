@@ -43,4 +43,4 @@ El catálogo, los precios y el carrito son de demostración. Los clips están di
 
 Para publicar resultados reales, edita `metrics` en `site/app.js` con los totales verificados y su periodo de medición en ambos idiomas. Un valor `null` se muestra como «Por publicar». El encabezado de contacto de `site/index.html` puede actualizarse cuando esté definido el canal oficial.
 
-Cloudflare Workers publica la carpeta `site/` desde la rama `main`, con `npx wrangler deploy` como comando de despliegue. Deja vacío el comando de compilación. El archivo `wrangler.jsonc` identifica el Worker y su dominio personalizado.
+Cloudflare Workers se despliega desde la rama `main` con `npx wrangler deploy`. Mientras la publicación esté pausada, `wrangler.jsonc` despliega `cloudflare/private-site.js` y deja fuera la carpeta `site/`. Para reabrir el sitio, se puede revertir el commit que activó la pausa.
