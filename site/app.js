@@ -1,3 +1,4 @@
+import { renderHelpChat } from './help-chat.js';
 import { renderEditorial } from './editorial.js';
 
 const courses = [
@@ -91,6 +92,7 @@ function renderLanguage() {
     if ($('featured-course')) renderFeaturedCourse();
     renderDirectories();
     renderEditorial(language);
+    renderHelpChat(language);
     if (activeCourse) renderCourse();
     renderCart();
 }

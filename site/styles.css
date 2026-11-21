@@ -261,3 +261,20 @@ video { display: block; width: 100%; aspect-ratio: 16/9; background: #102c21; bo
     .editorial-featured .editorial-card-copy { grid-area:1 / 1; }
     .editorial-featured img { grid-area:1 / 2; }
 }
+
+.help-chat { position:fixed; right:max(1rem, env(safe-area-inset-right)); bottom:max(1rem, env(safe-area-inset-bottom)); z-index:5; display:grid; justify-items:end; gap:.65rem; pointer-events:none; }
+.help-chat button, .help-panel { pointer-events:auto; }
+.help-bubble { display:flex; align-items:center; gap:.55rem; padding:.75rem 1rem; border:1px solid #476556; border-radius:2rem; background:var(--ink); color:#fffef8; box-shadow:0 4px 14px #102b2440; font-weight:750; }
+.help-icon { position:relative; width:1.15rem; height:.85rem; border:2px solid currentColor; border-radius:.25rem; }
+.help-icon::after { content:""; position:absolute; bottom:-.25rem; left:.12rem; width:.32rem; height:.32rem; background:var(--ink); border-left:2px solid currentColor; border-bottom:2px solid currentColor; transform:skewY(-35deg); }
+.help-panel { width:min(23rem, calc(100vw - 2rem)); max-height:calc(100dvh - 6rem); overflow:auto; background:var(--paper); color:var(--ink); border:1px solid #a8baa6; border-radius:1rem; box-shadow:0 12px 36px #102b2440; }
+.help-header { display:flex; align-items:center; justify-content:space-between; gap:.6rem; padding:.85rem 1rem; background:var(--ink); color:#fffef8; }
+.help-header h2 { font:750 1.08rem/1.25 system-ui,sans-serif; letter-spacing:normal; }
+.help-close { padding:.4rem .55rem; border:1px solid #a8baa6; border-radius:.4rem; color:inherit; background:transparent; }
+.help-body { padding:1rem; }
+.help-intro, .help-answer p { margin:0 0 .65rem; }
+.help-questions { display:grid; gap:.4rem; }
+.help-questions button { padding:.5rem .65rem; border:1px solid #a8baa6; border-radius:.45rem; background:#fffef8; color:var(--ink); text-align:left; }
+.help-questions button:hover, .help-questions button[aria-pressed="true"] { background:#d9e8c3; }
+.help-answer:not(:empty) { margin-top:.85rem; padding:.75rem; border-radius:.55rem; background:#e7eedb; }
+.help-answer a { font-weight:750; }
