@@ -79,7 +79,8 @@ function renderLanguage() {
         else element.textContent = tr(es, en);
     }
     renderMetrics();
-    renderCatalog();
+    if ($('course-list')) renderCatalog();
+    if (activeCourse) renderCourse();
     renderCart();
 }
 
@@ -106,10 +107,16 @@ function storeSet(key, values) {
 const cart = readSet('solara-demo-cart');
 const completed = readSet('solara-demo-progress');
 const player = $('player');
-const courseDialog = $('course-dialog');
 const cartDialog = $('cart-dialog');
-let activeCourse;
-let activeLesson = 0;
+const params = new URLSearchParams(location.search);
+const activeCourse = player ? courses.find((course) => course.id === params.get('curso')) : undefined;
+let activeLesson = activeCourse && !params.has('muestra')
+    ? Math.max(0, activeCourse.lessons.findIndex((_, index) => !completed.has(lessonKey(index))))
+    : 0;
+
+function levelText(level) {
+    return level === 'Inicial' ? tr('Inicial', 'Beginner') : tr('Intermedio', 'Intermediate');
+}
 
 function normalize(value) {
     return value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
@@ -129,7 +136,7 @@ function renderCatalog() {
 
     $('course-list').innerHTML = matching.map((course) => {
         const { title, description } = courseText(course);
-        const levelLabel = course.level === 'Inicial' ? tr('Inicial', 'Beginner') : tr('Intermedio', 'Intermediate');
+        const levelLabel = levelText(course.level);
         return `
         <article class="card">
             <img src="./media/${course.image}.jpg" alt="" loading="lazy" width="560" height="320">
@@ -139,7 +146,7 @@ function renderCatalog() {
                 <p>${description}</p>
                 <div class="card-bottom">
                     <strong>${currency(course.price)}</strong>
-                    <button class="button outline" type="button" data-course="${course.id}" aria-label="${tr('Ver curso', 'View course')}: ${title}">${tr('Ver curso', 'View course')}</button>
+                    <a class="button outline" href="./curso.html?curso=${course.id}" target="_blank" rel="noopener" aria-label="${tr('Ver curso', 'View course')}: ${title} (${tr('nueva pestaña', 'new tab')})">${tr('Ver curso', 'View course')}</a>
                 </div>
             </div>
         </article>`;
@@ -170,7 +177,8 @@ function selectLesson(index, focus = false) {
     $('video-status').textContent = '';
     $('video-language').hidden = language === 'es';
     player.poster = `./media/${activeCourse.image}.jpg`;
-    player.src = `./media/${activeCourse.id}-${index + 1}.mp4`;
+    const source = `./media/${activeCourse.id}-${index + 1}.mp4`;
+    if (player.getAttribute('src') !== source || player.error) player.src = source;
     renderProgress();
     if (focus) $('lessons').querySelector(`[data-lesson="${index}"]`).focus();
 }
@@ -181,15 +189,23 @@ function renderAddButton() {
     $('add-course').disabled = added;
 }
 
-function openCourse(course, firstLesson = false) {
-    activeCourse = course;
-    $('course-title').textContent = courseText(course).title;
-    $('course-description').textContent = courseText(course).description;
-    $('course-price').textContent = `${currency(course.price)} · ${tr('Precio de ejemplo', 'Sample price')}`;
+function renderCourse() {
+    const { title, description, lessons } = courseText(activeCourse);
+    document.title = `${title} | Solara Field School`;
+    $('course-title').textContent = title;
+    $('course-description').textContent = description;
+    $('course-level').textContent = levelText(activeCourse.level);
+    $('course-count').textContent = lessons.length;
+    $('course-price').textContent = currency(activeCourse.price);
+    $('course-cover').src = `./media/${activeCourse.image}.jpg`;
+    $('course-outcomes').replaceChildren(...lessons.map(([, outcome]) => {
+        const item = document.createElement('li');
+        item.textContent = outcome;
+        return item;
+    }));
+    $('course-content').hidden = false;
     renderAddButton();
-    const next = course.lessons.findIndex((_, index) => !completed.has(lessonKey(index)));
-    selectLesson(firstLesson ? 0 : Math.max(next, 0));
-    courseDialog.showModal();
+    selectLesson(activeLesson);
 }
 
 function renderCart() {
@@ -203,44 +219,59 @@ function renderCart() {
     $('checkout').disabled = !selected.length;
 }
 
-$('search').addEventListener('input', renderCatalog);
-$('level').addEventListener('change', renderCatalog);
-$('course-list').addEventListener('click', (event) => {
-    const button = event.target.closest('[data-course]');
-    if (button) openCourse(courses.find((course) => course.id === button.dataset.course));
+$('search')?.addEventListener('input', renderCatalog);
+$('level')?.addEventListener('change', renderCatalog);
+
+if (player && !activeCourse) $('course-missing').hidden = false;
+
+if (activeCourse) {
+    $('lessons').addEventListener('click', (event) => {
+        const button = event.target.closest('[data-lesson]');
+        if (button) selectLesson(Number(button.dataset.lesson), true);
+    });
+    player.addEventListener('error', () => {
+        $('video-status').textContent = tr('No se pudo cargar el video. Selecciona la lección de nuevo para reintentar.', 'Could not load the video. Select the lesson again to retry.');
+    });
+    player.addEventListener('ended', () => {
+        completed.add(lessonKey(activeLesson));
+        storeSet('solara-demo-progress', completed);
+        renderProgress();
+    });
+    $('complete-lesson').addEventListener('click', () => {
+        const key = lessonKey(activeLesson);
+        if (completed.has(key)) completed.delete(key);
+        else completed.add(key);
+        storeSet('solara-demo-progress', completed);
+        renderProgress();
+    });
+    $('add-course').addEventListener('click', () => {
+        cart.add(activeCourse.id);
+        storeSet('solara-demo-cart', cart);
+        renderAddButton();
+        renderCart();
+        player.pause();
+        $('checkout-status').textContent = '';
+        cartDialog.showModal();
+    });
+}
+
+window.addEventListener('storage', ({ key }) => {
+    if (key === 'solara-demo-cart') {
+        cart.clear();
+        for (const id of readSet(key)) cart.add(id);
+        renderCart();
+        if (activeCourse) renderAddButton();
+    }
+    if (key === 'solara-demo-progress' && activeCourse) {
+        completed.clear();
+        for (const id of readSet(key)) completed.add(id);
+        renderProgress();
+    }
 });
-$('open-sample').addEventListener('click', () => openCourse(courses[0], true));
-$('lessons').addEventListener('click', (event) => {
-    const button = event.target.closest('[data-lesson]');
-    if (button) selectLesson(Number(button.dataset.lesson), true);
-});
-courseDialog.addEventListener('close', () => player.pause());
-player.addEventListener('error', () => {
-    $('video-status').textContent = tr('No se pudo cargar el video. Selecciona la lección de nuevo para reintentar.', 'Could not load the video. Select the lesson again to retry.');
-});
-player.addEventListener('ended', () => {
-    completed.add(lessonKey(activeLesson));
-    storeSet('solara-demo-progress', completed);
-    renderProgress();
-});
-$('complete-lesson').addEventListener('click', () => {
-    const key = lessonKey(activeLesson);
-    if (completed.has(key)) completed.delete(key);
-    else completed.add(key);
-    storeSet('solara-demo-progress', completed);
-    renderProgress();
-});
-$('add-course').addEventListener('click', () => {
-    cart.add(activeCourse.id);
-    storeSet('solara-demo-cart', cart);
-    renderAddButton();
-    renderCart();
-    courseDialog.close();
-    $('checkout-status').textContent = '';
-    cartDialog.showModal();
-});
+
 $('open-cart').addEventListener('click', () => {
     $('checkout-status').textContent = '';
+    player?.pause();
     cartDialog.showModal();
 });
 $('cart-items').addEventListener('click', (event) => {
@@ -249,6 +280,7 @@ $('cart-items').addEventListener('click', (event) => {
     cart.delete(button.dataset.remove);
     storeSet('solara-demo-cart', cart);
     renderCart();
+    if (activeCourse) renderAddButton();
     ($('cart-items').querySelector('[data-remove]') ?? cartDialog.querySelector('form button')).focus();
 });
 $('checkout').addEventListener('click', () => {
@@ -256,6 +288,7 @@ $('checkout').addEventListener('click', () => {
     cart.clear();
     storeSet('solara-demo-cart', cart);
     renderCart();
+    if (activeCourse) renderAddButton();
     $('checkout-status').textContent = tr('Simulación completada. No se realizó ningún cobro.', 'Demo checkout complete. You were not charged.');
     cartDialog.querySelector('form button').focus();
 });
@@ -269,3 +302,7 @@ $('language').addEventListener('change', () => {
     renderLanguage();
 });
 renderLanguage();
+
+if (activeCourse && location.hash === '#lecciones') {
+    requestAnimationFrame(() => $('lecciones').scrollIntoView());
+}

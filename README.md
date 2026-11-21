@@ -33,6 +33,8 @@ php artisan test
 
 La vitrina pública de [solarafieldschool.com](https://solarafieldschool.com) vive en `site/`. Edita `index.html` para cambiar la presentación, `styles.css` para el diseño y `app.js` para actualizar el catálogo y el temario. Las fotos y los clips están en `site/media/`.
 
+Cada ficha utiliza la plantilla `site/curso.html` y el identificador del curso en la URL, por ejemplo `/curso.html?curso=campo`. En `site/app.js`, actualiza `courses` y su entrada en `englishCourses` para cambiar la descripción, los objetivos y las lecciones. Los videos siguen el nombre `<identificador>-<número de lección>.mp4`.
+
 Para probar la vitrina en local, ejecuta `php -S 127.0.0.1:8874 -t site` y abre `http://127.0.0.1:8874`.
 
 El catálogo, los precios y el carrito son de demostración. Los clips están disponibles públicamente y el progreso se conserva en el navegador. Para vender cursos reales hará falta integrar un proveedor de pagos y alojar los videos de pago con acceso controlado.
