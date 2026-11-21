@@ -90,3 +90,27 @@ video { display: block; width: 100%; aspect-ratio: 16/9; background: #102c21; bo
     .footer { align-items: start; flex-direction: column; }
     .dialog-heading { align-items: start; }
 }
+
+.nav-actions { display:flex; align-items:center; gap:.5rem; }
+.nav-actions select { max-width: 7rem; padding:.55rem .4rem; border:1px solid #a8baa6; border-radius:.55rem; color:var(--ink); background:#fcfcf5; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.info-section { padding-block:clamp(2.7rem,6vw,5rem); }
+.info-section > p { max-width:46rem; }
+.band { background:#eaf0df; }
+.metrics, .program-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin:1.5rem 0 0; }
+.metrics div, .program-grid article { padding:1.2rem; border:1px solid var(--line); border-radius:.8rem; background:#fffef8; }
+.metrics dt { font-weight:650; }
+.metrics dd { margin:.45rem 0 0; color:var(--muted); font-size:1.15rem; }
+.program-grid p { margin-bottom:0; }
+.audiences { display:grid; gap:.65rem; margin-top:1.4rem; max-width:52rem; }
+.audiences details { padding:.85rem 1rem; border:1px solid var(--line); border-radius:.7rem; background:#fffef8; }
+.audiences summary { cursor:pointer; font-weight:700; }
+.audiences p { margin:.65rem 0; }
+.audiences a { display:inline-block; margin-bottom:.2rem; }
+@media (max-width:800px) {
+    .nav { flex-wrap:wrap; }
+    .nav nav { order:3; width:100%; flex-wrap:wrap; }
+}
+@media (max-width:520px) {
+    .metrics, .program-grid { grid-template-columns:1fr; }
+}

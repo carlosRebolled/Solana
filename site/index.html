@@ -9,69 +9,134 @@
     <script type="module" src="./app.js"></script>
 </head>
 <body>
-    <a class="skip" href="#cursos">Ir al catálogo</a>
+    <a class="skip" href="#cursos" data-en="Skip to the academy">Ir al catálogo</a>
     <header class="top">
         <div class="wrap nav">
             <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
-            <nav aria-label="Principal"><a href="#cursos">Cursos</a><a href="#experiencia">Cómo funciona</a></nav>
-            <button class="button outline" id="open-cart" type="button">Carrito <span id="cart-count">0</span></button>
+            <nav aria-label="Principal" data-en-label="Main navigation"><a href="#publico" data-en="Who it’s for">Público</a><a href="#programas" data-en="Programs">Programas</a><a href="#cursos" data-en="Academy">Academia</a><a href="#contacto" data-en="Contact">Contacto</a></nav>
+            <div class="nav-actions"><label class="sr-only" for="language" data-en="Language">Idioma</label><select id="language"><option value="es" lang="es">Español</option><option value="en" lang="en">English</option></select><button class="button outline" id="open-cart" type="button"><span data-en="Cart">Carrito</span> <span id="cart-count">0</span></button></div>
         </div>
     </header>
     <main>
         <section class="hero" aria-labelledby="hero-title">
             <div class="wrap hero-content">
-                <p class="eyebrow">CURSOS EN VIDEO · A TU RITMO</p>
-                <h1 id="hero-title">Aprende con<br>los pies en la tierra.</h1>
-                <p class="intro">Explora el mundo natural con técnicas de observación, registro y trabajo de campo que puedes aplicar en tu próxima salida.</p>
-                <div class="actions"><a class="button primary" href="#cursos">Explorar cursos</a><button class="button glass" id="open-sample" type="button">▶ Ver una clase</button></div>
+                <p class="eyebrow" data-en="FIELD PROGRAMS AND VIDEO COURSES">PROGRAMAS DE CAMPO Y CURSOS EN VIDEO</p>
+                <h1 id="hero-title"><span data-en="Learn with">Aprende con</span><br><span data-en="your feet on the ground.">los pies en la tierra.</span></h1>
+                <p class="intro" data-en="Outdoor education for schools, families and young people. Explore our programs and video academy.">Formación al aire libre para instituciones educativas, familias y jóvenes. Explora nuestras propuestas y conoce la academia en video.</p>
+                <div class="actions"><a class="button primary" href="#cursos" data-en="Explore the academy">Explorar cursos</a><button class="button glass" id="open-sample" type="button" data-en="▶ Watch a sample lesson">▶ Ver una clase</button></div>
             </div>
         </section>
 
-        <section class="wrap catalog" id="cursos" aria-labelledby="catalog-title">
-            <p class="eyebrow green">CATÁLOGO DE DEMOSTRACIÓN</p>
-            <h2 id="catalog-title">Encuentra tu próximo curso</h2>
-            <div class="filters">
-                <label>Buscar cursos<input id="search" type="search" placeholder="Ej. biodiversidad"></label>
-                <label>Nivel<select id="level"><option value="">Todos los niveles</option><option>Inicial</option><option>Intermedio</option></select></label>
-            </div>
-            <p id="results" class="muted" role="status"></p>
-            <div class="course-grid" id="course-list"></div>
-            <noscript>Activa JavaScript para explorar los cursos y reproducir las lecciones.</noscript>
+        <section class="wrap info-section" id="comunidad" aria-labelledby="comunidad-title">
+            <h2 id="comunidad-title" data-en="Clients and students">Clientes y alumnos</h2>
+            <p data-en="We will publish participation figures once the records have been verified.">Publicaremos las cifras de participación cuando hayamos verificado los registros.</p>
+            <dl class="metrics">
+                <div><dt data-en="Students who have used our courses">Alumnos que han utilizado los cursos</dt><dd data-metric="students">Por publicar</dd></div>
+                <div><dt data-en="Client organizations">Organizaciones clientes</dt><dd data-metric="clients">Por publicar</dd></div>
+            </dl>
+            <p class="muted" data-period hidden></p>
         </section>
 
+        <section class="band" id="resultados" aria-labelledby="results-title">
+            <div class="wrap info-section">
+                <h2 id="results-title" data-en="Results">Resultados</h2>
+                <p data-en="These indicators track participation and completion. We will add the reporting period with each verified figure.">Estos indicadores permiten seguir la participación y la finalización. Publicaremos el periodo junto con cada cifra verificada.</p>
+                <dl class="metrics">
+                    <div><dt data-en="Students who completed a course">Personas que terminaron un curso</dt><dd data-metric="graduates">Por publicar</dd></div>
+                    <div><dt data-en="Hours of instruction delivered">Horas impartidas</dt><dd data-metric="hours">Por publicar</dd></div>
+                </dl>
+                <p class="muted" data-period hidden></p>
+            </div>
+        </section>
+
+        <section class="wrap info-section" id="publico" aria-labelledby="audience-title">
+            <h2 id="audience-title" data-en="Who we work with">Público</h2>
+            <p data-en="Find the option that fits your group.">Encuentra la opción que encaja con tu grupo.</p>
+            <div class="audiences">
+                <details open>
+                    <summary data-en="Educational institutions">Instituciones educativas</summary>
+                    <p data-en="For academic coordinators, guidance departments and school leaders planning educational field trips or extracurricular retreats. This includes private, science-focused and humanities-focused secondary schools.">Para coordinadores académicos, departamentos de orientación y directores que organizan giras educativas o retiros extracurriculares. Incluye colegios privados, científicos y humanísticos.</p>
+                    <a href="#programas" data-en="See programs for institutions">Ver programas para instituciones</a>
+                </details>
+                <details>
+                    <summary data-en="Families and young people">Familias y jóvenes</summary>
+                    <p data-en="For families in Costa Rica’s Greater Metropolitan Area looking for supervised, educational holiday activities, with safety and extended care as priorities. For young people interested in leadership or structured expeditions.">Para familias de la Gran Área Metropolitana (GAM) que buscan actividades formativas en vacaciones y priorizan la seguridad y la custodia extendida. Para jóvenes interesados en liderazgo o expediciones estructuradas.</p>
+                    <a href="#programas" data-en="See programs for families and youth">Ver programas para familias y jóvenes</a>
+                </details>
+                <details>
+                    <summary data-en="Nonprofits and tourism companies">Organizaciones sin fines de lucro y empresas de turismo</summary>
+                    <p data-en="We welcome conversations about educational outings and joint projects that bring more people into contact with nature.">Podemos conversar sobre salidas educativas o proyectos conjuntos que acerquen a más personas a la naturaleza.</p>
+                </details>
+            </div>
+        </section>
         <section class="experience" id="experiencia" aria-labelledby="experience-title">
             <div class="wrap experience-inner">
-                <div><p class="eyebrow green">CÓMO FUNCIONA</p><h2 id="experience-title">Del video al campo</h2></div>
+                <div><h2 id="experience-title" data-en="What we do for students">Lo que hacemos por los estudiantes</h2></div>
                 <div class="steps">
-                    <div><h3>Elige tu curso</h3><p>Consulta el nivel, el temario y el precio de ejemplo en cada ficha.</p></div>
-                    <div><h3>Prueba una lección</h3><p>Abre el reproductor y completa los ejercicios a tu ritmo.</p></div>
-                    <div><h3>Retoma tu progreso</h3><p>Las lecciones completadas se guardan en este navegador.</p></div>
+                    <div><h3 data-en="Take learning outdoors">Lleva el aprendizaje al campo</h3><p data-en="Practice observing, writing down what you find and working with your group during field activities.">Practica cómo observar, registrar tus hallazgos y trabajar con tu grupo en actividades de campo.</p></div>
+                    <div><h3 data-en="Choose your course">Elige tu curso</h3><p data-en="Check the level, syllabus and sample price for each course.">Consulta el nivel, el temario y el precio de ejemplo en cada ficha.</p></div>
+                    <div><h3 data-en="Try a lesson">Prueba una lección</h3><p data-en="Watch a lesson and try the exercises at your own pace.">Abre el reproductor y prueba los ejercicios a tu ritmo.</p></div>
+                    <div><h3 data-en="Pick up where you left off">Retoma tu progreso</h3><p data-en="Completed lessons are saved in this browser.">Las lecciones completadas se guardan en este navegador.</p></div>
                 </div>
             </div>
         </section>
+        <section class="wrap info-section" id="programas" aria-labelledby="program-title">
+            <h2 id="program-title" data-en="Programs">Programas</h2>
+            <div class="program-grid">
+                <article><h3 data-en="Educational field trips">Giras educativas</h3><p data-en="Field experiences built around a question or learning goal for the group.">Salidas de campo que parten de una pregunta o un objetivo de aprendizaje del grupo.</p></article>
+                <article><h3 data-en="Extracurricular retreats">Retiros extracurriculares</h3><p data-en="Group activities focused on teamwork and reflection outside the classroom.">Actividades de convivencia, trabajo en equipo y reflexión fuera del aula.</p></article>
+                <article><h3 data-en="Holiday programs">Programas vacacionales</h3><p data-en="Educational activities for families interested in supervision and extended care. Availability and arrangements are to be confirmed.">Actividades formativas para familias interesadas en la supervisión y la custodia extendida. La disponibilidad y las condiciones se confirmarán por programa.</p></article>
+                <article><h3 data-en="CIT leadership and expeditions">Liderazgo CIT y expediciones</h3><p data-en="Counselor-in-Training is a leadership pathway for young people. Structured expeditions are a separate way to practice field skills.">Counselor-in-Training (CIT) es una ruta de liderazgo para jóvenes. Las expediciones estructuradas ofrecen otra forma de practicar habilidades de campo.</p></article>
+            </div>
+        </section>
+        <section class="wrap catalog" id="cursos" aria-labelledby="catalog-title">
+            <p class="eyebrow green" data-en="UPCOMING COURSES">CURSOS POR VENIR</p>
+            <h2 id="catalog-title" data-en="Academy">Academia</h2>
+            <p data-en="Try our sample lessons while we prepare the full courses. Prices and purchases are for demonstration only.">Prueba las lecciones de muestra mientras preparamos los cursos completos. Los precios y las compras son de demostración.</p>
+            <div class="filters">
+                <label><span data-en="Search courses">Buscar cursos</span><input id="search" type="search" placeholder="Ej. biodiversidad" data-en-placeholder="e.g. biodiversity"></label>
+                <label><span data-en="Level">Nivel</span><select id="level"><option value="" data-en="All levels">Todos los niveles</option><option value="Inicial" data-en="Beginner">Inicial</option><option value="Intermedio" data-en="Intermediate">Intermedio</option></select></label>
+            </div>
+            <p id="results" class="muted" role="status"></p>
+            <div class="course-grid" id="course-list"></div>
+            <noscript data-en="Enable JavaScript to browse courses and watch lessons.">Activa JavaScript para explorar los cursos y reproducir las lecciones.</noscript>
+        </section>
+
+        <section class="band" id="nosotros" aria-labelledby="about-title">
+            <div class="wrap info-section">
+                <h2 id="about-title" data-en="About us">Sobre nosotros</h2>
+                <p data-en="Solara Field School brings together outdoor learning and video lessons. We design experiences that help groups observe their surroundings, document what they find and work together.">Solara Field School combina experiencias educativas al aire libre con lecciones en video. Diseñamos actividades para que los grupos aprendan a observar su entorno, documentar lo que encuentran y trabajar en equipo.</p>
+            </div>
+        </section>
+
+        <section class="wrap info-section" id="contacto" aria-labelledby="contact-title">
+            <h2 id="contact-title" data-en="Contact">Contacto</h2>
+            <p data-en="For questions about programs, educational trips or partnerships. Our official contact channel will be published here.">Para consultas sobre programas, giras educativas o alianzas. Publicaremos aquí el canal oficial de contacto.</p>
+        </section>
     </main>
-    <footer class="wrap footer"><span>Solara Field School</span><span>Curso, contenido y compra de demostración</span></footer>
+    <footer class="wrap footer"><span>Solara Field School</span><span data-en="Sample courses and demo checkout">Curso, contenido y compra de demostración</span></footer>
 
     <dialog class="course-dialog" id="course-dialog" aria-labelledby="course-title">
-        <div class="dialog-heading"><div><p class="eyebrow green">CURSO DE MUESTRA</p><h2 id="course-title"></h2></div><form method="dialog"><button class="button outline" aria-label="Cerrar curso">Cerrar</button></form></div>
+        <div class="dialog-heading"><div><p class="eyebrow green" data-en="SAMPLE COURSE">CURSO DE MUESTRA</p><h2 id="course-title"></h2></div><form method="dialog"><button class="button outline" aria-label="Cerrar curso" data-en-label="Close course" data-en="Close">Cerrar</button></form></div>
         <p id="course-description"></p>
         <div class="lesson-layout">
             <div>
-                <video id="player" controls playsinline preload="metadata" aria-label="Video de la lección"></video>
+                <video id="player" controls playsinline preload="metadata" aria-label="Video de la lección" data-en-label="Lesson video"></video>
+                <p class="muted" id="video-language" hidden>Sample video in Spanish. The lesson text below is available in English.</p>
                 <p class="muted" id="video-status" role="status"></p>
                 <h3 id="lesson-title"></h3><p id="lesson-description"></p>
                 <button class="button outline" id="complete-lesson" type="button"></button>
             </div>
-            <aside aria-label="Temario"><h3>Temario</h3><p class="muted" id="progress" role="status"></p><div id="lessons"></div></aside>
+            <aside aria-label="Temario" data-en-label="Syllabus"><h3 data-en="Syllabus">Temario</h3><p class="muted" id="progress" role="status"></p><div id="lessons"></div></aside>
         </div>
         <div class="dialog-footer"><strong id="course-price"></strong><button class="button dark" id="add-course" type="button"></button></div>
     </dialog>
 
     <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
-        <div class="dialog-heading"><h2 id="cart-title">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito">Cerrar</button></form></div>
-        <p class="muted">Compra de demostración. No se enviará ningún cobro.</p>
+        <div class="dialog-heading"><h2 id="cart-title" data-en="Your cart">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito" data-en-label="Close cart" data-en="Close">Cerrar</button></form></div>
+        <p class="muted" data-en="Demo checkout. You will not be charged.">Compra de demostración. No se enviará ningún cobro.</p>
         <div id="cart-items"></div>
-        <div class="dialog-footer"><strong id="cart-total"></strong><button class="button dark" id="checkout" type="button">Simular compra</button></div>
+        <div class="dialog-footer"><strong id="cart-total"></strong><button class="button dark" id="checkout" type="button" data-en="Simulate purchase">Simular compra</button></div>
         <p id="checkout-status" class="muted" role="status"></p>
     </dialog>
 </body>
