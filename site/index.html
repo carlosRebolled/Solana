@@ -3,21 +3,76 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solara Field School</title>
-    <meta name="description" content="Aprender al aire libre con Solara Field School.">
-    <style>
-        body { margin: 0; background: #f7f4e9; color: #19382f; font: 1.125rem/1.6 system-ui, sans-serif; }
-        main { max-width: 42rem; margin: auto; padding: clamp(3rem, 12vw, 8rem) 1.5rem; }
-        h1 { margin: .75rem 0 1rem; font: 700 clamp(2.5rem, 8vw, 5rem)/1.05 Georgia, serif; }
-        p { max-width: 34rem; }
-        .sun { width: 2rem; height: 2rem; border-radius: 50%; background: #da8b3b; }
-    </style>
+    <meta name="description" content="Explora la plataforma de cursos en video de Solara Field School.">
+    <title>Solara Field School | Cursos en video</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.js"></script>
 </head>
 <body>
+    <a class="skip" href="#cursos">Ir al catálogo</a>
+    <header class="top">
+        <div class="wrap nav">
+            <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
+            <nav aria-label="Principal"><a href="#cursos">Cursos</a><a href="#experiencia">Cómo funciona</a></nav>
+            <button class="button outline" id="open-cart" type="button">Carrito <span id="cart-count">0</span></button>
+        </div>
+    </header>
     <main>
-        <div class="sun" aria-hidden="true"></div>
-        <h1>Solara Field School</h1>
-        <p>Aprender al aire libre. Una invitación a observar, hacer preguntas y aprender en contacto con el entorno.</p>
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="wrap hero-content">
+                <p class="eyebrow">CURSOS EN VIDEO · A TU RITMO</p>
+                <h1 id="hero-title">Aprende con<br>los pies en la tierra.</h1>
+                <p class="intro">Explora el mundo natural con técnicas de observación, registro y trabajo de campo que puedes aplicar en tu próxima salida.</p>
+                <div class="actions"><a class="button primary" href="#cursos">Explorar cursos</a><button class="button glass" id="open-sample" type="button">▶ Ver una clase</button></div>
+            </div>
+        </section>
+
+        <section class="wrap catalog" id="cursos" aria-labelledby="catalog-title">
+            <p class="eyebrow green">CATÁLOGO DE DEMOSTRACIÓN</p>
+            <h2 id="catalog-title">Encuentra tu próximo curso</h2>
+            <div class="filters">
+                <label>Buscar cursos<input id="search" type="search" placeholder="Ej. biodiversidad"></label>
+                <label>Nivel<select id="level"><option value="">Todos los niveles</option><option>Inicial</option><option>Intermedio</option></select></label>
+            </div>
+            <p id="results" class="muted" role="status"></p>
+            <div class="course-grid" id="course-list"></div>
+            <noscript>Activa JavaScript para explorar los cursos y reproducir las lecciones.</noscript>
+        </section>
+
+        <section class="experience" id="experiencia" aria-labelledby="experience-title">
+            <div class="wrap experience-inner">
+                <div><p class="eyebrow green">CÓMO FUNCIONA</p><h2 id="experience-title">Del video al campo</h2></div>
+                <div class="steps">
+                    <div><h3>Elige tu curso</h3><p>Consulta el nivel, el temario y el precio de ejemplo en cada ficha.</p></div>
+                    <div><h3>Prueba una lección</h3><p>Abre el reproductor y completa los ejercicios a tu ritmo.</p></div>
+                    <div><h3>Retoma tu progreso</h3><p>Las lecciones completadas se guardan en este navegador.</p></div>
+                </div>
+            </div>
+        </section>
     </main>
+    <footer class="wrap footer"><span>Solara Field School</span><span>Curso, contenido y compra de demostración</span></footer>
+
+    <dialog class="course-dialog" id="course-dialog" aria-labelledby="course-title">
+        <div class="dialog-heading"><div><p class="eyebrow green">CURSO DE MUESTRA</p><h2 id="course-title"></h2></div><form method="dialog"><button class="button outline" aria-label="Cerrar curso">Cerrar</button></form></div>
+        <p id="course-description"></p>
+        <div class="lesson-layout">
+            <div>
+                <video id="player" controls playsinline preload="metadata" aria-label="Video de la lección"></video>
+                <p class="muted" id="video-status" role="status"></p>
+                <h3 id="lesson-title"></h3><p id="lesson-description"></p>
+                <button class="button outline" id="complete-lesson" type="button"></button>
+            </div>
+            <aside aria-label="Temario"><h3>Temario</h3><p class="muted" id="progress" role="status"></p><div id="lessons"></div></aside>
+        </div>
+        <div class="dialog-footer"><strong id="course-price"></strong><button class="button dark" id="add-course" type="button"></button></div>
+    </dialog>
+
+    <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+        <div class="dialog-heading"><h2 id="cart-title">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito">Cerrar</button></form></div>
+        <p class="muted">Compra de demostración. No se enviará ningún cobro.</p>
+        <div id="cart-items"></div>
+        <div class="dialog-footer"><strong id="cart-total"></strong><button class="button dark" id="checkout" type="button">Simular compra</button></div>
+        <p id="checkout-status" class="muted" role="status"></p>
+    </dialog>
 </body>
 </html>
