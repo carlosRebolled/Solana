@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./styles.css">
     <script type="module" src="./app.js"></script>
 </head>
-<body>
+<body class="home-page">
     <a class="skip" href="#cursos" data-en="Skip to the academy">Ir al catálogo</a>
     <header class="top">
         <div class="wrap nav">
@@ -18,21 +18,59 @@
         </div>
     </header>
     <main>
-        <section class="hero" aria-labelledby="hero-title">
-            <div class="wrap hero-content">
-                <div class="hero-copy">
-                <p class="eyebrow" data-en="FIELD PROGRAMS AND VIDEO COURSES">PROGRAMAS DE CAMPO Y CURSOS EN VIDEO</p>
-                <h1 id="hero-title"><span data-en="Learn with">Aprende con</span><br><span data-en="your feet on the ground.">los pies en la tierra.</span></h1>
-                <p class="intro" data-en="Outdoor education for schools, families and young people. Explore our programs and video academy.">Formación al aire libre para instituciones educativas, familias y jóvenes. Explora nuestras propuestas y conoce la academia en video.</p>
-                <div class="actions"><a class="button primary" href="#cursos" data-en="Explore the academy">Explorar cursos</a><a class="button glass" href="./curso.html?curso=campo&amp;muestra=1#lecciones" target="_blank" rel="noopener" data-en="Watch a sample lesson">Ver una clase</a></div>
-                </div>
-                <aside class="hero-feature" aria-labelledby="featured-title">
-                    <img src="./media/field.jpg" alt="" width="640" height="320">
-                    <div><p class="eyebrow green" data-en="FEATURED LESSON">LECCIÓN DESTACADA</p>
-                        <h2 id="featured-title" data-en="Fieldwork fundamentals">Fundamentos de trabajo de campo</h2>
-                        <a href="./curso.html?curso=campo" target="_blank" rel="noopener" data-en="Open course in a new tab">Abrir curso en otra pestaña</a>
+        <section class="home-hero" aria-labelledby="hero-title">
+            <div class="wrap">
+                <div class="home-hero-copy">
+                    <p class="eyebrow" data-en="OUTDOOR LEARNING AND VIDEO COURSES">EDUCACIÓN AL AIRE LIBRE Y CURSOS EN VIDEO</p>
+                    <h1 id="hero-title" data-en="Learn beyond the classroom">Aprende más allá del aula</h1>
+                    <p class="intro" data-en="Discover Solara’s field programs for schools, families and young people, and explore the video academy at your own pace.">Descubre los programas de campo de Solara para colegios, familias y jóvenes, y explora la academia en video a tu ritmo.</p>
+                    <div class="actions">
+                        <a class="button primary" href="#cursos" data-en="Explore courses">Explorar cursos</a>
+                        <a class="button glass" href="#programas" data-en="View field programs">Ver programas</a>
                     </div>
-                </aside>
+                </div>
+                <section class="home-picks" aria-labelledby="picks-title">
+                    <h2 id="picks-title" data-en="Start with a sample lesson">Empieza con una clase de muestra</h2>
+                    <div class="home-pick-grid">
+                        <a href="./curso.html?curso=campo&amp;muestra=1#lecciones" target="_blank" rel="noopener">
+                            <img src="./media/field.jpg" alt="" width="72" height="72">
+                            <span><strong data-en="Fieldwork">Trabajo de campo</strong><small data-en="Before you head out">Antes de salir</small></span>
+                        </a>
+                        <a href="./curso.html?curso=biodiversidad&amp;muestra=1#lecciones" target="_blank" rel="noopener">
+                            <img src="./media/biodiversity.jpg" alt="" width="72" height="72">
+                            <span><strong data-en="Biodiversity">Biodiversidad</strong><small data-en="Looking at different scales">Mirar a distintas escalas</small></span>
+                        </a>
+                        <a href="./curso.html?curso=sendero&amp;muestra=1#lecciones" target="_blank" rel="noopener">
+                            <img src="./media/trail.jpg" alt="" width="72" height="72">
+                            <span><strong data-en="Landscape">Paisaje</strong><small data-en="Clues in the terrain">Las pistas del terreno</small></span>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="wrap catalog" id="cursos" aria-labelledby="catalog-title">
+            <p class="eyebrow green" data-en="SOLARA ACADEMY · UPCOMING COURSES">ACADEMIA SOLARA · CURSOS POR VENIR</p>
+            <h2 id="catalog-title" data-en="What would you like to learn?">¿Qué quieres aprender?</h2>
+            <p data-en="Try our sample lessons while we prepare the full courses. Prices and purchases are for demonstration only.">Prueba las lecciones de muestra mientras preparamos los cursos completos. Los precios y las compras son de demostración.</p>
+            <div class="filters">
+                <label><span data-en="Search courses">Buscar cursos</span><input id="search" type="search" placeholder="Ej. biodiversidad" data-en-placeholder="e.g. biodiversity"></label>
+                <label><span data-en="Level">Nivel</span><select id="level"><option value="" data-en="All levels">Todos los niveles</option><option value="Inicial" data-en="Beginner">Inicial</option><option value="Intermedio" data-en="Intermediate">Intermedio</option></select></label>
+            </div>
+            <p id="results" class="muted" role="status"></p>
+            <div class="course-grid" id="course-list"></div>
+            <noscript data-en="Enable JavaScript to browse courses and watch lessons.">Activa JavaScript para explorar los cursos y reproducir las lecciones.</noscript>
+        </section>
+
+        <section class="experience" id="experiencia" aria-labelledby="experience-title">
+            <div class="wrap experience-inner">
+                <div><h2 id="experience-title" data-en="What we do for students">Lo que hacemos por los estudiantes</h2></div>
+                <div class="steps">
+                    <div><h3 data-en="Take learning outdoors">Lleva el aprendizaje al campo</h3><p data-en="Practice observing, writing down what you find and working with your group during field activities.">Practica cómo observar, registrar tus hallazgos y trabajar con tu grupo en actividades de campo.</p></div>
+                    <div><h3 data-en="Choose your course">Elige tu curso</h3><p data-en="Check the level, syllabus and sample price for each course.">Consulta el nivel, el temario y el precio de ejemplo en cada ficha.</p></div>
+                    <div><h3 data-en="Try a lesson">Prueba una lección</h3><p data-en="Watch a lesson and try the exercises at your own pace.">Abre el reproductor y prueba los ejercicios a tu ritmo.</p></div>
+                    <div><h3 data-en="Pick up where you left off">Retoma tu progreso</h3><p data-en="Completed lessons are saved in this browser.">Las lecciones completadas se guardan en este navegador.</p></div>
+                </div>
             </div>
         </section>
 
@@ -56,31 +94,6 @@
                 </dl>
                 <p class="muted" data-period hidden></p>
             </div>
-        </section>
-
-        <section class="experience" id="experiencia" aria-labelledby="experience-title">
-            <div class="wrap experience-inner">
-                <div><h2 id="experience-title" data-en="What we do for students">Lo que hacemos por los estudiantes</h2></div>
-                <div class="steps">
-                    <div><h3 data-en="Take learning outdoors">Lleva el aprendizaje al campo</h3><p data-en="Practice observing, writing down what you find and working with your group during field activities.">Practica cómo observar, registrar tus hallazgos y trabajar con tu grupo en actividades de campo.</p></div>
-                    <div><h3 data-en="Choose your course">Elige tu curso</h3><p data-en="Check the level, syllabus and sample price for each course.">Consulta el nivel, el temario y el precio de ejemplo en cada ficha.</p></div>
-                    <div><h3 data-en="Try a lesson">Prueba una lección</h3><p data-en="Watch a lesson and try the exercises at your own pace.">Abre el reproductor y prueba los ejercicios a tu ritmo.</p></div>
-                    <div><h3 data-en="Pick up where you left off">Retoma tu progreso</h3><p data-en="Completed lessons are saved in this browser.">Las lecciones completadas se guardan en este navegador.</p></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="wrap catalog" id="cursos" aria-labelledby="catalog-title">
-            <p class="eyebrow green" data-en="UPCOMING COURSES">CURSOS POR VENIR</p>
-            <h2 id="catalog-title" data-en="Academy">Academia</h2>
-            <p data-en="Try our sample lessons while we prepare the full courses. Prices and purchases are for demonstration only.">Prueba las lecciones de muestra mientras preparamos los cursos completos. Los precios y las compras son de demostración.</p>
-            <div class="filters">
-                <label><span data-en="Search courses">Buscar cursos</span><input id="search" type="search" placeholder="Ej. biodiversidad" data-en-placeholder="e.g. biodiversity"></label>
-                <label><span data-en="Level">Nivel</span><select id="level"><option value="" data-en="All levels">Todos los niveles</option><option value="Inicial" data-en="Beginner">Inicial</option><option value="Intermedio" data-en="Intermediate">Intermedio</option></select></label>
-            </div>
-            <p id="results" class="muted" role="status"></p>
-            <div class="course-grid" id="course-list"></div>
-            <noscript data-en="Enable JavaScript to browse courses and watch lessons.">Activa JavaScript para explorar los cursos y reproducir las lecciones.</noscript>
         </section>
 
         <section class="wrap info-section" id="publico" aria-labelledby="audience-title">
