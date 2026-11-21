@@ -37,6 +37,8 @@ Cada ficha utiliza la plantilla `site/curso.html` y el identificador del curso e
 
 Para probar la vitrina en local, ejecuta `php -S 127.0.0.1:8874 -t site` y abre `http://127.0.0.1:8874`.
 
+La navegación pública incluye `catalogo.html` (búsqueda y filtros), `escuelas.html` (directorio y fichas con `?area=`), `curso.html?curso=` y `precios.html` (precios de muestra). La lista `schools` de `site/app.js` organiza los cursos por área.
+
 El catálogo, los precios y el carrito son de demostración. Los clips están disponibles públicamente y el progreso se conserva en el navegador. Para vender cursos reales hará falta integrar un proveedor de pagos y alojar los videos de pago con acceso controlado.
 
 Para publicar resultados reales, edita `metrics` en `site/app.js` con los totales verificados y su periodo de medición en ambos idiomas. Un valor `null` se muestra como «Por publicar». El encabezado de contacto de `site/index.html` puede actualizarse cuando esté definido el canal oficial.

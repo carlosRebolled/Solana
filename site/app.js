@@ -25,6 +25,12 @@ const courses = [
     }
 ];
 
+const schools = [
+    { id: 'campo', title: ['Trabajo de campo', 'Fieldwork'], image: 'field', courses: ['campo', 'sendero'] },
+    { id: 'biodiversidad', title: ['Biodiversidad', 'Biodiversity'], image: 'biodiversity', courses: ['biodiversidad'] },
+    { id: 'paisaje', title: ['Lectura del paisaje', 'Landscape studies'], image: 'trail', courses: ['sendero'] }
+];
+
 const englishCourses = {
     campo: ['Fieldwork fundamentals', 'Turn an outing into a structured observation you can refer back to later.', [
         ['Before you head out', 'Define a specific question. Choose a place and a time to observe.'],
@@ -79,10 +85,9 @@ function renderLanguage() {
         else element.textContent = tr(es, en);
     }
     renderMetrics();
-    if ($('course-list')) {
-        renderCatalog();
-        renderFeaturedCourse();
-    }
+    if ($('course-list')) renderCatalog();
+    if ($('featured-course')) renderFeaturedCourse();
+    renderDirectories();
     if (activeCourse) renderCourse();
     renderCart();
 }
@@ -164,7 +169,10 @@ function renderCatalog() {
         ? `${matching.length} ${matching.length === 1 ? tr('curso de muestra', 'sample course') : tr('cursos de muestra', 'sample courses')}`
         : tr('No se encontraron cursos. Prueba otra búsqueda o cambia el nivel.', 'No courses found. Try another search or level.');
 
-    $('course-list').innerHTML = matching.map((course) => {
+    $('course-list').innerHTML = matching.map(courseCard).join('');
+}
+
+function courseCard(course) {
         const { title, description } = courseText(course);
         const levelLabel = levelText(course.level);
         return `
@@ -180,7 +188,89 @@ function renderCatalog() {
                 </div>
             </div>
         </article>`;
-    }).join('');
+}
+
+function renderDirectories() {
+    for (const id of ['school-rail', 'school-directory']) {
+        const container = $(id);
+        if (!container) continue;
+        container.innerHTML = schools.map((school) => {
+            const label = tr(...school.title);
+            const count = school.courses.length;
+            return `<a class="school-card" href="./escuelas.html?area=${school.id}">
+                <img src="./media/${school.image}.jpg" alt="" width="448" height="240" loading="lazy">
+                <div><h2>${label}</h2><p>${count} ${count === 1 ? tr('curso', 'course') : tr('cursos', 'courses')}</p></div>
+            </a>`;
+        }).join('');
+    }
+
+    if ($('school-title') && params.has('area')) {
+        const school = schools.find((entry) => entry.id === params.get('area'));
+        const title = school ? tr(...school.title) : tr('Escuela no encontrada', 'School not found');
+        $('school-title').textContent = title;
+        $('school-description').textContent = school
+            ? tr('Cursos y lecciones de muestra de esta escuela.', 'Sample courses and lessons from this school.')
+            : tr('Elige una de las escuelas disponibles.', 'Choose one of the available schools.');
+        if (school) {
+            $('school-directory').hidden = true;
+            $('school-courses').hidden = false;
+            $('school-courses').innerHTML = `
+                <div class="section-heading"><h2>${tr('Cursos de la escuela', 'School courses')}</h2>
+                    <a class="button outline" href="./escuelas.html">${tr('Todas las escuelas', 'All schools')}</a></div>
+                <div class="course-grid">${courses.filter((course) => school.courses.includes(course.id)).map(courseCard).join('')}</div>`;
+        }
+        document.title = `${title} | Solara Field School`;
+    } else if ($('school-title')) {
+        document.title = `${tr('Escuelas', 'Schools')} | Solara Field School`;
+    }
+
+    if (document.body.classList.contains('directory-page') && $('course-list')) {
+        document.title = `${tr('Catálogo', 'Course catalog')} | Solara Field School`;
+    }
+    if ($('pricing-courses')) {
+        $('pricing-courses').innerHTML = courses.map(courseCard).join('');
+        document.title = `${tr('Precios de muestra', 'Sample prices')} | Solara Field School`;
+    }
+
+    updateSchoolRail();
+}
+
+function updateSchoolRail() {
+    const rail = $('school-rail');
+    if (!rail) return;
+    const end = rail.scrollWidth - rail.clientWidth;
+    $('school-controls').hidden = end <= 1;
+    $('schools-prev').disabled = rail.scrollLeft <= 1;
+    $('schools-next').disabled = rail.scrollLeft >= end - 1;
+}
+
+const rail = $('school-rail');
+if (rail) {
+    rail.addEventListener('scroll', updateSchoolRail, { passive: true });
+    window.addEventListener('resize', updateSchoolRail);
+    for (const [id, direction] of [['schools-prev', -1], ['schools-next', 1]]) {
+        $(id).addEventListener('click', () => rail.scrollBy({
+            left: direction * rail.clientWidth * .7,
+            behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+        }));
+    }
+}
+
+const navigationToggle = $('navigation-toggle');
+if (navigationToggle) {
+    const navigation = $('main-navigation');
+    const closeMenu = () => navigationToggle.setAttribute('aria-expanded', 'false');
+    navigationToggle.addEventListener('click', () => {
+        const expanded = navigationToggle.getAttribute('aria-expanded') === 'true';
+        navigationToggle.setAttribute('aria-expanded', String(!expanded));
+    });
+    navigation.addEventListener('click', closeMenu);
+    navigationToggle.closest('header').addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && navigationToggle.getAttribute('aria-expanded') === 'true') {
+            closeMenu();
+            navigationToggle.focus();
+        }
+    });
 }
 
 function lessonKey(index) {

@@ -171,3 +171,34 @@ video { display: block; width: 100%; aspect-ratio: 16/9; background: #102c21; bo
     .discovery-preview > img { max-height:10rem; }
     .home-page .brand { flex-basis:100%; }
 }
+
+[hidden] { display:none !important; }
+.mobile-menu { display:none; }
+.directory-hero { background:#e7eedb; padding-block:clamp(2rem,6vw,5rem); }
+.directory-hero h1 { max-width:56rem; font-size:clamp(2.6rem,6vw,5rem); margin:.45rem 0; }
+.directory-hero p { max-width:46rem; }
+.section-heading { display:flex; align-items:center; justify-content:space-between; gap:.75rem 1rem; flex-wrap:wrap; margin-bottom:1rem; }
+.rail-controls { display:flex; justify-content:flex-end; gap:.5rem; margin-bottom:.75rem; }
+.school-rail { display:grid; grid-auto-flow:column; grid-auto-columns:42%; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:.2rem .2rem .8rem; }
+.school-card { display:block; overflow:hidden; background:var(--paper); border:1px solid #a8baa6; border-radius:.85rem; color:var(--ink); text-decoration:none; scroll-snap-align:start; }
+.school-card:hover h2 { text-decoration:underline; text-underline-offset:.2rem; }
+.school-card img { display:block; width:100%; height:9rem; object-fit:cover; }
+.school-card div { padding:1rem; }
+.school-card h2 { font-size:clamp(1.3rem,3vw,2rem); }
+.school-card p { margin:.45rem 0 0; }
+#pricing-courses { margin-top:1.2rem; }
+@media (max-width:830px) {
+    .nav .mobile-menu { display:inline-flex; }
+    .nav .mobile-menu[aria-expanded="false"] + #main-navigation { display:none; }
+    .nav #main-navigation { order:4; width:100%; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); padding:.6rem 0; }
+}
+@media (max-width:620px) {
+    .school-rail { grid-auto-columns:84%; }
+    .nav .nav-actions { margin-left:auto; flex-wrap:wrap; }
+}
+
+#pricing-courses .card img { display:none; }
+@media (min-width:831px) and (max-width:1040px) {
+    .nav { flex-wrap:wrap; }
+    .nav #main-navigation { order:3; width:100%; flex-wrap:wrap; }
+}
