@@ -14,7 +14,7 @@
         <div class="wrap nav">
             <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
             <nav aria-label="Principal" data-en-label="Main navigation"><a href="#cursos" data-en="Academy">Academia</a><a href="#programas" data-en="Programs">Programas</a><a href="#publico" data-en="Who it’s for">Público</a><a href="#contacto" data-en="Contact">Contacto</a></nav>
-            <div class="nav-actions"><label class="sr-only" for="language" data-en="Language">Idioma</label><select id="language"><option value="es" lang="es">Español</option><option value="en" lang="en">English</option></select><button class="button outline" id="open-cart" type="button"><span data-en="Cart">Carrito</span> <span id="cart-count">0</span></button></div>
+            <div class="nav-actions"><a class="button outline quick-search" href="#cursos" id="find-lessons" data-en="Search">Buscar</a><label class="sr-only" for="language" data-en="Language">Idioma</label><select id="language"><option value="es" lang="es">Español</option><option value="en" lang="en">English</option></select><button class="button outline" id="open-cart" type="button"><span data-en="Cart">Carrito</span> <span id="cart-count">0</span></button></div>
         </div>
     </header>
     <main>
@@ -29,22 +29,17 @@
                         <a class="button glass" href="#programas" data-en="View field programs">Ver programas</a>
                     </div>
                 </div>
-                <section class="home-picks" aria-labelledby="picks-title">
-                    <h2 id="picks-title" data-en="Start with a sample lesson">Empieza con una clase de muestra</h2>
-                    <div class="home-pick-grid">
-                        <a href="./curso.html?curso=campo&amp;muestra=1#lecciones" target="_blank" rel="noopener">
-                            <img src="./media/field.jpg" alt="" width="72" height="72">
-                            <span><strong data-en="Fieldwork">Trabajo de campo</strong><small data-en="Before you head out">Antes de salir</small></span>
-                        </a>
-                        <a href="./curso.html?curso=biodiversidad&amp;muestra=1#lecciones" target="_blank" rel="noopener">
-                            <img src="./media/biodiversity.jpg" alt="" width="72" height="72">
-                            <span><strong data-en="Biodiversity">Biodiversidad</strong><small data-en="Looking at different scales">Mirar a distintas escalas</small></span>
-                        </a>
-                        <a href="./curso.html?curso=sendero&amp;muestra=1#lecciones" target="_blank" rel="noopener">
-                            <img src="./media/trail.jpg" alt="" width="72" height="72">
-                            <span><strong data-en="Landscape">Paisaje</strong><small data-en="Clues in the terrain">Las pistas del terreno</small></span>
-                        </a>
+                <section class="discovery" aria-labelledby="picks-title">
+                    <div class="discovery-heading">
+                        <h2 id="picks-title" data-en="Find a topic">Explora por tema</h2>
+                        <div class="topic-buttons" id="topic-buttons" role="group" aria-label="Temas" data-en-label="Topics">
+                            <button type="button" data-topic="campo" aria-pressed="true" data-en="Fieldwork">Trabajo de campo</button>
+                            <button type="button" data-topic="biodiversidad" aria-pressed="false" data-en="Biodiversity">Biodiversidad</button>
+                            <button type="button" data-topic="sendero" aria-pressed="false" data-en="Landscape">Paisaje</button>
+                        </div>
                     </div>
+                    <article class="discovery-preview" id="featured-course"></article>
+                    <noscript><a href="./curso.html?curso=campo" target="_blank" rel="noopener">Ver curso de muestra</a></noscript>
                 </section>
             </div>
         </section>
@@ -56,6 +51,13 @@
             <div class="filters">
                 <label><span data-en="Search courses">Buscar cursos</span><input id="search" type="search" placeholder="Ej. biodiversidad" data-en-placeholder="e.g. biodiversity"></label>
                 <label><span data-en="Level">Nivel</span><select id="level"><option value="" data-en="All levels">Todos los niveles</option><option value="Inicial" data-en="Beginner">Inicial</option><option value="Intermedio" data-en="Intermediate">Intermedio</option></select></label>
+                <label><span data-en="Topic">Tema</span><select id="catalog-topic">
+                    <option value="" data-en="All topics">Todos los temas</option>
+                    <option value="campo" data-en="Fieldwork">Trabajo de campo</option>
+                    <option value="biodiversidad" data-en="Biodiversity">Biodiversidad</option>
+                    <option value="sendero" data-en="Landscape">Paisaje</option>
+                </select></label>
+                <button class="button outline" id="clear-filters" type="button" data-en="Clear filters">Limpiar filtros</button>
             </div>
             <p id="results" class="muted" role="status"></p>
             <div class="course-grid" id="course-list"></div>
@@ -138,8 +140,33 @@
             <h2 id="contact-title" data-en="Contact">Contacto</h2>
             <p data-en="For questions about programs, educational trips or partnerships. Our official contact channel will be published here.">Para consultas sobre programas, giras educativas o alianzas. Publicaremos aquí el canal oficial de contacto.</p>
         </section>
+        <section class="band" id="preguntas" aria-labelledby="faq-title">
+            <div class="wrap info-section">
+                <h2 id="faq-title" data-en="Frequently asked questions">Preguntas frecuentes</h2>
+                <div class="audiences">
+                    <details>
+                        <summary data-en="How do I start a lesson?">¿Cómo empiezo una lección?</summary>
+                        <p data-en="Choose a topic at the top or open a course from the catalog. The course page opens in a new tab.">Elige un tema al inicio o abre un curso del catálogo. La ficha se abre en otra pestaña.</p>
+                    </details>
+                    <details>
+                        <summary data-en="Do I need an account?">¿Necesito una cuenta?</summary>
+                        <p data-en="Sample lessons are public. This browser stores any lessons you mark as complete.">Las lecciones de muestra son públicas. Este navegador guarda las lecciones que marcas como completas.</p>
+                    </details>
+                    <details>
+                        <summary data-en="How does the cart work?">¿Cómo funciona el carrito?</summary>
+                        <p data-en="You can add courses and test the checkout. Prices are examples and no payment is collected.">Puedes agregar cursos y probar la compra. Los precios son de ejemplo y no se realiza ningún cobro.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
     </main>
-    <footer class="wrap footer"><span>Solara Field School</span><span data-en="Sample courses and demo checkout">Curso, contenido y compra de demostración</span></footer>
+    <footer class="wrap footer">
+        <span>Solara Field School</span>
+        <nav class="footer-nav" aria-label="Enlaces del sitio" data-en-label="Site links">
+            <a href="#cursos" data-en="Academy">Academia</a><a href="#programas" data-en="Programs">Programas</a>
+            <a href="#preguntas" data-en="Help">Ayuda</a><a href="#contacto" data-en="Contact">Contacto</a>
+        </nav>
+    </footer>
 
     <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
         <div class="dialog-heading"><h2 id="cart-title" data-en="Your cart">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito" data-en-label="Close cart" data-en="Close">Cerrar</button></form></div>

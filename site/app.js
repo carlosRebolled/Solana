@@ -79,7 +79,10 @@ function renderLanguage() {
         else element.textContent = tr(es, en);
     }
     renderMetrics();
-    if ($('course-list')) renderCatalog();
+    if ($('course-list')) {
+        renderCatalog();
+        renderFeaturedCourse();
+    }
     if (activeCourse) renderCourse();
     renderCart();
 }
@@ -107,6 +110,7 @@ function storeSet(key, values) {
 const cart = readSet('solara-demo-cart');
 const completed = readSet('solara-demo-progress');
 const player = $('player');
+let featuredCourse = courses[0];
 const cartDialog = $('cart-dialog');
 const params = new URLSearchParams(location.search);
 const activeCourse = player ? courses.find((course) => course.id === params.get('curso')) : undefined;
@@ -122,11 +126,37 @@ function normalize(value) {
     return value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
 }
 
+function renderFeaturedCourse() {
+    const { id, image } = featuredCourse;
+    const { title, lessons } = courseText(featuredCourse);
+    const count = lessons.filter((_, index) => completed.has(`${id}:${index}`)).length;
+    for (const button of $('topic-buttons').querySelectorAll('[data-topic]')) {
+        button.setAttribute('aria-pressed', String(button.dataset.topic === id));
+    }
+    $('featured-course').innerHTML = `
+        <img src="./media/${image}.jpg" width="560" height="320" alt="">
+        <div class="discovery-body">
+            <h3>${title}</h3>
+            <p>${lessons[0][0]}</p>
+            <div class="featured-progress">
+                <progress value="${count}" max="${lessons.length}" aria-label="${tr('Progreso del curso', 'Course progress')}"></progress>
+                <span>${count}/${lessons.length} ${tr('lecciones completadas', 'lessons completed')}</span>
+            </div>
+            <div class="actions">
+                <a class="button primary" href="./curso.html?curso=${id}&amp;muestra=1#lecciones" target="_blank" rel="noopener">${tr('Ver clase de muestra', 'Watch sample lesson')}</a>
+                <a class="button glass" href="./curso.html?curso=${id}" target="_blank" rel="noopener">${tr('Ver temario', 'View syllabus')}</a>
+            </div>
+        </div>`;
+}
+
 function renderCatalog() {
     const term = normalize($('search').value.trim());
     const level = $('level').value;
+    const topic = $('catalog-topic').value;
+    $('clear-filters').disabled = !term && !level && !topic;
     const matching = courses.filter((course) =>
         (!level || course.level === level)
+        && (!topic || course.id === topic)
         && normalize([course.title, course.description, courseText(course).title, courseText(course).description, course.level].join(' ')).includes(term)
     );
 
@@ -221,6 +251,22 @@ function renderCart() {
 
 $('search')?.addEventListener('input', renderCatalog);
 $('level')?.addEventListener('change', renderCatalog);
+$('catalog-topic')?.addEventListener('change', renderCatalog);
+$('find-lessons')?.addEventListener('click', () => {
+    requestAnimationFrame(() => $('search').focus({ preventScroll: true }));
+});
+$('clear-filters')?.addEventListener('click', () => {
+    for (const id of ['search', 'level', 'catalog-topic']) $(id).value = '';
+    $('search').focus();
+    renderCatalog();
+});
+$('topic-buttons')?.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-topic]');
+    if (button) {
+        featuredCourse = courses.find((course) => course.id === button.dataset.topic);
+        renderFeaturedCourse();
+    }
+});
 
 if (player && !activeCourse) $('course-missing').hidden = false;
 
@@ -262,10 +308,11 @@ window.addEventListener('storage', ({ key }) => {
         renderCart();
         if (activeCourse) renderAddButton();
     }
-    if (key === 'solara-demo-progress' && activeCourse) {
+    if (key === 'solara-demo-progress') {
         completed.clear();
         for (const id of readSet(key)) completed.add(id);
-        renderProgress();
+        if (activeCourse) renderProgress();
+        if ($('featured-course')) renderFeaturedCourse();
     }
 });
 
