@@ -3,7 +3,7 @@
     "compatibility_date": "2026-11-18",
     "workers_dev": false,
     "preview_urls": false,
-    "main": "cloudflare/private-site.js",
+    "assets": { "directory": "./site" },
     "routes": [
         { "pattern": "solarafieldschool.com", "custom_domain": true }
     ]
