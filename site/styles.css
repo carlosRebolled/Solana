@@ -46,6 +46,7 @@ p { line-height: 1.55; }
 .catalog { padding-block: clamp(3rem, 7vw, 6rem); }
 .filters { display: flex; align-items: end; flex-wrap: wrap; gap: 1rem; margin-top: 1.6rem; }
 .filters label { display: grid; gap: .4rem; font-weight: 650; }
+.filters label:has(#catalog-topic) { min-width: 0; max-width: 100%; }
 .filters label:first-child { flex: 1 1 15rem; max-width: 24rem; }
 .filters input, .filters select { width: 100%; padding: .65rem .85rem; border: 1px solid #a8baa6; border-radius: .55rem; background: white; color: var(--ink); }
 .muted { color: var(--muted); }
