@@ -3,43 +3,85 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Explora la plataforma de cursos en video de Solara Field School.">
-    <title>Precios de muestra | Solara Field School</title>
+    <meta name="description" content="Precios de muestra y opciones para personas e instituciones de Solara Field School.">
+    <title>Precios | Solara Field School</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./ui.css">
+    <script type="module" src="./prices.js"></script>
     <script type="module" src="./app.js"></script>
 </head>
-<body class="directory-page">
+<body class="ui prices-ui">
     <a class="skip" href="#main" data-en="Skip to content">Ir al contenido</a>
-    <header class="top">
-        <div class="wrap nav">
-            <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
-            <button class="button outline mobile-menu" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
-            <nav id="main-navigation" aria-label="Principal" data-en-label="Main navigation">
-                <a href="./catalogo.html" data-en="Courses">Cursos</a><a href="./escuelas.html" data-en="Schools">Escuelas</a>
-                <a href="./#programas" data-en="Programs">Programas</a><a href="./#publico" data-en="Who it’s for">Público</a>
-                <a href="./blog.html" data-en="Blog">Blog</a><a href="./precios.html" data-en="Pricing">Precios</a>
-                <a href="./#contacto" data-en="Contact">Contacto</a>
+    <header class="site-header">
+        <div class="container header-bar">
+            <a class="site-brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
+            <nav id="main-navigation" class="header-nav" aria-label="Principal" data-en-label="Main navigation">
+                <div class="nav-panel-title"><span data-en="Menu">Menú</span><button class="icon-btn nav-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">✕</button></div>
+                <a href="./catalogo.html" data-en="Courses">Cursos</a>
+                <a href="./escuelas.html" data-en="Schools">Escuelas</a>
+                <a href="./ruta.html" data-en="Paths">Rutas</a>
+                <a href="./#programas" data-en="Programs">Programas</a>
+                <a href="./blog.html" data-en="Blog">Blog</a>
+                <a href="./precios.html" data-en="Pricing">Precios</a>
             </nav>
-            <div class="nav-actions"><a class="button outline quick-search" href="./catalogo.html#cursos" data-en="Search">Buscar</a><label class="sr-only" for="language" data-en="Language">Idioma</label><select id="language"><option value="es" lang="es">Español</option><option value="en" lang="en">English</option></select><button class="button outline" id="open-cart" type="button"><span data-en="Cart">Carrito</span> <span id="cart-count">0</span></button></div>
+            <div class="header-actions">
+                <a class="btn btn-light btn-small hide-small" href="./#publico" data-en="Institutions">Instituciones</a>
+                <label class="sr-only" for="language" data-en="Language">Idioma</label>
+                <select id="language"><option value="es" lang="es">ES</option><option value="en" lang="en">EN</option></select>
+                <button class="btn btn-outline btn-small" id="open-cart" type="button"><span class="hide-small" data-en="Cart">Carrito</span><span class="cart-count" id="cart-count">0</span><span class="sr-only" data-en="items in cart">cursos en el carrito</span></button>
+                <button class="btn btn-outline btn-small menu-toggle" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
+            </div>
         </div>
     </header>
+
     <main id="main">
-        <section class="directory-hero"><div class="wrap">
-            <p class="eyebrow green" data-en="DEMO CHECKOUT">COMPRA DE DEMOSTRACIÓN</p>
-            <h1 data-en="Course prices">Precios de cursos</h1>
-            <p data-en="Compare sample prices in US dollars. Sample lessons are open to everyone.">Compara los precios de demostración en dólares. Las lecciones de muestra tienen acceso libre.</p>
-        </div></section>
-        <section class="wrap info-section" aria-labelledby="prices-title">
-            <h2 id="prices-title" data-en="Compare courses">Compara los cursos</h2>
-            <div class="course-grid" id="pricing-courses"></div>
+        <!-- 30 · Encabezado de precios -->
+        <section class="page-hero" style="text-align:center">
+            <div class="container">
+                <ol class="breadcrumbs" style="justify-content:center"><li><a href="./" data-en="Home">Inicio</a></li><li data-en="Pricing">Precios</li></ol>
+                <h1 style="margin-inline:auto" data-en="Solara prices">Precios de Solara</h1>
+                <p style="margin-inline:auto" data-en="Compare the options for individuals and institutions. Prices are samples in US dollars and no payment is collected.">Compara las opciones para personas e instituciones. Los precios son de muestra en dólares y no se realiza ningún cobro.</p>
+            </div>
+        </section>
+        <!-- 31–32, 34 · Selector de modalidad, tarjetas y planes grupales -->
+        <section class="container" aria-labelledby="plans-title">
+            <div class="plans-head">
+                <h2 id="plans-title" data-en="Choose the right option for you">Elige la opción ideal para ti</h2>
+                <div class="audience-switch" role="tablist" aria-label="Tipo de plan" data-en-label="Plan type" id="price-audience"></div>
+            </div>
+            <div class="pricing-grid" id="price-plans" role="tabpanel"></div>
+        </section>
+        <!-- 33 · Comparación de beneficios -->
+        <section class="container section" aria-labelledby="compare-title" style="padding-bottom:0">
+            <h2 class="section-title" id="compare-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Compare benefits">Compara los beneficios</h2>
+            <div id="price-compare"></div>
+        </section>
+        <section class="container section" aria-labelledby="course-prices-title" style="padding-bottom:0">
+            <h2 class="section-title" id="course-prices-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Price per course">Precio por curso</h2>
+            <div class="course-row-grid" id="price-courses"></div>
+        </section>
+        <!-- 35 · Medios de pago y beneficios -->
+        <section class="container section" aria-labelledby="payment-title" style="padding-bottom:0">
+            <h2 class="section-title" id="payment-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Payments and results">Pagos y resultados</h2>
+            <div class="payment-grid">
+                <article class="info-card"><h3 data-en="Payment methods">Medios de pago</h3><p data-en="Payments are not enabled yet. The cart lets you try a demo checkout without entering any payment details.">Todavía no hay pagos habilitados. El carrito permite probar una compra de demostración sin ingresar datos de pago.</p></article>
+                <article class="info-card"><h3 data-en="Institutions">Instituciones</h3><p data-en="Field trips and group courses are quoted per group. The official contact channel will be published soon.">Las giras y los cursos para grupos se cotizan por grupo. Pronto publicaremos el canal oficial de contacto.</p></article>
+                <article class="info-card"><h3 data-en="Verified results">Resultados verificados</h3><dl class="metric-list" style="margin-top:10px;grid-template-columns:1fr 1fr"><div><dt data-en="Students">Alumnos</dt><dd data-metric="students">Por publicar</dd></div><div><dt data-en="Hours">Horas</dt><dd data-metric="hours">Por publicar</dd></div></dl><p class="muted" data-period hidden></p></article>
+            </div>
+        </section>
+        <section class="container section" aria-labelledby="price-faq-title">
+            <h2 class="section-title" id="price-faq-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Pricing questions">Preguntas sobre precios</h2>
+            <div class="accordion">
+                <details><summary data-en="Is any payment collected?">¿Se cobra algún pago?</summary><p data-en="No. Prices are samples and the checkout is a simulation.">No. Los precios son de muestra y la compra es una simulación.</p></details>
+                <details><summary data-en="Are there free lessons?">¿Hay clases gratis?</summary><p data-en="Yes. Courses marked “Sample lessons” have public videos you can watch without an account.">Sí. Los cursos marcados «Clases de muestra» tienen videos públicos que puedes ver sin cuenta.</p></details>
+                <details><summary data-en="How much does a group cost?">¿Cuánto cuesta un grupo?</summary><p data-en="The group price is not defined yet. Choose the number of students to prepare your inquiry.">El precio para grupos aún no está definido. Elige la cantidad de estudiantes para preparar tu consulta.</p></details>
+            </div>
         </section>
     </main>
-    <footer class="wrap footer">
-        <span>Solara Field School</span>
-        <nav class="footer-nav" aria-label="Enlaces del sitio" data-en-label="Site links">
-            <a href="./catalogo.html" data-en="Course catalog">Catálogo de cursos</a><a href="./escuelas.html" data-en="Schools">Escuelas</a><a href="./blog.html">Blog</a><a href="./#programas" data-en="Programs">Programas</a>
-            <a href="./#preguntas" data-en="Help">Ayuda</a><a href="./#contacto" data-en="Contact">Contacto</a>
-        </nav>
+
+    <footer class="site-footer" id="site-footer">
+        <noscript><div class="container footer-legal"><a href="./catalogo.html">Catálogo</a><a href="./escuelas.html">Escuelas</a><a href="./precios.html">Precios</a><a href="./#contacto">Contacto</a></div></noscript>
     </footer>
 
     <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">

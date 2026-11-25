@@ -1,53 +1,6 @@
 import { renderHelpChat } from './help-chat.js';
 import { renderEditorial } from './editorial.js';
-
-const courses = [
-    {
-        id: 'campo', topic: 'field-studies', title: 'Fundamentos de trabajo de campo', level: 'Inicial', price: 29, image: 'field',
-        description: 'Convierte una salida en una observación organizada con un registro que puedas consultar después.',
-        lessons: [
-            ['Antes de salir', 'Define una pregunta que puedas responder con una observación corta.'],
-            ['Tu cuaderno de campo', 'Registra fecha, lugar y condiciones antes de anotar lo que observas.']
-        ]
-    },
-    {
-        id: 'biodiversidad', topic: 'biodiversity', title: 'Observación de biodiversidad', level: 'Intermedio', price: 39, image: 'biodiversity',
-        description: 'Aprende a describir la diversidad de un lugar y a comparar lo que encuentras en distintos recorridos.',
-        lessons: [
-            ['Mirar a distintas escalas', 'Compara lo que ves en el suelo con lo que encuentras en el dosel.'],
-            ['Comparar observaciones', 'Usa el mismo recorrido y tiempo de observación al comparar dos visitas.']
-        ]
-    },
-    {
-        id: 'sendero', topic: 'field-studies', title: 'Lectura del paisaje', level: 'Inicial', price: 29, image: 'trail',
-        description: 'Interpreta las señales del terreno para reconocer cómo cambian el agua, la luz y la vegetación.',
-        lessons: [
-            ['Las pistas del terreno', 'Identifica pendientes y puntos bajos para seguir el recorrido del agua.'],
-            ['Luz y vegetación', 'Compara una zona abierta con otra bajo sombra y anota sus diferencias.']
-        ]
-    }
-];
-
-const schools = [
-    { id: 'campo', title: ['Trabajo de campo', 'Fieldwork'], image: 'field', courses: ['campo', 'sendero'] },
-    { id: 'biodiversidad', title: ['Biodiversidad', 'Biodiversity'], image: 'biodiversity', courses: ['biodiversidad'] },
-    { id: 'paisaje', title: ['Lectura del paisaje', 'Landscape studies'], image: 'trail', courses: ['sendero'] }
-];
-
-const englishCourses = {
-    campo: ['Fieldwork fundamentals', 'Turn an outing into a structured observation you can refer back to later.', [
-        ['Before you head out', 'Define a specific question. Choose a place and a time to observe.'],
-        ['Your field notebook', 'Write down the date, place and weather. Separate what you see from your interpretations.']
-    ]],
-    biodiversidad: ['Observing biodiversity', 'Describe local diversity and compare what you find on different walks.', [
-        ['Looking at different scales', 'Observe the ground, understory and canopy. Describe one difference between each layer.'],
-        ['Comparing observations', 'Repeat the same route and observation period. Note what changes between two visits.']
-    ]],
-    sendero: ['Reading the landscape', 'Read the terrain to understand how water, light and vegetation change.', [
-        ['Clues in the terrain', 'Look for slopes, channels and low areas. Draw the likely path of the water.'],
-        ['Light and vegetation', 'Choose a sunny spot and a shaded one. Compare moisture and vegetation.']
-    ]]
-};
+import { courses, englishCourses, schools, coursesForSchool, findSchool } from './data.js';
 
 // Enter verified figures only. Set period to { es: '…', en: '…' } for their reporting period.
 const metrics = { students: null, clients: null, graduates: null, hours: null, period: null };
@@ -95,10 +48,11 @@ function renderLanguage() {
     renderHelpChat(language);
     if (activeCourse) renderCourse();
     renderCart();
+    document.dispatchEvent(new CustomEvent('solara:language', { detail: language }));
 }
 
 const $ = (id) => document.getElementById(id);
-const currency = (amount) => new Intl.NumberFormat(getLocale(), { style: 'currency', currency: 'USD', currencyDisplay: 'code', maximumFractionDigits: 0 }).format(amount);
+const currency = (amount) => amount === null || amount === undefined ? tr('Por confirmar', 'To be confirmed') : new Intl.NumberFormat(getLocale(), { style: 'currency', currency: 'USD', currencyDisplay: 'code', maximumFractionDigits: 0 }).format(amount);
 
 function readSet(key) {
     try {
@@ -129,6 +83,7 @@ let activeLesson = activeCourse && !params.has('muestra')
     : 0;
 
 function levelText(level) {
+    if (!level) return tr('Nivel por definir', 'Level to be defined');
     return level === 'Inicial' ? tr('Inicial', 'Beginner') : tr('Intermedio', 'Intermediate');
 }
 
@@ -171,7 +126,7 @@ function renderCatalog() {
     );
 
     $('results').textContent = matching.length
-        ? `${matching.length} ${matching.length === 1 ? tr('curso de muestra', 'sample course') : tr('cursos de muestra', 'sample courses')}`
+        ? `${matching.length} ${matching.length === 1 ? tr('curso', 'course') : tr('cursos', 'courses')} · ${matching.filter((course) => course.sample).length} ${tr('con clases de muestra', 'with sample lessons')}`
         : tr('No se encontraron cursos. Prueba otra búsqueda o cambia el nivel.', 'No courses found. Try another search or level.');
 
     $('course-list').innerHTML = matching.map(courseCard).join('');
@@ -201,7 +156,7 @@ function renderDirectories() {
         if (!container) continue;
         container.innerHTML = schools.map((school) => {
             const label = tr(...school.title);
-            const count = school.courses.length;
+            const count = coursesForSchool(school).length;
             return `<a class="school-card" href="./escuelas.html?area=${school.id}">
                 <img src="./media/${school.image}.jpg" alt="" width="448" height="240" loading="lazy">
                 <div><h2>${label}</h2><p>${count} ${count === 1 ? tr('curso', 'course') : tr('cursos', 'courses')}</p></div>
@@ -210,7 +165,7 @@ function renderDirectories() {
     }
 
     if ($('school-title') && params.has('area')) {
-        const school = schools.find((entry) => entry.id === params.get('area'));
+        const school = findSchool(params.get('area'));
         const title = school ? tr(...school.title) : tr('Escuela no encontrada', 'School not found');
         $('school-title').textContent = title;
         $('school-description').textContent = school
@@ -222,7 +177,7 @@ function renderDirectories() {
             $('school-courses').innerHTML = `
                 <div class="section-heading"><h2>${tr('Cursos de la escuela', 'School courses')}</h2>
                     <a class="button outline" href="./escuelas.html">${tr('Todas las escuelas', 'All schools')}</a></div>
-                <div class="course-grid">${courses.filter((course) => school.courses.includes(course.id)).map(courseCard).join('')}</div>`;
+                <div class="course-grid">${coursesForSchool(school).map(courseCard).join('')}</div>`;
         }
         document.title = `${title} | Solara Field School`;
     } else if ($('school-title')) {
@@ -302,6 +257,12 @@ function selectLesson(index, focus = false) {
     $('video-status').textContent = '';
     $('video-language').hidden = language === 'es';
     player.poster = `./media/${activeCourse.image}.jpg`;
+    if (!activeCourse.sample) {
+        player.removeAttribute('src');
+        $('video-status').textContent = tr('Esta lección está en preparación. Puedes ver las clases de muestra de los cursos disponibles.', 'This lesson is being prepared. You can watch the sample lessons of the available courses.');
+        renderProgress();
+        return;
+    }
     const source = `./media/${activeCourse.id}-${index + 1}.mp4`;
     if (player.getAttribute('src') !== source || player.error) player.src = source;
     renderProgress();
@@ -310,8 +271,9 @@ function selectLesson(index, focus = false) {
 
 function renderAddButton() {
     const added = cart.has(activeCourse.id);
-    $('add-course').textContent = added ? tr('En el carrito', 'In cart') : tr('Añadir al carrito', 'Add to cart');
-    $('add-course').disabled = added;
+    const unavailable = activeCourse.price === null;
+    $('add-course').textContent = unavailable ? tr('Próximamente', 'Coming soon') : added ? tr('En el carrito', 'In cart') : tr('Añadir al carrito', 'Add to cart');
+    $('add-course').disabled = added || unavailable;
 }
 
 function renderCourse() {
@@ -334,7 +296,7 @@ function renderCourse() {
 }
 
 function renderCart() {
-    const selected = courses.filter((course) => cart.has(course.id));
+    const selected = courses.filter((course) => cart.has(course.id) && course.price !== null);
     $('cart-count').textContent = selected.length;
     $('cart-items').innerHTML = selected.length ? selected.map((course) => `
         <div class="cart-row"><div><strong>${courseText(course).title}</strong><br>${currency(course.price)}</div>

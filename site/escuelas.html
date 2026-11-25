@@ -3,43 +3,42 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Explora la plataforma de cursos en video de Solara Field School.">
+    <meta name="description" content="Escuelas de aprendizaje al aire libre de Solara Field School.">
     <title>Escuelas | Solara Field School</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./ui.css">
+    <script type="module" src="./school.js"></script>
     <script type="module" src="./app.js"></script>
 </head>
-<body class="directory-page">
+<body class="ui school-ui">
     <a class="skip" href="#main" data-en="Skip to content">Ir al contenido</a>
-    <header class="top">
-        <div class="wrap nav">
-            <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
-            <button class="button outline mobile-menu" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
-            <nav id="main-navigation" aria-label="Principal" data-en-label="Main navigation">
-                <a href="./catalogo.html" data-en="Courses">Cursos</a><a href="./escuelas.html" data-en="Schools">Escuelas</a>
-                <a href="./#programas" data-en="Programs">Programas</a><a href="./#publico" data-en="Who it’s for">Público</a>
-                <a href="./blog.html" data-en="Blog">Blog</a><a href="./precios.html" data-en="Pricing">Precios</a>
-                <a href="./#contacto" data-en="Contact">Contacto</a>
+    <header class="site-header">
+        <div class="container header-bar">
+            <a class="site-brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
+            <nav id="main-navigation" class="header-nav" aria-label="Principal" data-en-label="Main navigation">
+                <div class="nav-panel-title"><span data-en="Menu">Menú</span><button class="icon-btn nav-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">✕</button></div>
+                <a href="./catalogo.html" data-en="Courses">Cursos</a>
+                <a href="./escuelas.html" data-en="Schools">Escuelas</a>
+                <a href="./ruta.html" data-en="Paths">Rutas</a>
+                <a href="./#programas" data-en="Programs">Programas</a>
+                <a href="./blog.html" data-en="Blog">Blog</a>
+                <a href="./precios.html" data-en="Pricing">Precios</a>
             </nav>
-            <div class="nav-actions"><a class="button outline quick-search" href="./catalogo.html#cursos" data-en="Search">Buscar</a><label class="sr-only" for="language" data-en="Language">Idioma</label><select id="language"><option value="es" lang="es">Español</option><option value="en" lang="en">English</option></select><button class="button outline" id="open-cart" type="button"><span data-en="Cart">Carrito</span> <span id="cart-count">0</span></button></div>
+            <div class="header-actions">
+                <a class="btn btn-light btn-small hide-small" href="./#publico" data-en="Institutions">Instituciones</a>
+                <label class="sr-only" for="language" data-en="Language">Idioma</label>
+                <select id="language"><option value="es" lang="es">ES</option><option value="en" lang="en">EN</option></select>
+                <button class="btn btn-outline btn-small" id="open-cart" type="button"><span class="hide-small" data-en="Cart">Carrito</span><span class="cart-count" id="cart-count">0</span><span class="sr-only" data-en="items in cart">cursos en el carrito</span></button>
+                <button class="btn btn-outline btn-small menu-toggle" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
+            </div>
         </div>
     </header>
-    <main id="main">
-        <section class="directory-hero"><div class="wrap">
-            <a href="./catalogo.html" data-en="Course catalog">Catálogo de cursos</a>
-            <h1 id="school-title" data-en="Schools of learning">Escuelas de aprendizaje</h1>
-            <p id="school-description" data-en="Choose a field-learning topic and browse its introductory courses.">Elige un área de aprendizaje de campo y explora sus cursos de introducción.</p>
-        </div></section>
-        <section class="wrap info-section" aria-label="Escuelas y cursos" data-en-label="Schools and courses">
-            <div class="course-grid" id="school-directory"></div>
-            <div id="school-courses" hidden></div>
-        </section>
-    </main>
-    <footer class="wrap footer">
-        <span>Solara Field School</span>
-        <nav class="footer-nav" aria-label="Enlaces del sitio" data-en-label="Site links">
-            <a href="./catalogo.html" data-en="Course catalog">Catálogo de cursos</a><a href="./escuelas.html" data-en="Schools">Escuelas</a><a href="./blog.html">Blog</a><a href="./#programas" data-en="Programs">Programas</a>
-            <a href="./#preguntas" data-en="Help">Ayuda</a><a href="./#contacto" data-en="Contact">Contacto</a>
-        </nav>
+
+    <main id="main"><div id="school-page"></div><noscript class="container" data-en="Enable JavaScript to view the schools.">Activa JavaScript para ver las escuelas.</noscript></main>
+
+    <footer class="site-footer" id="site-footer">
+        <noscript><div class="container footer-legal"><a href="./catalogo.html">Catálogo</a><a href="./escuelas.html">Escuelas</a><a href="./precios.html">Precios</a><a href="./#contacto">Contacto</a></div></noscript>
     </footer>
 
     <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">

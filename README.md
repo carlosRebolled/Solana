@@ -33,14 +33,56 @@ php artisan test
 
 La vitrina pública de [solarafieldschool.com](https://solarafieldschool.com) vive en `site/`. Edita `index.html` para cambiar la presentación, `styles.css` para el diseño y `app.js` para actualizar el catálogo y el temario. Las fotos y los clips están en `site/media/`.
 
-Cada ficha utiliza la plantilla `site/curso.html` y el identificador del curso en la URL, por ejemplo `/curso.html?curso=campo`. En `site/app.js`, actualiza `courses` y su entrada en `englishCourses` para cambiar la descripción, los objetivos y las lecciones. Los videos siguen el nombre `<identificador>-<número de lección>.mp4`.
+Cada ficha utiliza la plantilla `site/curso.html` y el identificador del curso en la URL, por ejemplo `/curso.html?curso=campo`. En `site/data.js`, actualiza `courses` y su entrada en `englishCourses` para cambiar la descripción, los objetivos y las lecciones. Los videos siguen el nombre `<identificador>-<número de lección>.mp4`.
 
 Para probar la vitrina en local, ejecuta `php -S 127.0.0.1:8874 -t site` y abre `http://127.0.0.1:8874`.
 
-La navegación pública incluye `catalogo.html` (búsqueda y filtros), `escuelas.html` (directorio y fichas con `?area=`), `curso.html?curso=` y `precios.html` (precios de muestra). La lista `schools` de `site/app.js` organiza los cursos por área.
+La navegación pública incluye `catalogo.html` (búsqueda y filtros), `escuelas.html` (directorio y fichas con `?area=`), `curso.html?curso=` y `precios.html` (precios de muestra). La lista `schools` de `site/data.js` organiza los cursos por área (cada escuela tiene un `topic`), y `paths` define las rutas de aprendizaje (`ruta.html?ruta=`).
 
 El catálogo, los precios y el carrito son de demostración. Los clips están disponibles públicamente y el progreso se conserva en el navegador. Para vender cursos reales hará falta integrar un proveedor de pagos y alojar los videos de pago con acceso controlado.
 
 Para publicar resultados reales, edita `metrics` en `site/app.js` con los totales verificados y su periodo de medición en ambos idiomas. Un valor `null` se muestra como «Por publicar». El encabezado de contacto de `site/index.html` puede actualizarse cuando esté definido el canal oficial.
 
 Cloudflare Workers publica la carpeta `site/` en el dominio personalizado desde la rama `main`, con `npx wrangler deploy` como comando de despliegue. Deja vacío el comando de compilación. El archivo `wrangler.jsonc` identifica el Worker y su dominio.
+
+## Dónde editar el contenido
+
+Todo lo publicado vive en `site/`. Cada texto visible tiene su versión en inglés junto a la española (atributo `data-en` en HTML o la pareja `es`/`en` en JavaScript); actualiza siempre las dos.
+
+| Contenido | Archivo | Qué cambiar |
+| --- | --- | --- |
+| Cursos (título, nivel, descripción, lecciones) | `site/data.js` | `courses` (español) y `englishCourses` (inglés), con el mismo `id` |
+| Videos de las lecciones | `site/media/` | `<id del curso>-<número de lección>.mp4`, por ejemplo `campo-1.mp4` |
+| Fotos de cursos y escuelas | `site/media/` | `<image>.jpg`, según el campo `image` del curso o la escuela |
+| Precios | `site/data.js` | `price` de cada curso (USD). Son precios de muestra hasta que se confirmen los definitivos |
+| Escuelas | `site/data.js` | `schools`: `id`, `topic`, título y descripción en ambos idiomas |
+| Rutas, planes, testimonios de ejemplo, footer | `site/data.js` | `paths`, `plans`, `testimonials`, `events`, `footerColumns` |
+| Campaña promocional | `site/data.js` | `promotion`: déjala con `active: false` mientras no haya campaña real |
+| Seis áreas temáticas | `site/index.html` y `site/catalogo.html` | `<select id="catalog-topic">`; el `value` debe coincidir con el `topic` de cada curso |
+| Temas de la portada («Explora por tema») | `site/index.html` | Botones `data-topic` (usan el `id` de un curso) |
+| Artículos del blog | `site/editorial.js` | `topics` y `posts` (texto en `es` y `en`, foto y curso relacionado) |
+| Resultados | `site/app.js` | `metrics`: solo totales verificados y su periodo; `null` muestra «Por publicar» |
+| Contacto | `site/index.html` | Sección `id="contacto"`; actualiza también la respuesta de contacto en `site/help-chat.js` |
+| Burbuja de ayuda | `site/help-chat.js` | `questions`: pregunta, respuesta y enlace opcional en ambos idiomas |
+| Programas, público y sobre nosotros | `site/index.html` | Secciones `id="programas"`, `id="publico"` y la sección «Sobre nosotros» |
+| Diseño | `site/styles.css` | Colores de marca en las variables de `:root` |
+
+Los nuevos archivos que pongas en `site/` quedan públicos al publicar. No guardes ahí videos de pago, borradores ni datos privados. Cloudflare rechaza archivos de más de 25 MiB en `site/`.
+
+Para publicar, sube los cambios a `main`. Cloudflare despliega automáticamente y el cambio aparece en solarafieldschool.com cuando termine el despliegue (revisa su estado en el panel de Workers).
+
+## Pruebas del sitio público
+
+El diseño de las páginas públicas usa `site/ui.css` y los módulos `site/ui.js`, `home.js`, `catalog.js`, `school.js`, `path.js`, `course.js` y `prices.js`. Para revisarlo en local:
+
+```powershell
+npm.cmd run site
+```
+
+Las pruebas de Playwright abren cada página y comprueban errores, resoluciones y componentes interactivos:
+
+```powershell
+npm.cmd run test:site
+```
+
+El informe del rediseño y la comparación de medidas están en `tests/visual/INFORME.md`.

@@ -3,12 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Explora la plataforma de cursos en video de Solara Field School.">
-    <title>Solara Field School | Cursos en video</title>
+    <meta name="description" content="Solara Field School: programas de campo y cursos en video sobre naturaleza, trabajo de campo y liderazgo.">
+    <title>Solara Field School | Programas y academia</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./ui.css">
+    <script type="module" src="./home.js"></script>
     <script type="module" src="./app.js"></script>
 </head>
-<body class="home-page">
+<body class="ui home-page home-ui">
     <a class="skip" href="#cursos" data-en="Skip to the academy">Ir al catálogo</a>
     <header class="top">
         <div class="wrap nav">
@@ -23,7 +26,8 @@
             <div class="nav-actions"><a class="button outline quick-search" href="#cursos" id="find-lessons" data-en="Search">Buscar</a><label class="sr-only" for="language" data-en="Language">Idioma</label><select id="language"><option value="es" lang="es">Español</option><option value="en" lang="en">English</option></select><button class="button outline" id="open-cart" type="button"><span data-en="Cart">Carrito</span> <span id="cart-count">0</span></button></div>
         </div>
     </header>
-    <main>
+    <section class="promo-banner" id="promo-banner" aria-labelledby="promo-title" hidden></section>
+    <main id="main">
         <div class="home-announcement">
             <div class="wrap"><span data-en="Read the field journal for ideas to try on your next outing.">Encuentra ideas para tu próxima salida en la bitácora de campo.</span><a href="./blog.html" data-en="Read the blog">Leer el blog</a></div>
         </div>
@@ -53,6 +57,7 @@
             </div>
         </section>
 
+        <div class="legacy-light">
         <section class="wrap catalog" id="cursos" aria-labelledby="catalog-title">
             <p class="eyebrow green" data-en="SOLARA ACADEMY · UPCOMING COURSES">ACADEMIA SOLARA · CURSOS POR VENIR</p>
             <h2 id="catalog-title" data-en="What would you like to learn?">¿Qué quieres aprender?</h2>
@@ -75,132 +80,287 @@
             <div class="course-grid" id="course-list"></div>
             <noscript data-en="Enable JavaScript to browse courses and watch lessons.">Activa JavaScript para explorar los cursos y reproducir las lecciones.</noscript>
         </section>
-        <section class="band" id="escuelas" aria-labelledby="schools-title">
-            <div class="wrap info-section">
-                <div class="section-heading">
-                    <h2 id="schools-title" data-en="Explore the schools">Explora las escuelas</h2>
-                    <a class="button outline" href="./escuelas.html" data-en="All schools">Todas las escuelas</a>
+        </div>
+
+        <!-- 06 · Historias -->
+        <section class="section" id="historias" aria-labelledby="stories-title">
+            <div class="container-section">
+                <div class="section-head">
+                    <div>
+                        <h2 class="section-title" id="stories-title" data-en="Stories from the field">Historias desde el campo</h2>
+                        <p class="section-lead" data-en="Example cards: we will publish real testimonials once participants authorize them.">Tarjetas de ejemplo: publicaremos testimonios reales cuando las personas participantes los autoricen.</p>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="icon-btn" id="stories-prev" type="button" aria-controls="stories-track" aria-label="Historia anterior" data-en-label="Previous story"></button>
+                        <button class="icon-btn" id="stories-next" type="button" aria-controls="stories-track" aria-label="Historia siguiente" data-en-label="Next story"></button>
+                    </div>
                 </div>
-                <div class="rail-controls" id="school-controls" hidden>
-                    <button class="button outline" id="schools-prev" type="button" aria-controls="school-rail" data-en="Previous">Anterior</button>
-                    <button class="button outline" id="schools-next" type="button" aria-controls="school-rail" data-en="Next">Siguiente</button>
+                <div class="carousel-track testimonial-track" id="stories-track" tabindex="0" role="region" aria-label="Historias de ejemplo" data-en-label="Example stories"></div>
+            </div>
+        </section>
+
+        <!-- 07–09 · Aprendizaje personalizado, enfoque y práctica -->
+        <section class="showcase" id="experiencia" aria-labelledby="showcase-title">
+            <h2 class="sr-only" id="showcase-title" data-en="How learning works at Solara">Cómo se aprende en Solara</h2>
+            <div class="showcase-steps" id="showcase-steps">
+                <div class="container showcase-sticky">
+                    <div class="feature-stack" id="feature-stack">
+                        <article class="feature-card tone-sky" data-step="0" data-active="true">
+                            <h3 data-en="A path that fits your goals">Un camino según tus metas</h3>
+                            <span class="chip" data-en="Personalized">Personalizado</span>
+                        </article>
+                        <article class="feature-card tone-lime" data-step="1">
+                            <h3 data-en="Focus from the first minute">Enfoque desde el primer minuto</h3>
+                            <span class="chip" data-en="Simple">Sencillo</span>
+                        </article>
+                        <article class="feature-card tone-sun" data-step="2">
+                            <h3 data-en="Learn by practicing">Aprende practicando</h3>
+                            <span class="chip" data-en="Interactive">Interactivo</span>
+                        </article>
+                    </div>
+                    <div class="app-frame">
+                        <div class="app-bar" aria-hidden="true"><i></i><i></i><i></i><span>solarafieldschool.com</span></div>
+                        <div class="app-screen">
+                            <div class="app-view" data-view="0" data-active="true">
+                                <h4 data-en="What do you want to achieve?">¿Qué quieres lograr?</h4>
+                                <div class="goal-picker" id="goal-picker" role="group" aria-label="Metas" data-en-label="Goals"></div>
+                                <ol class="path-list" id="path-preview"></ol>
+                            </div>
+                            <div class="app-view" data-view="1">
+                                <div class="focus-player">
+                                    <video id="focus-video" controls playsinline preload="metadata" poster="./media/field.jpg" aria-label="Clase de muestra" data-en-label="Sample lesson"></video>
+                                    <aside id="focus-lessons" aria-label="Clases del curso" data-en-label="Course lessons"></aside>
+                                </div>
+                                <div class="focus-progress"><span id="focus-label"></span><progress id="focus-progress" max="2" value="0"></progress></div>
+                            </div>
+                            <div class="app-view quiz" data-view="2">
+                                <form id="quiz-form">
+                                    <fieldset>
+                                        <legend id="quiz-question"></legend>
+                                        <div class="quiz-options" id="quiz-options"></div>
+                                    </fieldset>
+                                    <div class="quiz-actions">
+                                        <button class="btn btn-primary btn-small" type="submit" id="quiz-check" data-en="Check answer">Comprobar</button>
+                                        <button class="btn btn-outline btn-small" type="button" id="quiz-next" hidden data-en="Next question">Siguiente pregunta</button>
+                                        <p class="quiz-result" id="quiz-result" role="status"></p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-description">
+                        <p id="feature-text"></p>
+                        <div class="feature-dots" aria-hidden="true"><span data-active="true"></span><span></span><span></span></div>
+                    </div>
                 </div>
-                <div class="school-rail" id="school-rail" tabindex="0" aria-label="Escuelas" data-en-label="Schools"></div>
             </div>
         </section>
 
-        <section class="experience" id="experiencia" aria-labelledby="experience-title">
-            <div class="wrap experience-inner">
-                <div><h2 id="experience-title" data-en="What we do for students">Lo que hacemos por los estudiantes</h2></div>
-                <div class="steps">
-                    <div><h3 data-en="Take learning outdoors">Lleva el aprendizaje al campo</h3><p data-en="Practice observing, writing down what you find and working with your group during field activities.">Practica cómo observar, registrar tus hallazgos y trabajar con tu grupo en actividades de campo.</p></div>
-                    <div><h3 data-en="Choose your course">Elige tu curso</h3><p data-en="Check the level, syllabus and sample price for each course.">Consulta el nivel, el temario y el precio de ejemplo en cada ficha.</p></div>
-                    <div><h3 data-en="Try a lesson">Prueba una lección</h3><p data-en="Watch a lesson and try the exercises at your own pace.">Abre el reproductor y prueba los ejercicios a tu ritmo.</p></div>
-                    <div><h3 data-en="Pick up where you left off">Retoma tu progreso</h3><p data-en="Completed lessons are saved in this browser.">Las lecciones completadas se guardan en este navegador.</p></div>
+        <!-- 10 · Escuelas -->
+        <section class="section" id="escuelas" aria-labelledby="schools-title">
+            <div class="container-section">
+                <div class="section-head">
+                    <h2 class="section-title" id="schools-title" data-en="Choose what to learn today">Elige qué aprender hoy</h2>
+                    <div class="carousel-controls">
+                        <button class="icon-btn" id="schools-prev-ui" type="button" aria-controls="schools-track" aria-label="Escuelas anteriores" data-en-label="Previous schools"></button>
+                        <button class="icon-btn" id="schools-next-ui" type="button" aria-controls="schools-track" aria-label="Más escuelas" data-en-label="More schools"></button>
+                    </div>
+                </div>
+                <div class="carousel-track school-track" id="schools-track" tabindex="0" role="region" aria-label="Escuelas" data-en-label="Schools"></div>
+            </div>
+        </section>
+
+        <!-- 11–12 · Comunidad y actividades -->
+        <section class="section community" id="comunidad" aria-labelledby="community-title">
+            <div class="container-section">
+                <h2 class="section-title reveal" id="community-title" data-en="We grow together outdoors">Juntos crecemos al aire libre</h2>
+                <div class="mosaic reveal" aria-hidden="true">
+                    <div class="m-a"><img src="./media/forest.jpg" alt="" loading="lazy" width="600" height="400"></div>
+                    <div class="m-b"><img src="./media/field.jpg" alt="" loading="lazy" width="600" height="400"></div>
+                    <div class="m-c"><img src="./media/trail.jpg" alt="" loading="lazy" width="600" height="400"></div>
+                    <div class="m-d tone-sun" id="mosaic-shape"></div>
+                    <div class="m-e"><img src="./media/biodiversity.jpg" alt="" loading="lazy" width="600" height="400"></div>
+                </div>
+                <p class="community-lead reveal" data-en="That’s why there’s a place for you">Por eso te guardamos un lugar</p>
+                <div class="event-grid" id="event-grid"></div>
+            </div>
+        </section>
+
+        <!-- 13–14 · Metas y llamada final -->
+        <section class="goals" aria-labelledby="goals-title">
+            <div class="container-section">
+                <div class="goal-cloud" id="goal-cloud">
+                    <h2 id="goals-title" data-en="Turn your goals into your next achievement outdoors">Convierte tus metas en tu próximo logro al aire libre</h2>
+                </div>
+                <div class="final-cta reveal">
+                    <h2 data-en="Start making them happen today">Empieza a hacerlas realidad desde hoy</h2>
+                    <a class="btn btn-primary" href="./catalogo.html" data-en="Get started">Comenzar</a>
                 </div>
             </div>
         </section>
 
-        <section class="wrap info-section" id="comunidad" aria-labelledby="comunidad-title">
-            <h2 id="comunidad-title" data-en="Clients and students">Clientes y alumnos</h2>
-            <p data-en="We will publish participation figures once the records have been verified.">Publicaremos las cifras de participación cuando hayamos verificado los registros.</p>
-            <dl class="metrics">
-                <div><dt data-en="Students who have used our courses">Alumnos que han utilizado los cursos</dt><dd data-metric="students">Por publicar</dd></div>
-                <div><dt data-en="Client organizations">Organizaciones clientes</dt><dd data-metric="clients">Por publicar</dd></div>
-            </dl>
-            <p class="muted" data-period hidden></p>
-        </section>
-
-        <section class="band" id="resultados" aria-labelledby="results-title">
-            <div class="wrap info-section">
-                <h2 id="results-title" data-en="Results">Resultados</h2>
-                <p data-en="These indicators track participation and completion. We will add the reporting period with each verified figure.">Estos indicadores permiten seguir la participación y la finalización. Publicaremos el periodo junto con cada cifra verificada.</p>
-                <dl class="metrics">
-                    <div><dt data-en="Students who completed a course">Personas que terminaron un curso</dt><dd data-metric="graduates">Por publicar</dd></div>
-                    <div><dt data-en="Hours of instruction delivered">Horas impartidas</dt><dd data-metric="hours">Por publicar</dd></div>
-                </dl>
-                <p class="muted" data-period hidden></p>
+        <!-- 32 · Planes -->
+        <section class="section" id="planes" aria-labelledby="plans-title">
+            <div class="container">
+                <div class="plans-head">
+                    <h2 id="plans-title" data-en="Choose the right option for you">Elige la opción ideal para ti</h2>
+                    <div class="audience-switch" role="tablist" aria-label="Tipo de plan" data-en-label="Plan type" id="home-audience"></div>
+                </div>
+                <div class="pricing-grid" id="home-plans" role="tabpanel"></div>
+                <p class="pricing-note" data-en="Sample prices in US dollars. No payment is collected.">Precios de muestra en dólares. No se realiza ningún cobro.</p>
             </div>
         </section>
 
-        <section class="wrap info-section" id="publico" aria-labelledby="audience-title">
-            <h2 id="audience-title" data-en="Who we work with">Público</h2>
-            <p data-en="Find the option that fits your group.">Encuentra la opción que encaja con tu grupo.</p>
-            <div class="audiences">
-                <details open>
-                    <summary data-en="Educational institutions">Instituciones educativas</summary>
-                    <p data-en="For academic coordinators, guidance departments and school leaders planning educational field trips or extracurricular retreats. This includes private, science-focused and humanities-focused secondary schools.">Para coordinadores académicos, departamentos de orientación y directores que organizan giras educativas o retiros extracurriculares. Incluye colegios privados, científicos y humanísticos.</p>
-                    <a href="#programas" data-en="See programs for institutions">Ver programas para instituciones</a>
-                </details>
-                <details>
-                    <summary data-en="Families and young people">Familias y jóvenes</summary>
-                    <p data-en="For families in Costa Rica’s Greater Metropolitan Area looking for supervised, educational holiday activities, with safety and extended care as priorities. For young people interested in leadership or structured expeditions.">Para familias de la Gran Área Metropolitana (GAM) que buscan actividades formativas en vacaciones y priorizan la seguridad y la custodia extendida. Para jóvenes interesados en liderazgo o expediciones estructuradas.</p>
-                    <a href="#programas" data-en="See programs for families and youth">Ver programas para familias y jóvenes</a>
-                </details>
-                <details>
-                    <summary data-en="Nonprofits and tourism companies">Organizaciones sin fines de lucro y empresas de turismo</summary>
-                    <p data-en="We welcome conversations about educational outings and joint projects that bring more people into contact with nature.">Podemos conversar sobre salidas educativas o proyectos conjuntos que acerquen a más personas a la naturaleza.</p>
-                </details>
+        <!-- Información institucional de Solara (Documento Maestro, secciones 01, 03, 04 y 07) -->
+        <section class="section band-section" id="programas" aria-labelledby="program-title">
+            <div class="container-section">
+                <div class="section-head">
+                    <div>
+                        <h2 class="section-title" id="program-title" data-en="Programs and solutions">Programas y soluciones</h2>
+                        <p class="section-lead" data-en="Solara organizes its offer into three lines of solutions, delivered in person, hybrid or online.">Solara organiza su oferta en tres líneas de soluciones, con formatos presenciales, híbridos o digitales.</p>
+                    </div>
+                </div>
+                <div class="info-grid">
+                    <article class="info-card"><h3 data-en="Educational solutions">Soluciones educativas</h3><p data-en="Educational programs and experiences, online courses, professional development, workshops, curriculum design, camp program development and training materials.">Programas y experiencias educativas, cursos en línea, desarrollo profesional, talleres, diseño curricular, desarrollo de programas de campamento y materiales de capacitación.</p></article>
+                    <article class="info-card"><h3 data-en="Institutional solutions">Soluciones institucionales</h3><p data-en="Custom educational programs, NGO initiatives, school enrichment, community education projects, environmental awareness campaigns and youth participation programs.">Programas educativos personalizados, iniciativas para ONG, enriquecimiento escolar, proyectos de educación comunitaria, campañas de conciencia ambiental y programas de participación juvenil.</p></article>
+                    <article class="info-card"><h3 data-en="Consulting and educational support">Consultoría y apoyo educativo</h3><p data-en="Camp and program management consulting with an emphasis on risk management, staff training, quality improvement and program evaluation.">Consultoría para campamentos y gestión de programas, con énfasis en gestión de riesgos, capacitación de personal, mejora de la calidad educativa y evaluación de programas.</p></article>
+                </div>
+                <h3 class="programs-subtitle" data-en="Field experiences">Experiencias de campo</h3>
+                <div class="info-grid">
+                    <article class="info-card"><h3 data-en="Educational field trips">Giras educativas</h3><p data-en="Field experiences built around a question or learning goal for the group.">Salidas de campo que parten de una pregunta o un objetivo de aprendizaje del grupo.</p></article>
+                    <article class="info-card"><h3 data-en="Extracurricular retreats">Retiros extracurriculares</h3><p data-en="Group activities focused on teamwork and reflection outside the classroom.">Actividades de convivencia, trabajo en equipo y reflexión fuera del aula.</p></article>
+                    <article class="info-card"><h3 data-en="Holiday programs">Programas vacacionales</h3><p data-en="Educational activities for families interested in supervision and extended care. Availability and arrangements are to be confirmed.">Actividades formativas para familias interesadas en la supervisión y la custodia extendida. La disponibilidad y las condiciones se confirmarán por programa.</p></article>
+                    <article class="info-card"><h3 data-en="CIT leadership and expeditions">Liderazgo CIT y expediciones</h3><p data-en="Counselor-in-Training is a leadership pathway for young people. Structured expeditions are a separate way to practice field skills.">Counselor-in-Training (CIT) es una ruta de liderazgo para jóvenes. Las expediciones estructuradas ofrecen otra forma de practicar habilidades de campo.</p></article>
+                </div>
+                <h3 class="programs-subtitle" data-en="Delivery formats">Formatos de entrega</h3>
+                <ul class="chip-links format-list">
+                    <li><span data-en="Certificate of completion">Certificado de finalización</span></li>
+                    <li><span data-en="Program certificate">Certificado de programa</span></li>
+                    <li><span data-en="Workshops">Talleres</span></li>
+                    <li><span data-en="Webinars">Webinars</span></li>
+                    <li><span data-en="Self-paced courses">Cursos asíncronos</span></li>
+                    <li><span data-en="Field learning experiences">Experiencias de aprendizaje de campo</span></li>
+                    <li><span data-en="Institutional training">Capacitación institucional</span></li>
+                </ul>
+                <p class="muted" data-en="Professional certification is only offered when proper backing and accreditation exist.">La certificación profesional solo se ofrecerá cuando exista el respaldo y la acreditación adecuados.</p>
             </div>
         </section>
 
-        <section class="wrap info-section" id="programas" aria-labelledby="program-title">
-            <h2 id="program-title" data-en="Programs">Programas</h2>
-            <div class="program-grid">
-                <article><h3 data-en="Educational field trips">Giras educativas</h3><p data-en="Field experiences built around a question or learning goal for the group.">Salidas de campo que parten de una pregunta o un objetivo de aprendizaje del grupo.</p></article>
-                <article><h3 data-en="Extracurricular retreats">Retiros extracurriculares</h3><p data-en="Group activities focused on teamwork and reflection outside the classroom.">Actividades de convivencia, trabajo en equipo y reflexión fuera del aula.</p></article>
-                <article><h3 data-en="Holiday programs">Programas vacacionales</h3><p data-en="Educational activities for families interested in supervision and extended care. Availability and arrangements are to be confirmed.">Actividades formativas para familias interesadas en la supervisión y la custodia extendida. La disponibilidad y las condiciones se confirmarán por programa.</p></article>
-                <article><h3 data-en="CIT leadership and expeditions">Liderazgo CIT y expediciones</h3><p data-en="Counselor-in-Training is a leadership pathway for young people. Structured expeditions are a separate way to practice field skills.">Counselor-in-Training (CIT) es una ruta de liderazgo para jóvenes. Las expediciones estructuradas ofrecen otra forma de practicar habilidades de campo.</p></article>
+        <section class="section" id="publico" aria-labelledby="audience-title">
+            <div class="container-section info-split">
+                <div>
+                    <h2 class="section-title" id="audience-title" data-en="Who we work with">Público</h2>
+                    <p class="section-lead" data-en="Solara works with six groups, from individual participants and their families to institutions and public bodies.">Solara trabaja con seis grupos, desde participantes individuales y sus familias hasta instituciones y entidades públicas.</p>
+                </div>
+                <div class="accordion">
+                    <details open>
+                        <summary data-en="Individuals and families">Personas y familias</summary>
+                        <p data-en="Children, teenagers and young adults, along with parents and families, especially homeschool families looking for structured learning experiences in nature.">Niños, adolescentes y jóvenes adultos, junto con padres y familias, en especial familias homeschool que buscan experiencias estructuradas de aprendizaje en la naturaleza.</p>
+                    </details>
+                    <details>
+                        <summary data-en="Educational institutions">Instituciones educativas</summary>
+                        <p data-en="Preschools, primary, middle and secondary schools, international schools, homeschooling communities, colleges and universities that want hands-on and field-based methods.">Preescolares, escuelas primarias, intermedias y secundarias, escuelas internacionales, comunidades homeschooling, colegios y universidades interesados en metodologías vivenciales y formación de campo.</p>
+                        <p><a href="#programas" data-en="See programs for institutions">Ver programas para instituciones</a></p>
+                    </details>
+                    <details>
+                        <summary data-en="Youth and nonprofit organizations">Organizaciones juveniles y sin fines de lucro</summary>
+                        <p data-en="Youth development organizations, NGOs and foundations, community centers, faith-based organizations, environmental and social impact organizations, and youth clubs.">Organizaciones de desarrollo juvenil, ONG y fundaciones, centros comunitarios, organizaciones religiosas y de fe, organizaciones ambientales y de impacto social, y clubes juveniles.</p>
+                    </details>
+                    <details>
+                        <summary data-en="Camps and recreation providers">Campamentos y proveedores recreativos</summary>
+                        <p data-en="Summer, day, residential and adventure camps, outdoor education centers, Dude Ranches, family camps and RV and outdoor recreation providers.">Summer camps, day camps, residential camps y adventure camps, centros de educación al aire libre, Dude Ranches, campamentos familiares y proveedores de RV y recreación outdoor.</p>
+                    </details>
+                    <details>
+                        <summary data-en="Education and youth service providers">Proveedores educativos y de servicios juveniles</summary>
+                        <p data-en="Educational consultants, after-school providers, tutoring and enrichment centers, youth program operators, educational travel providers and training providers.">Consultores educativos, proveedores de programas after-school, centros de tutoría y enriquecimiento, operadores de programas juveniles, proveedores de viajes educativos y de formación.</p>
+                    </details>
+                    <details>
+                        <summary data-en="Companies and institutional partners">Empresas y aliados institucionales</summary>
+                        <p data-en="Corporate social responsibility and HR and learning departments, hospitality and tourism companies, environmental companies, government institutions, municipalities and public education agencies.">Departamentos de responsabilidad social empresarial y de recursos humanos y aprendizaje, empresas de hospitalidad y turismo, empresas ambientales, instituciones gubernamentales, municipalidades y agencias públicas de educación.</p>
+                    </details>
+                </div>
             </div>
         </section>
 
-        <section class="band" id="nosotros" aria-labelledby="about-title">
-            <div class="wrap info-section">
-                <h2 id="about-title" data-en="About us">Sobre nosotros</h2>
-                <p data-en="Solara Field School brings together outdoor learning and video lessons. We design experiences that help groups observe their surroundings, document what they find and work together.">Solara Field School combina experiencias educativas al aire libre con lecciones en video. Diseñamos actividades para que los grupos aprendan a observar su entorno, documentar lo que encuentran y trabajar en equipo.</p>
+        <section class="section band-section" id="becas" aria-labelledby="scholarships-title">
+            <div class="container-section">
+                <div class="section-head">
+                    <div>
+                        <p class="eyebrow-tag" data-en="Scholarships and social responsibility">Becas y responsabilidad social</p>
+                        <h2 class="section-title" id="scholarships-title" data-en="Scholarship program">Programa de becas</h2>
+                        <p class="section-lead" data-en="Solara plans to donate three to five courses to organizations through a structured scholarship program. These are the proposed courses; the program is not open yet.">Solara contempla donar entre tres y cinco cursos a organizaciones mediante un programa estructurado de becas. Estas son las propuestas; el programa todavía no está abierto.</p>
+                    </div>
+                </div>
+                <div class="info-grid">
+                    <article class="info-card"><h3 data-en="Environmental Education Program Design">Diseño de programas de educación ambiental</h3><p data-en="For environmental NGOs, educational foundations, community associations and youth organizations.">Para ONG ambientales, fundaciones educativas, asociaciones comunitarias y organizaciones juveniles.</p></article>
+                    <article class="info-card"><h3 data-en="Child Safeguarding & Outdoor Program Safety">Protección de menores y seguridad en programas al aire libre</h3><p data-en="For NGOs working with children, teenagers, volunteers and field activities. Requires specialist review and is not an official certification.">Para ONG que trabajan con niños, adolescentes, voluntarios y actividades de campo. Requiere revisión de especialistas y no es una certificación oficial.</p></article>
+                    <article class="info-card"><h3 data-en="Nature-Based Learning & Outdoor STEM">Aprendizaje en la naturaleza y STEM al aire libre</h3><p data-en="For educational and environmental NGOs and organizations working with rural communities.">Para ONG educativas, ambientales y organizaciones que trabajan con comunidades rurales.</p></article>
+                    <article class="info-card"><h3 data-en="Volunteer & Youth Program Staff Training">Formación de voluntarios y personal de programas juveniles</h3><p data-en="For NGOs with volunteer programs, camps and youth projects.">Para ONG con programas de voluntariado, campamentos y proyectos juveniles.</p></article>
+                    <article class="info-card"><h3 data-en="Monitoring, Evaluation & Impact Measurement">Monitoreo, evaluación y medición de impacto</h3><p data-en="For NGOs that report results to foundations, donors and funders.">Para ONG que presentan resultados a fundaciones, donantes y organismos financiadores.</p></article>
+                </div>
             </div>
         </section>
 
-        <section class="band" aria-labelledby="journal-title">
-            <div class="wrap info-section">
-                <div class="section-heading">
-                    <div><p class="eyebrow green" data-en="FIELD JOURNAL">BITÁCORA DE CAMPO</p><h2 id="journal-title" data-en="From the Solara blog">Del blog de Solara</h2></div>
-                    <a class="button outline" href="./blog.html" data-en="View all articles">Ver todos los artículos</a>
+        <section class="section" id="nosotros" aria-labelledby="about-title">
+            <div class="container-section info-split">
+                <div>
+                    <h2 class="section-title" id="about-title" data-en="About us">Sobre nosotros</h2>
+                    <p class="section-lead" data-en="Solara Field School works in experiential education, nature, outdoor activities and youth development. We design and deliver training, programs and educational experiences for individuals and for institutions that work with children, teenagers, young people and communities.">Solara Field School trabaja en educación experiencial, naturaleza, actividades al aire libre y desarrollo juvenil. Diseñamos y ofrecemos formación, programas y experiencias educativas para personas y para instituciones que trabajan con niños, adolescentes, jóvenes y comunidades.</p>
+                    <p class="section-lead" data-en="We are based in Costa Rica, with the United States as our priority market and an open view toward international growth.">Tenemos nuestra base en Costa Rica, con Estados Unidos como mercado prioritario y una visión abierta a la expansión internacional.</p>
+                </div>
+                <div id="resultados">
+                    <h3 data-en="Clients, students and results">Clientes, alumnos y resultados</h3>
+                    <p class="section-lead" data-en="We will publish participation figures once the records have been verified.">Publicaremos las cifras de participación cuando hayamos verificado los registros.</p>
+                    <dl class="metric-list">
+                        <div><dt data-en="Students who have used our courses">Alumnos que han utilizado los cursos</dt><dd data-metric="students">Por publicar</dd></div>
+                        <div><dt data-en="Client organizations">Organizaciones clientes</dt><dd data-metric="clients">Por publicar</dd></div>
+                        <div><dt data-en="Students who completed a course">Personas que terminaron un curso</dt><dd data-metric="graduates">Por publicar</dd></div>
+                        <div><dt data-en="Hours of instruction delivered">Horas impartidas</dt><dd data-metric="hours">Por publicar</dd></div>
+                    </dl>
+                    <p class="muted" data-period hidden></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="journal-title">
+            <div class="container-section">
+                <div class="section-head">
+                    <div><p class="eyebrow-tag" data-en="Field journal">Bitácora de campo</p><h2 class="section-title" id="journal-title" data-en="From the Solara blog">Del blog de Solara</h2></div>
+                    <a class="btn btn-outline" href="./blog.html" data-en="View all articles">Ver todos los artículos</a>
                 </div>
                 <div class="editorial-grid" id="home-posts"></div>
             </div>
         </section>
 
-        <section class="wrap info-section" id="contacto" aria-labelledby="contact-title">
-            <h2 id="contact-title" data-en="Contact">Contacto</h2>
-            <p data-en="For questions about programs, educational trips or partnerships. Our official contact channel will be published here.">Para consultas sobre programas, giras educativas o alianzas. Publicaremos aquí el canal oficial de contacto.</p>
-        </section>
-        <section class="band" id="preguntas" aria-labelledby="faq-title">
-            <div class="wrap info-section">
-                <h2 id="faq-title" data-en="Frequently asked questions">Preguntas frecuentes</h2>
-                <div class="audiences">
-                    <details>
-                        <summary data-en="How do I start a lesson?">¿Cómo empiezo una lección?</summary>
-                        <p data-en="Choose a topic at the top or open a course from the catalog. The course page opens in a new tab.">Elige un tema al inicio o abre un curso del catálogo. La ficha se abre en otra pestaña.</p>
-                    </details>
-                    <details>
-                        <summary data-en="Do I need an account?">¿Necesito una cuenta?</summary>
-                        <p data-en="Sample lessons are public. This browser stores any lessons you mark as complete.">Las lecciones de muestra son públicas. Este navegador guarda las lecciones que marcas como completas.</p>
-                    </details>
-                    <details>
-                        <summary data-en="How does the cart work?">¿Cómo funciona el carrito?</summary>
-                        <p data-en="You can add courses and test the checkout. Prices are examples and no payment is collected.">Puedes agregar cursos y probar la compra. Los precios son de ejemplo y no se realiza ningún cobro.</p>
-                    </details>
+        <section class="section band-section" id="contacto" aria-labelledby="contact-title">
+            <div class="container-section info-split">
+                <div>
+                    <h2 class="section-title" id="contact-title" data-en="Contact">Contacto</h2>
+                    <p class="section-lead" data-en="For questions about programs, educational trips or partnerships. Our official contact channel will be published here.">Para consultas sobre programas, giras educativas o alianzas. Publicaremos aquí el canal oficial de contacto.</p>
+                </div>
+                <div id="preguntas">
+                    <h3 id="faq-title" data-en="Frequently asked questions">Preguntas frecuentes</h3>
+                    <div class="accordion">
+                        <details>
+                            <summary data-en="How do I start a lesson?">¿Cómo empiezo una lección?</summary>
+                            <p data-en="Choose a sample lesson at the top or open a course from the catalog.">Elige una clase de muestra al inicio o abre un curso desde el catálogo.</p>
+                        </details>
+                        <details>
+                            <summary data-en="Do I need an account?">¿Necesito una cuenta?</summary>
+                            <p data-en="Sample lessons are public. This browser stores any lessons you mark as complete.">Las lecciones de muestra son públicas. Este navegador guarda las lecciones que marcas como completas.</p>
+                        </details>
+                        <details>
+                            <summary data-en="How does the cart work?">¿Cómo funciona el carrito?</summary>
+                            <p data-en="You can add courses and test the checkout. Prices are examples and no payment is collected.">Puedes agregar cursos y probar la compra. Los precios son de ejemplo y no se realiza ningún cobro.</p>
+                        </details>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
-    <footer class="wrap footer">
-        <span>Solara Field School</span>
-        <nav class="footer-nav" aria-label="Enlaces del sitio" data-en-label="Site links">
-            <a href="./catalogo.html" data-en="Course catalog">Catálogo de cursos</a><a href="./escuelas.html" data-en="Schools">Escuelas</a><a href="./blog.html">Blog</a><a href="#programas" data-en="Programs">Programas</a>
-            <a href="#preguntas" data-en="Help">Ayuda</a><a href="#contacto" data-en="Contact">Contacto</a>
-        </nav>
+
+    <footer class="site-footer" id="site-footer">
+        <noscript><div class="container footer-legal"><a href="./catalogo.html">Catálogo</a><a href="./escuelas.html">Escuelas</a><a href="./precios.html">Precios</a><a href="./#contacto">Contacto</a></div></noscript>
     </footer>
 
     <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
