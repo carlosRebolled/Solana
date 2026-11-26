@@ -86,3 +86,14 @@ npm.cmd run test:site
 ```
 
 El informe del rediseño y la comparación de medidas están en `tests/visual/INFORME.md`.
+
+## Pagos
+
+El carrito lleva a `site/pago.html`, donde la persona revisa el pedido, escribe sus datos, acepta las condiciones y elige PayPal. Por ahora es una **vista previa**: `payments.paypal.enabled` vale `false` en `site/data.js`, así que no se abre PayPal, no se cobra nada y los datos del formulario no se envían ni se guardan.
+
+Para cobrar de verdad hace falta:
+
+1. Una cuenta de PayPal Business y una app creada en el panel de desarrolladores de PayPal, primero en modo *sandbox*.
+2. El Client ID público en `payments.paypal.clientId`. La clave secreta nunca va en `site/`: se guarda en Cloudflare con `wrangler secret put PAYPAL_CLIENT_SECRET`.
+3. Un Worker que cree y capture la orden en el servidor con el precio de `site/data.js`. El total que envía el navegador no se debe tomar como válido.
+4. Precios definitivos, las condiciones de compra, la política de privacidad y de reembolsos publicadas, y los videos de pago con acceso controlado. Hoy los videos de `site/media/` son públicos.

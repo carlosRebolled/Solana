@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Completa tu compra en Solara Field School.">
+    <meta name="robots" content="noindex">
+    <title>Pago | Solara Field School</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./ui.css">
+    <script type="module" src="./pago.js"></script>
+    <script type="module" src="./app.js"></script>
+</head>
+<body class="ui checkout-ui">
+    <a class="skip" href="#main" data-en="Skip to content">Ir al contenido</a>
+    <header class="site-header">
+        <div class="container header-bar">
+            <a class="site-brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
+            <nav id="main-navigation" class="header-nav" aria-label="Principal" data-en-label="Main navigation">
+                <div class="nav-panel-title"><span data-en="Menu">Menú</span><button class="icon-btn nav-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">✕</button></div>
+                <a href="./catalogo.html" data-en="Courses">Cursos</a>
+                <a href="./escuelas.html" data-en="Schools">Escuelas</a>
+                <a href="./ruta.html" data-en="Paths">Rutas</a>
+                <a href="./programas.html" data-en="Programs">Programas</a>
+                <a href="./blog.html" data-en="Blog">Blog</a>
+                <a href="./precios.html" data-en="Pricing">Precios</a>
+            </nav>
+            <div class="header-actions">
+                <a class="btn btn-light btn-small hide-small" href="./publico.html" data-en="Institutions">Instituciones</a>
+                <label class="sr-only" for="language" data-en="Language">Idioma</label>
+                <select id="language"><option value="es" lang="es">ES</option><option value="en" lang="en">EN</option></select>
+                <button class="btn btn-outline btn-small" id="open-cart" type="button"><span class="hide-small" data-en="Cart">Carrito</span><span class="cart-count" id="cart-count">0</span><span class="sr-only" data-en="items in cart">cursos en el carrito</span></button>
+                <button class="btn btn-outline btn-small menu-toggle" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="page-hero">
+            <div class="container">
+                <ol class="breadcrumbs"><li><a href="./" data-en="Home">Inicio</a></li><li><a href="./catalogo.html" data-en="Courses">Cursos</a></li><li data-en="Payment">Pago</li></ol>
+                <h1 data-en="Complete your purchase">Completa tu compra</h1>
+                <p data-en="Review your order and pay with PayPal.">Revisa tu pedido y paga con PayPal.</p>
+                <p class="checkout-preview-note" role="note" data-en="Preview: PayPal is not connected yet. No payment will be made and no information will be sent.">Vista previa: PayPal todavía no está conectado. No se realizará ningún cobro ni se enviará información.</p>
+            </div>
+        </section>
+
+        <section class="container checkout" aria-label="Pago" data-en-label="Payment">
+            <ol class="checkout-steps" aria-label="Pasos" data-en-label="Steps">
+                <li data-done="true"><span>1</span><span data-en="Cart">Carrito</span></li>
+                <li data-current="true" aria-current="step"><span>2</span><span data-en="Details">Datos</span></li>
+                <li><span>3</span><span data-en="Payment">Pago</span></li>
+            </ol>
+
+            <div class="checkout-layout">
+                <form class="checkout-form" id="checkout-form" novalidate>
+                    <fieldset>
+                        <legend data-en="Your details">Tus datos</legend>
+                        <label class="field"><span data-en="Full name">Nombre completo</span><input id="buyer-name" name="name" autocomplete="name" required></label>
+                        <label class="field"><span data-en="Email for the receipt and course access">Correo para el recibo y el acceso a los cursos</span><input id="buyer-email" name="email" type="email" autocomplete="email" required></label>
+                        <label class="field"><span data-en="Country">País</span><select id="buyer-country" name="country" autocomplete="country" required>
+                            <option value="" data-en="Choose a country">Elige un país</option>
+                            <option value="CR">Costa Rica</option>
+                            <option value="US" data-en="United States">Estados Unidos</option>
+                            <option value="MX" data-en="Mexico">México</option>
+                            <option value="CO">Colombia</option>
+                            <option value="OTHER" data-en="Other">Otro</option>
+                        </select></label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend data-en="Payment method">Medio de pago</legend>
+                        <label class="pay-method"><input type="radio" name="method" value="paypal" checked> <span><strong>PayPal</strong><small data-en="Pay with your PayPal balance or a card through PayPal.">Paga con tu saldo de PayPal o con tarjeta a través de PayPal.</small></span></label>
+                        <p class="muted" data-en="Card details are entered on PayPal, never on this site.">Los datos de la tarjeta se ingresan en PayPal, nunca en este sitio.</p>
+                    </fieldset>
+
+                    <label class="check-field consent"><input id="buyer-terms" type="checkbox" required> <span data-en="I accept the terms of purchase and the privacy policy, which will be published before payments are enabled.">Acepto las condiciones de compra y la política de privacidad, que se publicarán antes de habilitar los pagos.</span></label>
+
+                    <div class="form-message" id="checkout-message" role="status" aria-live="polite"></div>
+                    <button class="btn paypal-button" id="paypal-button" type="submit"><span data-en="Pay with">Pagar con</span> <strong>PayPal</strong></button>
+                    <p class="muted" data-en="PayPal will open in a secure window to confirm the payment.">PayPal se abrirá en una ventana segura para confirmar el pago.</p>
+                </form>
+
+                <aside class="order-summary" aria-labelledby="summary-title">
+                    <h2 id="summary-title" data-en="Order summary">Resumen del pedido</h2>
+                    <ul id="order-items"></ul>
+                    <dl>
+                        <div><dt data-en="Subtotal">Subtotal</dt><dd id="order-subtotal"></dd></div>
+                        <div><dt data-en="Taxes">Impuestos</dt><dd data-en="To be calculated">Por calcular</dd></div>
+                        <div class="total"><dt data-en="Total">Total</dt><dd id="order-total"></dd></div>
+                    </dl>
+                    <p class="muted" data-en="Prices in US dollars. Sample prices until the final ones are confirmed.">Precios en dólares. Son precios de muestra hasta confirmar los definitivos.</p>
+                </aside>
+            </div>
+        </section>
+        <div class="section" aria-hidden="true" style="padding-bottom:0"></div>
+    </main>
+
+    <footer class="site-footer" id="site-footer">
+        <noscript><div class="container footer-legal"><a href="./catalogo.html">Catálogo</a><a href="./escuelas.html">Escuelas</a><a href="./precios.html">Precios</a><a href="./contacto.html">Contacto</a></div></noscript>
+    </footer>
+
+    <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+        <div class="dialog-heading"><h2 id="cart-title" data-en="Your cart">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito" data-en-label="Close cart" data-en="Close">Cerrar</button></form></div>
+        <p class="muted" data-en="Payments are not active yet. No charge will be made.">Los pagos todavía no están activos. No se realizará ningún cobro.</p>
+        <div id="cart-items"></div>
+        <div class="dialog-footer"><strong id="cart-total"></strong><button class="button dark" id="checkout" type="button" data-en="Go to payment">Ir a pagar</button></div>
+        <p id="checkout-status" class="muted" role="status"></p>
+    </dialog>
+</body>
+</html>

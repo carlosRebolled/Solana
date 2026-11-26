@@ -387,14 +387,10 @@ $('cart-items').addEventListener('click', (event) => {
     if (activeCourse) renderAddButton();
     ($('cart-items').querySelector('[data-remove]') ?? cartDialog.querySelector('form button')).focus();
 });
+// El carrito lleva a la página de pago (pago.html), donde se elige el medio de pago.
 $('checkout').addEventListener('click', () => {
     if (!cart.size) return;
-    cart.clear();
-    storeSet('solara-demo-cart', cart);
-    renderCart();
-    if (activeCourse) renderAddButton();
-    $('checkout-status').textContent = tr('Simulación completada. No se realizó ningún cobro.', 'Demo checkout complete. You were not charged.');
-    cartDialog.querySelector('form button').focus();
+    location.href = './pago.html';
 });
 
 const savedLanguage = readSet('solara-language').has('en') ? 'en' : 'es';

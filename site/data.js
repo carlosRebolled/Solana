@@ -328,6 +328,13 @@ export const plans = {
     ]
 };
 
+// Medios de pago. PayPal está en vista previa: sin cuenta ni Client ID no se abre ni se cobra nada.
+// Para activarlo: cuenta de PayPal Business, Client ID público aquí y un Worker que cree y capture
+// la orden con la clave secreta (guardada con `wrangler secret put`, nunca en este archivo).
+export const payments = {
+    paypal: { enabled: false, clientId: null, currency: 'USD' }
+};
+
 export const footerColumns = [
     {
         title: ['Escuelas', 'Schools'], wide: true,

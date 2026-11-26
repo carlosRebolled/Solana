@@ -5,7 +5,7 @@ const routes = [
     '/', '/catalogo.html', '/catalogo.html?escuela=biodiversidad', '/escuelas.html', '/escuelas.html?area=campo',
     '/escuelas.html?area=paisaje', '/escuelas.html?area=no-existe', '/ruta.html', '/ruta.html?ruta=direccion-campamentos',
     '/ruta.html?ruta=no-existe', '/curso.html?curso=campo', '/curso.html?curso=gestion-riesgos', '/curso.html?curso=no-existe',
-    '/precios.html', '/precios.html?modalidad=instituciones', '/programas.html', '/publico.html', '/nosotros.html', '/contacto.html', '/blog.html', '/articulo.html?articulo=cuaderno-de-campo'
+    '/precios.html', '/precios.html?modalidad=instituciones', '/pago.html', '/programas.html', '/publico.html', '/nosotros.html', '/contacto.html', '/blog.html', '/articulo.html?articulo=cuaderno-de-campo'
 ];
 
 const viewports = [[1920, 1080], [1440, 900], [1366, 768], [1024, 768], [768, 1024], [430, 932], [390, 844], [375, 667]];
@@ -180,13 +180,35 @@ test('idioma: el cambio a inglés traduce las partes generadas', async ({ page }
     await page.selectOption('#language', 'es');
 });
 
-test('carrito de demostración sigue funcionando', async ({ page }) => {
+test('carrito: lleva a la página de pago con PayPal en vista previa, sin cobrar ni enviar datos', async ({ page }) => {
+    const external = [];
+    page.on('request', (request) => { if (!request.url().startsWith('http://127.0.0.1')) external.push(request.url()); });
     await page.goto('/curso.html?curso=campo');
     await page.locator('#add-course').click();
     await expect(page.locator('#cart-dialog')).toBeVisible();
     await expect(page.locator('#cart-count')).toHaveText('1');
     await page.locator('#checkout').click();
-    await expect(page.locator('#checkout-status')).toContainText('Simulación completada');
+    await expect(page).toHaveURL(/pago.html/);
+    await expect(page.locator('#order-items li')).toHaveCount(1);
+    await expect(page.locator('#order-total')).toContainText('29');
+    await page.locator('#paypal-button').click();
+    await expect(page.locator('#checkout-message')).toContainText('nombre completo');
+    await page.fill('#buyer-name', 'Persona de prueba');
+    await page.fill('#buyer-email', 'prueba@example.com');
+    await page.selectOption('#buyer-country', 'CR');
+    await page.locator('#paypal-button').click();
+    await expect(page.locator('#checkout-message')).toContainText('condiciones');
+    await page.check('#buyer-terms');
+    await page.locator('#paypal-button').click();
+    await expect(page.locator('#checkout-message')).toContainText('no se realizó ningún cobro');
+    expect(external, 'peticiones externas').toEqual([]);
+    expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain('prueba@example.com');
+});
+
+test('pago: con el carrito vacío no se puede pagar', async ({ page }) => {
+    await page.goto('/pago.html');
+    await expect(page.locator('#order-items .empty')).toBeVisible();
+    await expect(page.locator('#paypal-button')).toBeDisabled();
 });
 
 test('movimiento reducido: sin animaciones', async ({ page }) => {
