@@ -604,3 +604,15 @@
 .home-page .top a { color: inherit; }
 .programs-subtitle { margin: 40px 0 16px; font-size: 1.35rem; font-weight: 600; }
 .format-list { margin-bottom: 14px; }
+
+/* Ventana emergente de las secciones del curso (Qué aprenderás, Temario, Clases, Equipo, Opiniones). */
+.ui .section-dialog { width: min(980px, calc(100% - 24px)); max-height: calc(100dvh - 32px); padding: 0; overflow: hidden; border-radius: 18px; background: var(--color-background); }
+.ui .section-dialog[open] { display: flex; flex-direction: column; animation: dialog-in 220ms var(--ease); }
+.ui .section-dialog::backdrop { background: rgb(5 14 10 / .72); }
+.section-dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 24px; border-bottom: 1px solid var(--color-border-soft); background: var(--color-section); }
+.section-dialog-head h2 { margin: 0; font-size: clamp(1.3rem, 2.4vw, 1.7rem); font-weight: 600; }
+.section-dialog-body { overflow-y: auto; overscroll-behavior: contain; padding: 24px; }
+.section-dialog-body .course-player-ui { grid-template-columns: minmax(0, 2fr) minmax(12rem, 1fr); }
+@keyframes dialog-in { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+@media (max-width: 860px) { .section-dialog-body .course-player-ui { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .section-dialog-body { padding: 16px; } .section-dialog-head { padding: 14px 16px; } }

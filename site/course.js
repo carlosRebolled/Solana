@@ -110,6 +110,63 @@ function renderReviews() {
         </article>`).join('')}</div>`;
 }
 
+// Las pestañas del curso (y los botones que apuntan a esas secciones) abren la sección en una
+// ventana emergente en lugar de desplazar la página. El contenido se mueve a la ventana y vuelve a
+// su lugar al cerrarla, así el reproductor y los demás controles siguen siendo los mismos.
+const dialogSections = ['aprendizaje', 'temario', 'lecciones', 'docentes', 'opiniones'];
+
+function setupSectionDialog() {
+    const dialog = $('section-dialog');
+    const body = $('section-dialog-body');
+    let current = null;
+
+    const restore = () => {
+        if (!current) return;
+        current.placeholder.replaceWith(...current.nodes);
+        current = null;
+        $('player')?.pause();
+    };
+
+    const open = (id, trigger) => {
+        const section = $(id);
+        const heading = section?.querySelector('h2');
+        if (!heading) return false;
+        // Si ya hay una sección abierta, se devuelve a su lugar y la ventana sigue abierta con la nueva.
+        restore();
+        const nodes = [];
+        for (let node = heading.nextElementSibling; node; node = node.nextElementSibling) nodes.push(node);
+        const placeholder = document.createElement('div');
+        placeholder.style.minHeight = `${nodes.reduce((sum, node) => sum + node.offsetHeight, 0)}px`;
+        nodes[0].before(placeholder);
+        body.replaceChildren(...nodes);
+        current = { nodes, placeholder, trigger };
+        $('section-dialog-title').textContent = heading.textContent;
+        dialog.dataset.section = id;
+        if (!dialog.open) dialog.showModal();
+        body.scrollTop = 0;
+        $('section-dialog-close').focus();
+        return true;
+    };
+
+    dialog.addEventListener('close', () => {
+        const trigger = current?.trigger;
+        restore();
+        if (trigger?.isConnected) trigger.focus({ preventScroll: true });
+    });
+    // Cerrar al pulsar fuera de la ventana.
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+    $('section-dialog-close').addEventListener('click', () => dialog.close());
+
+    document.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href^="#"]');
+        const id = link?.getAttribute('href').slice(1);
+        if (!dialogSections.includes(id)) return;
+        event.preventDefault();
+        const trigger = dialog.contains(link) ? current?.trigger : link;
+        open(id, trigger);
+    });
+}
+
 function render() {
     renderHero();
     renderSyllabus();
@@ -141,6 +198,7 @@ if (course) {
     document.addEventListener('click', (event) => {
         if (event.target.closest('#complete-lesson')) requestAnimationFrame(renderSyllabus);
     });
+    setupSectionDialog();
 } else {
     setTitle(tr('Curso no encontrado', 'Course not found'));
 }

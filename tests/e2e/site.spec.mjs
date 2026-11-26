@@ -210,3 +210,30 @@ test('menú: cada enlace abre su propia página, sin anclas a la portada', async
         await expect(page.locator('h1')).toHaveText(heading);
     }
 });
+
+test('curso: las pestañas abren cada sección en una ventana sin mover la página', async ({ page }) => {
+    await page.goto('/curso.html?curso=campo');
+    await page.waitForLoadState('networkidle');
+    const before = await page.evaluate(() => scrollY);
+    const tab = page.locator('.course-tabs a[href="#temario"]');
+    await tab.click();
+    const dialog = page.locator('#section-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(page.locator('#section-dialog-title')).toHaveText('Temario');
+    expect(await page.evaluate(() => scrollY)).toBe(before);
+    await dialog.locator('[data-open-lesson="1"]').click();
+    await expect(page.locator('#section-dialog-title')).toHaveText('Clases');
+    await expect(dialog.locator('#player')).toBeVisible();
+    await expect(page.locator('#lessons [data-lesson="1"]')).toHaveAttribute('aria-current', 'true');
+    await expect(page.locator('#temario #course-syllabus')).toHaveCount(1);
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+    await expect(page.locator('#lecciones #player')).toHaveCount(1);
+    await expect(tab).toBeFocused();
+    for (const [id, title] of [['aprendizaje', 'Qué aprenderás'], ['docentes', 'Quién enseña el curso'], ['opiniones', 'Opiniones']]) {
+        await page.locator(`.course-tabs a[href="#${id}"]`).click();
+        await expect(page.locator('#section-dialog-title')).toHaveText(title);
+        await page.locator('#section-dialog-close').click();
+        await expect(dialog).toBeHidden();
+    }
+});
