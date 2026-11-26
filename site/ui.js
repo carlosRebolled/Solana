@@ -239,12 +239,52 @@ function setupMobileMenu() {
     });
 }
 
+// Sesión de DEMOSTRACIÓN guardada en este navegador. No hay contraseñas ni servidor.
+const sessionKey = 'solara-demo-session';
+export function getSession() {
+    try {
+        const stored = JSON.parse(localStorage.getItem(sessionKey));
+        return stored?.account === 'demo' ? stored : null;
+    } catch {
+        return null;
+    }
+}
+export function startDemoSession() {
+    try { localStorage.setItem(sessionKey, JSON.stringify({ account: 'demo', since: new Date().toISOString() })); } catch { /* sin almacenamiento */ }
+}
+export function endSession() {
+    try { localStorage.removeItem(sessionKey); } catch { /* sin almacenamiento */ }
+}
+
+const personIcon = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+// Botón de acceso arriba a la derecha, en el encabezado nuevo y en el anterior.
+function renderAccountLink() {
+    const cartButton = $('open-cart');
+    if (!cartButton) return;
+    let link = $('account-link');
+    if (!link) {
+        link = document.createElement('a');
+        link.id = 'account-link';
+        link.className = cartButton.classList.contains('btn') ? 'btn btn-outline btn-small account-link' : 'button outline account-link';
+        cartButton.before(link);
+    }
+    const session = getSession();
+    const label = session ? tr('Mi cuenta', 'My account') : tr('Iniciar sesión', 'Sign in');
+    link.href = session ? './mi-cuenta.html' : './login.html';
+    link.innerHTML = `${personIcon}<span class="account-label">${label}</span>`;
+    link.setAttribute('aria-label', label);
+    if (/(mi-cuenta|login)\.html$/.test(location.pathname)) link.setAttribute('aria-current', 'page');
+}
+
 // Páginas informativas: conservan su propio título (app.js pone el de la portada al cambiar el idioma).
 const titleEn = document.body.dataset.titleEn;
 const titleEs = document.title.replace(' | Solara Field School', '');
 if (titleEn) onLanguage(() => setTitle(tr(titleEs, titleEn)));
 
 onLanguage(renderFooter);
+onLanguage(renderAccountLink);
+addEventListener('storage', ({ key }) => { if (key === sessionKey) renderAccountLink(); });
 onLanguage(renderHtmlTranslations);
 markCurrentPage();
 setupMobileMenu();

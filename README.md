@@ -97,3 +97,16 @@ Para cobrar de verdad hace falta:
 2. El Client ID público en `payments.paypal.clientId`. La clave secreta nunca va en `site/`: se guarda en Cloudflare con `wrangler secret put PAYPAL_CLIENT_SECRET`.
 3. Un Worker que cree y capture la orden en el servidor con el precio de `site/data.js`. El total que envía el navegador no se debe tomar como válido.
 4. Precios definitivos, las condiciones de compra, la política de privacidad y de reembolsos publicadas, y los videos de pago con acceso controlado. Hoy los videos de `site/media/` son públicos.
+
+## Cuentas
+
+El botón «Iniciar sesión» de la esquina superior derecha lleva a `site/login.html`. Las cuentas todavía no están activas: el formulario con correo y contraseña solo valida los campos y no guarda ni envía la contraseña. El botón «Entrar con la cuenta de demostración» abre `site/mi-cuenta.html`, el panel de un cliente que ya compró cursos, con:
+
+- resumen: cursos activos, clases completadas, progreso general, tiempo de video visto y total pagado;
+- «Continúa donde lo dejaste», con un enlace a la siguiente clase;
+- tabla de cursos con su progreso y estado, y cursos guardados;
+- rutas en las que avanza, historial de pagos, certificados de finalización y perfil.
+
+La cuenta y sus pagos vienen de `demoAccount` en `site/data.js` y se muestran con la etiqueta «Demostración». El progreso de las clases es el real de este navegador. La sesión de demostración solo guarda una marca en `localStorage` (`solara-demo-session`).
+
+Para las cuentas reales, `cloudflare/schema.sql` propone las tablas para Cloudflare D1: usuarios, sesiones, organizaciones, cursos, clases, pedidos, pagos, accesos, progreso, certificados, becas y cursos guardados. Al final del archivo se indica de qué tablas sale cada estadística del panel. Hará falta además un Worker que gestione el registro, el inicio de sesión con contraseñas cifradas y las cookies de sesión.

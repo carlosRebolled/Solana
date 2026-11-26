@@ -279,3 +279,9 @@ video { display: block; width: 100%; aspect-ratio: 16/9; background: #102c21; bo
 .help-questions button:hover, .help-questions button[aria-pressed="true"] { background:#d9e8c3; }
 .help-answer:not(:empty) { margin-top:.85rem; padding:.75rem; border-radius:.55rem; background:#e7eedb; }
 .help-answer a { font-weight:750; }
+
+/* Botón de acceso en el encabezado anterior (portada, blog y artículos). */
+.account-link { display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; }
+@media (max-width: 1200px) { .nav-actions .account-link .account-label { display: none; } }
+.account-link svg { flex: none; }
+@media (max-width: 620px) { .nav-actions .account-link .account-label { display: none; } }

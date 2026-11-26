@@ -5,7 +5,7 @@ const routes = [
     '/', '/catalogo.html', '/catalogo.html?escuela=biodiversidad', '/escuelas.html', '/escuelas.html?area=campo',
     '/escuelas.html?area=paisaje', '/escuelas.html?area=no-existe', '/ruta.html', '/ruta.html?ruta=direccion-campamentos',
     '/ruta.html?ruta=no-existe', '/curso.html?curso=campo', '/curso.html?curso=gestion-riesgos', '/curso.html?curso=no-existe',
-    '/precios.html', '/precios.html?modalidad=instituciones', '/pago.html', '/programas.html', '/publico.html', '/nosotros.html', '/contacto.html', '/blog.html', '/articulo.html?articulo=cuaderno-de-campo'
+    '/precios.html', '/precios.html?modalidad=instituciones', '/pago.html', '/login.html', '/mi-cuenta.html', '/programas.html', '/publico.html', '/nosotros.html', '/contacto.html', '/blog.html', '/articulo.html?articulo=cuaderno-de-campo'
 ];
 
 const viewports = [[1920, 1080], [1440, 900], [1366, 768], [1024, 768], [768, 1024], [430, 932], [390, 844], [375, 667]];
@@ -39,7 +39,7 @@ for (const route of routes) {
 
 test.describe('responsive', () => {
     for (const [width, height] of viewports) {
-        for (const route of ['/', '/catalogo.html', '/escuelas.html?area=campo', '/ruta.html?ruta=observador-de-campo', '/curso.html?curso=campo', '/precios.html']) {
+        for (const route of ['/', '/catalogo.html', '/escuelas.html?area=campo', '/ruta.html?ruta=observador-de-campo', '/curso.html?curso=campo', '/precios.html', '/login.html', '/mi-cuenta.html?demo']) {
             test(`${route} sin desbordamiento horizontal a ${width}�${height}`, async ({ page }) => {
                 await page.setViewportSize({ width, height });
                 await page.goto(route);
@@ -258,4 +258,36 @@ test('curso: las pestañas abren cada sección en una ventana sin mover la pági
         await page.locator('#section-dialog-close').click();
         await expect(dialog).toBeHidden();
     }
+});
+
+test('acceso: botón arriba a la derecha, cuenta de demostración y cierre de sesión', async ({ page }) => {
+    for (const route of ['/', '/catalogo.html', '/blog.html']) {
+        await page.goto(route);
+        await expect(page.locator('#account-link')).toHaveAttribute('href', './login.html');
+    }
+    await page.locator('#account-link').click();
+    await expect(page).toHaveURL(/login.html/);
+    await page.fill('#login-email', 'persona@example.com');
+    await page.fill('#login-password', 'contraseña-larga');
+    await page.locator('#login-form button[type=submit]').click();
+    await expect(page.locator('#login-message')).toContainText('no se guardó ni se envió');
+    await expect(page.locator('#login-password')).toHaveValue('');
+    expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain('contraseña-larga');
+    await page.evaluate(() => localStorage.setItem('solara-demo-progress', JSON.stringify(['campo:0'])));
+    await page.locator('#demo-login').click();
+    await expect(page).toHaveURL(/mi-cuenta.html/);
+    await expect(page.locator('h1')).toContainText('Cuenta de demostración');
+    await expect(page.locator('#account-link')).toHaveText('Mi cuenta');
+    await expect(page.locator('#mis-cursos tbody tr')).toHaveCount(3);
+    await expect(page.locator('#resumen .stat-cards dd').nth(1)).toHaveText('1/6');
+    await expect(page.locator('#pagos tbody tr')).toHaveCount(2);
+    await expect(page.locator('#pagos tfoot')).toContainText('68');
+    await expect(page.locator('.resume-card a')).toHaveAttribute('href', /curso=campo&leccion=2/);
+    await expect(page.locator('#stat-watched')).toHaveText(/^\d+:\d{2}$/);
+    await page.locator('#logout').click();
+    await expect(page).toHaveURL(/login.html/);
+    await expect(page.locator('#account-link')).toHaveText('Iniciar sesión');
+    await page.goto('/mi-cuenta.html');
+    await expect(page.locator('h1')).toHaveText('Mi cuenta');
+    await expect(page.locator('#account-page a.btn')).toHaveAttribute('href', './login.html');
 });

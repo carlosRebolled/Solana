@@ -328,6 +328,26 @@ export const plans = {
     ]
 };
 
+// Cuenta de DEMOSTRACIÓN para mostrar el panel de un cliente que ya compró cursos.
+// No es una persona real y los pagos no ocurrieron: se muestran con la etiqueta «Demostración».
+// El progreso de las lecciones sí es el real de este navegador (clave `solara-demo-progress`).
+// Las tablas de la versión real con servidor están en `cloudflare/schema.sql`.
+export const demoAccount = {
+    id: 'demo',
+    name: ['Cuenta de demostración', 'Demo account'],
+    email: 'cuenta.demo@example.com',
+    memberSince: '2026-11-02',
+    country: 'CR',
+    purchases: [
+        { order: 'DEMO-0001', course: 'campo', date: '2026-11-04', amount: 29, method: 'PayPal', status: 'paid' },
+        { order: 'DEMO-0002', course: 'biodiversidad', date: '2026-11-12', amount: 39, method: 'PayPal', status: 'paid' }
+    ],
+    // Cursos con acceso gratuito a sus clases de muestra (sin compra).
+    freeAccess: ['sendero'],
+    // Cursos del catálogo que la persona guardó para cuando estén disponibles.
+    wishlist: ['gestion-riesgos', 'forest-school']
+};
+
 // Medios de pago. PayPal está en vista previa: sin cuenta ni Client ID no se abre ni se cobra nada.
 // Para activarlo: cuenta de PayPal Business, Client ID público aquí y un Worker que cree y capture
 // la orden con la clave secreta (guardada con `wrangler secret put`, nunca en este archivo).
