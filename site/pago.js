@@ -1,7 +1,7 @@
 // Página de pago con PayPal. VISTA PREVIA: no se conecta a PayPal, no cobra ni envía datos.
 // Para activarlo hará falta una cuenta de PayPal Business, su Client ID y un Worker que cree
 // y capture la orden en el servidor (ver README, «Pagos»).
-import { courses, payments, discountCodes } from './data.js';
+import { courses, payments, discountCodes, discountContactEmail } from './data.js';
 import { $, tr, esc, courseText, onLanguage, setTitle } from './ui.js';
 
 const money = (amount) => new Intl.NumberFormat(tr('es-CR', 'en-US'), { style: 'currency', currency: 'USD', currencyDisplay: 'code', maximumFractionDigits: 2 }).format(amount);
@@ -31,6 +31,8 @@ const discountValue = (subtotal) => {
 
 function renderSummary() {
     setTitle(tr('Pago', 'Payment'));
+    const subject = encodeURIComponent(tr('Solicitud de código de descuento', 'Discount code request'));
+    $('discount-help').innerHTML = `${tr('¿No tienes un código de descuento? Escríbenos a', 'Don’t have a discount code? Email us at')} <a href="mailto:${esc(discountContactEmail)}?subject=${subject}">${esc(discountContactEmail)}</a> ${tr('y pide el tuyo.', 'to request one.')}`;
     const list = items();
     const subtotal = list.reduce((sum, course) => sum + course.price, 0);
     const off = discountValue(subtotal);

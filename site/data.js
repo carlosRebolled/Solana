@@ -353,6 +353,9 @@ export const demoAccount = {
 // la orden con la clave secreta (guardada con `wrangler secret put`, nunca en este archivo).
 // Códigos de descuento. `percent` o `amount` (USD). Son de DEMOSTRACIÓN mientras no haya pagos reales:
 // la versión real debe validar el código y recalcular el total en el servidor.
+// Correo para pedir un código de descuento (se muestra debajo del campo en la página de pago).
+export const discountContactEmail = 'prueba@prueba.com';
+
 export const discountCodes = [
     { code: 'BIENVENIDA10', percent: 10, label: ['10 % de bienvenida', '10% welcome discount'] },
     { code: 'CAMPO5', amount: 5, label: ['USD 5 de descuento', 'USD 5 off'] }

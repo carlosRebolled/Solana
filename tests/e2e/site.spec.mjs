@@ -315,3 +315,11 @@ test('pago: código de descuento válido, inválido y quitar', async ({ page }) 
     await expect(page.locator('#discount-line')).toBeHidden();
     await expect(page.locator('#order-total')).toContainText('68');
 });
+
+test('pago: debajo del código aparece el correo para pedir un descuento', async ({ page }) => {
+    await page.goto('/pago.html');
+    const link = page.locator('#discount-help a');
+    await expect(page.locator('#discount-help')).toContainText('¿No tienes un código de descuento?');
+    await expect(link).toHaveText('prueba@prueba.com');
+    await expect(link).toHaveAttribute('href', /^mailto:prueba@prueba\.com\?subject=/);
+});

@@ -763,3 +763,5 @@
 .order-summary dl .discount-line dt { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .link-button { padding: 0; border: 0; background: none; color: var(--color-text-secondary); font: inherit; font-size: .82rem; text-decoration: underline; cursor: pointer; }
 .link-button:hover { color: var(--color-text-primary); }
+.discount-help { margin: 2px 0 0; color: var(--color-text-secondary); font-size: .82rem; line-height: 1.45; }
+.discount-help a { color: var(--color-accent); overflow-wrap: anywhere; }
