@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Con quién trabaja Solara Field School: personas, familias, instituciones y organizaciones.">
+    <title>Público | Solara Field School</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./ui.css">
+    <script type="module" src="./ui.js"></script>
+    <script type="module" src="./app.js"></script>
+</head>
+<body class="ui info-page" data-title-en="Who we work with">
+    <a class="skip" href="#main" data-en="Skip to content">Ir al contenido</a>
+    <header class="site-header">
+        <div class="container header-bar">
+            <a class="site-brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
+            <nav id="main-navigation" class="header-nav" aria-label="Principal" data-en-label="Main navigation">
+                <div class="nav-panel-title"><span data-en="Menu">Menú</span><button class="icon-btn nav-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">✕</button></div>
+                <a href="./catalogo.html" data-en="Courses">Cursos</a>
+                <a href="./escuelas.html" data-en="Schools">Escuelas</a>
+                <a href="./ruta.html" data-en="Paths">Rutas</a>
+                <a href="./programas.html" data-en="Programs">Programas</a>
+                <a href="./blog.html" data-en="Blog">Blog</a>
+                <a href="./precios.html" data-en="Pricing">Precios</a>
+            </nav>
+            <div class="header-actions">
+                <a class="btn btn-light btn-small hide-small" href="./publico.html" data-en="Institutions">Instituciones</a>
+                <label class="sr-only" for="language" data-en="Language">Idioma</label>
+                <select id="language"><option value="es" lang="es">ES</option><option value="en" lang="en">EN</option></select>
+                <button class="btn btn-outline btn-small" id="open-cart" type="button"><span class="hide-small" data-en="Cart">Carrito</span><span class="cart-count" id="cart-count">0</span><span class="sr-only" data-en="items in cart">cursos en el carrito</span></button>
+                <button class="btn btn-outline btn-small menu-toggle" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="section" id="publico" aria-labelledby="audience-title">
+            <div class="container-section info-split">
+                <div>
+                    <h1 class="section-title" id="audience-title" data-en="Who we work with">Público</h1>
+                    <p class="section-lead" data-en="Solara works with six groups, from individual participants and their families to institutions and public bodies.">Solara trabaja con seis grupos, desde participantes individuales y sus familias hasta instituciones y entidades públicas.</p>
+                </div>
+                <div class="accordion">
+                    <details open>
+                        <summary data-en="Individuals and families">Personas y familias</summary>
+                        <p data-en="Children, teenagers and young adults, along with parents and families, especially homeschool families looking for structured learning experiences in nature.">Niños, adolescentes y jóvenes adultos, junto con padres y familias, en especial familias homeschool que buscan experiencias estructuradas de aprendizaje en la naturaleza.</p>
+                    </details>
+                    <details>
+                        <summary data-en="Educational institutions">Instituciones educativas</summary>
+                        <p data-en="Preschools, primary, middle and secondary schools, international schools, homeschooling communities, colleges and universities that want hands-on and field-based methods.">Preescolares, escuelas primarias, intermedias y secundarias, escuelas internacionales, comunidades homeschooling, colegios y universidades interesados en metodologías vivenciales y formación de campo.</p>
+                        <p><a href="./programas.html" data-en="See programs for institutions">Ver programas para instituciones</a></p>
+                    </details>
+                    <details>
+                        <summary data-en="Youth and nonprofit organizations">Organizaciones juveniles y sin fines de lucro</summary>
+                        <p data-en="Youth development organizations, NGOs and foundations, community centers, faith-based organizations, environmental and social impact organizations, and youth clubs.">Organizaciones de desarrollo juvenil, ONG y fundaciones, centros comunitarios, organizaciones religiosas y de fe, organizaciones ambientales y de impacto social, y clubes juveniles.</p>
+                    </details>
+                    <details>
+                        <summary data-en="Camps and recreation providers">Campamentos y proveedores recreativos</summary>
+                        <p data-en="Summer, day, residential and adventure camps, outdoor education centers, Dude Ranches, family camps and RV and outdoor recreation providers.">Summer camps, day camps, residential camps y adventure camps, centros de educación al aire libre, Dude Ranches, campamentos familiares y proveedores de RV y recreación outdoor.</p>
+                    </details>
+                    <details>
+                        <summary data-en="Education and youth service providers">Proveedores educativos y de servicios juveniles</summary>
+                        <p data-en="Educational consultants, after-school providers, tutoring and enrichment centers, youth program operators, educational travel providers and training providers.">Consultores educativos, proveedores de programas after-school, centros de tutoría y enriquecimiento, operadores de programas juveniles, proveedores de viajes educativos y de formación.</p>
+                    </details>
+                    <details>
+                        <summary data-en="Companies and institutional partners">Empresas y aliados institucionales</summary>
+                        <p data-en="Corporate social responsibility and HR and learning departments, hospitality and tourism companies, environmental companies, government institutions, municipalities and public education agencies.">Departamentos de responsabilidad social empresarial y de recursos humanos y aprendizaje, empresas de hospitalidad y turismo, empresas ambientales, instituciones gubernamentales, municipalidades y agencias públicas de educación.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="site-footer">
+        <noscript><div class="container footer-legal"><a href="./catalogo.html">Catálogo</a><a href="./escuelas.html">Escuelas</a><a href="./precios.html">Precios</a><a href="./contacto.html">Contacto</a></div></noscript>
+    </footer>
+
+    <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+        <div class="dialog-heading"><h2 id="cart-title" data-en="Your cart">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito" data-en-label="Close cart" data-en="Close">Cerrar</button></form></div>
+        <p class="muted" data-en="Demo checkout. You will not be charged.">Compra de demostración. No se enviará ningún cobro.</p>
+        <div id="cart-items"></div>
+        <div class="dialog-footer"><strong id="cart-total"></strong><button class="button dark" id="checkout" type="button" data-en="Simulate purchase">Simular compra</button></div>
+        <p id="checkout-status" class="muted" role="status"></p>
+    </dialog>
+</body>
+</html>

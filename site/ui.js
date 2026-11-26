@@ -239,6 +239,11 @@ function setupMobileMenu() {
     });
 }
 
+// Páginas informativas: conservan su propio título (app.js pone el de la portada al cambiar el idioma).
+const titleEn = document.body.dataset.titleEn;
+const titleEs = document.title.replace(' | Solara Field School', '');
+if (titleEn) onLanguage(() => setTitle(tr(titleEs, titleEn)));
+
 onLanguage(renderFooter);
 onLanguage(renderHtmlTranslations);
 markCurrentPage();

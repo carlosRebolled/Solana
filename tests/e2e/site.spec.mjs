@@ -5,7 +5,7 @@ const routes = [
     '/', '/catalogo.html', '/catalogo.html?escuela=biodiversidad', '/escuelas.html', '/escuelas.html?area=campo',
     '/escuelas.html?area=paisaje', '/escuelas.html?area=no-existe', '/ruta.html', '/ruta.html?ruta=direccion-campamentos',
     '/ruta.html?ruta=no-existe', '/curso.html?curso=campo', '/curso.html?curso=gestion-riesgos', '/curso.html?curso=no-existe',
-    '/precios.html', '/precios.html?modalidad=instituciones', '/blog.html', '/articulo.html?articulo=cuaderno-de-campo'
+    '/precios.html', '/precios.html?modalidad=instituciones', '/programas.html', '/publico.html', '/nosotros.html', '/contacto.html', '/blog.html', '/articulo.html?articulo=cuaderno-de-campo'
 ];
 
 const viewports = [[1920, 1080], [1440, 900], [1366, 768], [1024, 768], [768, 1024], [430, 932], [390, 844], [375, 667]];
@@ -196,3 +196,17 @@ test('movimiento reducido: sin animaciones', async ({ page }) => {
     expect(animated).toBe(0);
 });
 
+
+test('menú: cada enlace abre su propia página, sin anclas a la portada', async ({ page }) => {
+    for (const route of ['/', '/catalogo.html', '/blog.html']) {
+        await page.goto(route);
+        const hrefs = await page.$$eval('#main-navigation a, #site-footer a, .footer a', (links) => links.map((link) => link.getAttribute('href')));
+        expect(hrefs.filter((href) => /^(\.\/)?#/.test(href)), route).toEqual([]);
+    }
+    for (const [link, url, heading] of [['Programas', /programas\.html/, 'Programas y soluciones'], ['Público', /publico\.html/, 'Público'], ['Contacto', /contacto\.html/, 'Contacto']]) {
+        await page.goto('/');
+        await page.locator('#main-navigation a', { hasText: link }).click();
+        await expect(page).toHaveURL(url);
+        await expect(page.locator('h1')).toHaveText(heading);
+    }
+});

@@ -257,17 +257,17 @@ export const testimonials = [
 // Formatos de entrega del portafolio (sección 4.4), presentados en la sección de comunidad.
 export const events = [
     {
-        color: 'sky', image: 'field', href: './#programas',
+        color: 'sky', image: 'field', href: './programas.html',
         title: ['Experiencias de campo', 'Field learning experiences'],
         text: ['Aprendizaje aplicado directamente en entornos reales y naturales.', 'Learning applied directly in real, natural settings.']
     },
     {
-        color: 'sun', image: 'forest', href: './#programas',
+        color: 'sun', image: 'forest', href: './programas.html',
         title: ['Talleres y webinars', 'Workshops and webinars'],
         text: ['Espacios prácticos y concentrados, y sesiones en línea en vivo.', 'Focused hands-on sessions and live online sessions.']
     },
     {
-        color: 'lime', image: 'trail', href: './#publico',
+        color: 'lime', image: 'trail', href: './publico.html',
         title: ['Capacitación institucional', 'Institutional training'],
         text: ['Formación diseñada para equipos internos de escuelas, campamentos y organizaciones.', 'Training designed for the teams of schools, camps and organizations.']
     }
@@ -308,13 +308,13 @@ export const plans = {
     instituciones: [
         {
             id: 'gira', name: ['Programas a medida', 'Custom programs'], period: ['Por proyecto', 'Per project'],
-            seats: ['Escuelas, campamentos, ONG y entidades públicas', 'Schools, camps, NGOs and public bodies'], price: null, cta: ['Ver soluciones', 'View solutions'], href: './#programas',
+            seats: ['Escuelas, campamentos, ONG y entidades públicas', 'Schools, camps, NGOs and public bodies'], price: null, cta: ['Ver soluciones', 'View solutions'], href: './programas.html',
             features: { samples: true, syllabus: true, progress: true, full: true, group: true, guide: true }
         },
         {
             id: 'grupo', name: ['Capacitación institucional', 'Institutional training'], period: ['Por participante', 'Per participant'],
             seats: ['De 5 a 40 estudiantes', '5 to 40 students'], price: null, group: { min: 5, max: 40, step: 1, start: 10 }, highlight: true,
-            cta: ['Consultar disponibilidad', 'Ask about availability'], href: './#contacto',
+            cta: ['Consultar disponibilidad', 'Ask about availability'], href: './contacto.html',
             features: { samples: true, syllabus: true, progress: true, full: true, group: true, guide: false }
         }
     ],
@@ -336,10 +336,10 @@ export const footerColumns = [
     {
         title: ['Solara', 'Solara'],
         links: [
-            [['Programas', 'Programs'], './#programas'],
-            [['Público', 'Who it’s for'], './#publico'],
-            [['Sobre nosotros', 'About us'], './#nosotros'],
-            [['Becas', 'Scholarships'], './#becas'],
+            [['Programas', 'Programs'], './programas.html'],
+            [['Público', 'Who it’s for'], './publico.html'],
+            [['Sobre nosotros', 'About us'], './nosotros.html'],
+            [['Becas', 'Scholarships'], './programas.html#becas'],
             [['Blog', 'Blog'], './blog.html']
         ]
     },
@@ -354,8 +354,8 @@ export const footerColumns = [
     {
         title: ['Soporte', 'Support'],
         links: [
-            [['Preguntas frecuentes', 'FAQ'], './#preguntas'],
-            [['Contacto', 'Contact'], './#contacto']
+            [['Preguntas frecuentes', 'FAQ'], './contacto.html#preguntas'],
+            [['Contacto', 'Contact'], './contacto.html']
         ]
     }
 ];

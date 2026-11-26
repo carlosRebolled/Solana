@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Quiénes somos y cómo trabaja Solara Field School.">
+    <title>Sobre nosotros | Solara Field School</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./ui.css">
+    <script type="module" src="./ui.js"></script>
+    <script type="module" src="./app.js"></script>
+</head>
+<body class="ui info-page" data-title-en="About us">
+    <a class="skip" href="#main" data-en="Skip to content">Ir al contenido</a>
+    <header class="site-header">
+        <div class="container header-bar">
+            <a class="site-brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
+            <nav id="main-navigation" class="header-nav" aria-label="Principal" data-en-label="Main navigation">
+                <div class="nav-panel-title"><span data-en="Menu">Menú</span><button class="icon-btn nav-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">✕</button></div>
+                <a href="./catalogo.html" data-en="Courses">Cursos</a>
+                <a href="./escuelas.html" data-en="Schools">Escuelas</a>
+                <a href="./ruta.html" data-en="Paths">Rutas</a>
+                <a href="./programas.html" data-en="Programs">Programas</a>
+                <a href="./blog.html" data-en="Blog">Blog</a>
+                <a href="./precios.html" data-en="Pricing">Precios</a>
+            </nav>
+            <div class="header-actions">
+                <a class="btn btn-light btn-small hide-small" href="./publico.html" data-en="Institutions">Instituciones</a>
+                <label class="sr-only" for="language" data-en="Language">Idioma</label>
+                <select id="language"><option value="es" lang="es">ES</option><option value="en" lang="en">EN</option></select>
+                <button class="btn btn-outline btn-small" id="open-cart" type="button"><span class="hide-small" data-en="Cart">Carrito</span><span class="cart-count" id="cart-count">0</span><span class="sr-only" data-en="items in cart">cursos en el carrito</span></button>
+                <button class="btn btn-outline btn-small menu-toggle" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="section" id="nosotros" aria-labelledby="about-title">
+            <div class="container-section info-split">
+                <div>
+                    <h1 class="section-title" id="about-title" data-en="About us">Sobre nosotros</h1>
+                    <p class="section-lead" data-en="Solara Field School works in experiential education, nature, outdoor activities and youth development. We design and deliver training, programs and educational experiences for individuals and for institutions that work with children, teenagers, young people and communities.">Solara Field School trabaja en educación experiencial, naturaleza, actividades al aire libre y desarrollo juvenil. Diseñamos y ofrecemos formación, programas y experiencias educativas para personas y para instituciones que trabajan con niños, adolescentes, jóvenes y comunidades.</p>
+                    <p class="section-lead" data-en="We are based in Costa Rica, with the United States as our priority market and an open view toward international growth.">Tenemos nuestra base en Costa Rica, con Estados Unidos como mercado prioritario y una visión abierta a la expansión internacional.</p>
+                </div>
+                <div id="resultados">
+                    <h3 data-en="Clients, students and results">Clientes, alumnos y resultados</h3>
+                    <p class="section-lead" data-en="We will publish participation figures once the records have been verified.">Publicaremos las cifras de participación cuando hayamos verificado los registros.</p>
+                    <dl class="metric-list">
+                        <div><dt data-en="Students who have used our courses">Alumnos que han utilizado los cursos</dt><dd data-metric="students">Por publicar</dd></div>
+                        <div><dt data-en="Client organizations">Organizaciones clientes</dt><dd data-metric="clients">Por publicar</dd></div>
+                        <div><dt data-en="Students who completed a course">Personas que terminaron un curso</dt><dd data-metric="graduates">Por publicar</dd></div>
+                        <div><dt data-en="Hours of instruction delivered">Horas impartidas</dt><dd data-metric="hours">Por publicar</dd></div>
+                    </dl>
+                    <p class="muted" data-period hidden></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="site-footer">
+        <noscript><div class="container footer-legal"><a href="./catalogo.html">Catálogo</a><a href="./escuelas.html">Escuelas</a><a href="./precios.html">Precios</a><a href="./contacto.html">Contacto</a></div></noscript>
+    </footer>
+
+    <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+        <div class="dialog-heading"><h2 id="cart-title" data-en="Your cart">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito" data-en-label="Close cart" data-en="Close">Cerrar</button></form></div>
+        <p class="muted" data-en="Demo checkout. You will not be charged.">Compra de demostración. No se enviará ningún cobro.</p>
+        <div id="cart-items"></div>
+        <div class="dialog-footer"><strong id="cart-total"></strong><button class="button dark" id="checkout" type="button" data-en="Simulate purchase">Simular compra</button></div>
+        <p id="checkout-status" class="muted" role="status"></p>
+    </dialog>
+</body>
+</html>

@@ -16,12 +16,12 @@ const questions = [
     {
         es: ['¿Qué programas ofrece Solara?', 'En Programas puedes consultar las propuestas de giras educativas, retiros, actividades vacacionales, liderazgo CIT y expediciones.', 'Ver programas'],
         en: ['What programs does Solara offer?', 'Visit Programs to explore educational trips, retreats, holiday activities, CIT leadership and expeditions.', 'View programs'],
-        href: './#programas'
+        href: './programas.html'
     },
     {
         es: ['¿Cómo contacto a Solara?', 'El canal oficial se publicará en la sección Contacto.', 'Ir a Contacto'],
         en: ['How do I contact Solara?', 'The official contact channel will be published in the Contact section.', 'Go to Contact'],
-        href: './#contacto'
+        href: './contacto.html'
     }
 ];
 

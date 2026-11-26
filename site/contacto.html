@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Contacto y preguntas frecuentes de Solara Field School.">
+    <title>Contacto | Solara Field School</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./ui.css">
+    <script type="module" src="./ui.js"></script>
+    <script type="module" src="./app.js"></script>
+</head>
+<body class="ui info-page" data-title-en="Contact">
+    <a class="skip" href="#main" data-en="Skip to content">Ir al contenido</a>
+    <header class="site-header">
+        <div class="container header-bar">
+            <a class="site-brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
+            <nav id="main-navigation" class="header-nav" aria-label="Principal" data-en-label="Main navigation">
+                <div class="nav-panel-title"><span data-en="Menu">Menú</span><button class="icon-btn nav-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">✕</button></div>
+                <a href="./catalogo.html" data-en="Courses">Cursos</a>
+                <a href="./escuelas.html" data-en="Schools">Escuelas</a>
+                <a href="./ruta.html" data-en="Paths">Rutas</a>
+                <a href="./programas.html" data-en="Programs">Programas</a>
+                <a href="./blog.html" data-en="Blog">Blog</a>
+                <a href="./precios.html" data-en="Pricing">Precios</a>
+            </nav>
+            <div class="header-actions">
+                <a class="btn btn-light btn-small hide-small" href="./publico.html" data-en="Institutions">Instituciones</a>
+                <label class="sr-only" for="language" data-en="Language">Idioma</label>
+                <select id="language"><option value="es" lang="es">ES</option><option value="en" lang="en">EN</option></select>
+                <button class="btn btn-outline btn-small" id="open-cart" type="button"><span class="hide-small" data-en="Cart">Carrito</span><span class="cart-count" id="cart-count">0</span><span class="sr-only" data-en="items in cart">cursos en el carrito</span></button>
+                <button class="btn btn-outline btn-small menu-toggle" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="section band-section" id="contacto" aria-labelledby="contact-title">
+            <div class="container-section info-split">
+                <div>
+                    <h1 class="section-title" id="contact-title" data-en="Contact">Contacto</h1>
+                    <p class="section-lead" data-en="For questions about programs, educational trips or partnerships. Our official contact channel will be published here.">Para consultas sobre programas, giras educativas o alianzas. Publicaremos aquí el canal oficial de contacto.</p>
+                </div>
+                <div id="preguntas">
+                    <h3 id="faq-title" data-en="Frequently asked questions">Preguntas frecuentes</h3>
+                    <div class="accordion">
+                        <details>
+                            <summary data-en="How do I start a lesson?">¿Cómo empiezo una lección?</summary>
+                            <p data-en="Choose a sample lesson at the top or open a course from the catalog.">Elige una clase de muestra al inicio o abre un curso desde el catálogo.</p>
+                        </details>
+                        <details>
+                            <summary data-en="Do I need an account?">¿Necesito una cuenta?</summary>
+                            <p data-en="Sample lessons are public. This browser stores any lessons you mark as complete.">Las lecciones de muestra son públicas. Este navegador guarda las lecciones que marcas como completas.</p>
+                        </details>
+                        <details>
+                            <summary data-en="How does the cart work?">¿Cómo funciona el carrito?</summary>
+                            <p data-en="You can add courses and test the checkout. Prices are examples and no payment is collected.">Puedes agregar cursos y probar la compra. Los precios son de ejemplo y no se realiza ningún cobro.</p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="site-footer">
+        <noscript><div class="container footer-legal"><a href="./catalogo.html">Catálogo</a><a href="./escuelas.html">Escuelas</a><a href="./precios.html">Precios</a><a href="./contacto.html">Contacto</a></div></noscript>
+    </footer>
+
+    <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+        <div class="dialog-heading"><h2 id="cart-title" data-en="Your cart">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito" data-en-label="Close cart" data-en="Close">Cerrar</button></form></div>
+        <p class="muted" data-en="Demo checkout. You will not be charged.">Compra de demostración. No se enviará ningún cobro.</p>
+        <div id="cart-items"></div>
+        <div class="dialog-footer"><strong id="cart-total"></strong><button class="button dark" id="checkout" type="button" data-en="Simulate purchase">Simular compra</button></div>
+        <p id="checkout-status" class="muted" role="status"></p>
+    </dialog>
+</body>
+</html>

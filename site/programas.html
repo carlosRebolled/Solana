@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Programas, soluciones, formatos de entrega y becas de Solara Field School.">
+    <title>Programas y soluciones | Solara Field School</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./ui.css">
+    <script type="module" src="./ui.js"></script>
+    <script type="module" src="./app.js"></script>
+</head>
+<body class="ui info-page" data-title-en="Programs and solutions">
+    <a class="skip" href="#main" data-en="Skip to content">Ir al contenido</a>
+    <header class="site-header">
+        <div class="container header-bar">
+            <a class="site-brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
+            <nav id="main-navigation" class="header-nav" aria-label="Principal" data-en-label="Main navigation">
+                <div class="nav-panel-title"><span data-en="Menu">Menú</span><button class="icon-btn nav-close" type="button" aria-label="Cerrar menú" data-en-label="Close menu">✕</button></div>
+                <a href="./catalogo.html" data-en="Courses">Cursos</a>
+                <a href="./escuelas.html" data-en="Schools">Escuelas</a>
+                <a href="./ruta.html" data-en="Paths">Rutas</a>
+                <a href="./programas.html" data-en="Programs">Programas</a>
+                <a href="./blog.html" data-en="Blog">Blog</a>
+                <a href="./precios.html" data-en="Pricing">Precios</a>
+            </nav>
+            <div class="header-actions">
+                <a class="btn btn-light btn-small hide-small" href="./publico.html" data-en="Institutions">Instituciones</a>
+                <label class="sr-only" for="language" data-en="Language">Idioma</label>
+                <select id="language"><option value="es" lang="es">ES</option><option value="en" lang="en">EN</option></select>
+                <button class="btn btn-outline btn-small" id="open-cart" type="button"><span class="hide-small" data-en="Cart">Carrito</span><span class="cart-count" id="cart-count">0</span><span class="sr-only" data-en="items in cart">cursos en el carrito</span></button>
+                <button class="btn btn-outline btn-small menu-toggle" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="section band-section" id="programas" aria-labelledby="program-title">
+            <div class="container-section">
+                <div class="section-head">
+                    <div>
+                        <h1 class="section-title" id="program-title" data-en="Programs and solutions">Programas y soluciones</h1>
+                        <p class="section-lead" data-en="Solara organizes its offer into three lines of solutions, delivered in person, hybrid or online.">Solara organiza su oferta en tres líneas de soluciones, con formatos presenciales, híbridos o digitales.</p>
+                    </div>
+                </div>
+                <div class="info-grid">
+                    <article class="info-card"><h3 data-en="Educational solutions">Soluciones educativas</h3><p data-en="Educational programs and experiences, online courses, professional development, workshops, curriculum design, camp program development and training materials.">Programas y experiencias educativas, cursos en línea, desarrollo profesional, talleres, diseño curricular, desarrollo de programas de campamento y materiales de capacitación.</p></article>
+                    <article class="info-card"><h3 data-en="Institutional solutions">Soluciones institucionales</h3><p data-en="Custom educational programs, NGO initiatives, school enrichment, community education projects, environmental awareness campaigns and youth participation programs.">Programas educativos personalizados, iniciativas para ONG, enriquecimiento escolar, proyectos de educación comunitaria, campañas de conciencia ambiental y programas de participación juvenil.</p></article>
+                    <article class="info-card"><h3 data-en="Consulting and educational support">Consultoría y apoyo educativo</h3><p data-en="Camp and program management consulting with an emphasis on risk management, staff training, quality improvement and program evaluation.">Consultoría para campamentos y gestión de programas, con énfasis en gestión de riesgos, capacitación de personal, mejora de la calidad educativa y evaluación de programas.</p></article>
+                </div>
+                <h3 class="programs-subtitle" data-en="Field experiences">Experiencias de campo</h3>
+                <div class="info-grid">
+                    <article class="info-card"><h3 data-en="Educational field trips">Giras educativas</h3><p data-en="Field experiences built around a question or learning goal for the group.">Salidas de campo que parten de una pregunta o un objetivo de aprendizaje del grupo.</p></article>
+                    <article class="info-card"><h3 data-en="Extracurricular retreats">Retiros extracurriculares</h3><p data-en="Group activities focused on teamwork and reflection outside the classroom.">Actividades de convivencia, trabajo en equipo y reflexión fuera del aula.</p></article>
+                    <article class="info-card"><h3 data-en="Holiday programs">Programas vacacionales</h3><p data-en="Educational activities for families interested in supervision and extended care. Availability and arrangements are to be confirmed.">Actividades formativas para familias interesadas en la supervisión y la custodia extendida. La disponibilidad y las condiciones se confirmarán por programa.</p></article>
+                    <article class="info-card"><h3 data-en="CIT leadership and expeditions">Liderazgo CIT y expediciones</h3><p data-en="Counselor-in-Training is a leadership pathway for young people. Structured expeditions are a separate way to practice field skills.">Counselor-in-Training (CIT) es una ruta de liderazgo para jóvenes. Las expediciones estructuradas ofrecen otra forma de practicar habilidades de campo.</p></article>
+                </div>
+                <h3 class="programs-subtitle" data-en="Delivery formats">Formatos de entrega</h3>
+                <ul class="chip-links format-list">
+                    <li><span data-en="Certificate of completion">Certificado de finalización</span></li>
+                    <li><span data-en="Program certificate">Certificado de programa</span></li>
+                    <li><span data-en="Workshops">Talleres</span></li>
+                    <li><span data-en="Webinars">Webinars</span></li>
+                    <li><span data-en="Self-paced courses">Cursos asíncronos</span></li>
+                    <li><span data-en="Field learning experiences">Experiencias de aprendizaje de campo</span></li>
+                    <li><span data-en="Institutional training">Capacitación institucional</span></li>
+                </ul>
+                <p class="muted" data-en="Professional certification is only offered when proper backing and accreditation exist.">La certificación profesional solo se ofrecerá cuando exista el respaldo y la acreditación adecuados.</p>
+            </div>
+        </section>
+
+        <section class="section band-section" id="becas" aria-labelledby="scholarships-title">
+            <div class="container-section">
+                <div class="section-head">
+                    <div>
+                        <p class="eyebrow-tag" data-en="Scholarships and social responsibility">Becas y responsabilidad social</p>
+                        <h2 class="section-title" id="scholarships-title" data-en="Scholarship program">Programa de becas</h2>
+                        <p class="section-lead" data-en="Solara plans to donate three to five courses to organizations through a structured scholarship program. These are the proposed courses; the program is not open yet.">Solara contempla donar entre tres y cinco cursos a organizaciones mediante un programa estructurado de becas. Estas son las propuestas; el programa todavía no está abierto.</p>
+                    </div>
+                </div>
+                <div class="info-grid">
+                    <article class="info-card"><h3 data-en="Environmental Education Program Design">Diseño de programas de educación ambiental</h3><p data-en="For environmental NGOs, educational foundations, community associations and youth organizations.">Para ONG ambientales, fundaciones educativas, asociaciones comunitarias y organizaciones juveniles.</p></article>
+                    <article class="info-card"><h3 data-en="Child Safeguarding & Outdoor Program Safety">Protección de menores y seguridad en programas al aire libre</h3><p data-en="For NGOs working with children, teenagers, volunteers and field activities. Requires specialist review and is not an official certification.">Para ONG que trabajan con niños, adolescentes, voluntarios y actividades de campo. Requiere revisión de especialistas y no es una certificación oficial.</p></article>
+                    <article class="info-card"><h3 data-en="Nature-Based Learning & Outdoor STEM">Aprendizaje en la naturaleza y STEM al aire libre</h3><p data-en="For educational and environmental NGOs and organizations working with rural communities.">Para ONG educativas, ambientales y organizaciones que trabajan con comunidades rurales.</p></article>
+                    <article class="info-card"><h3 data-en="Volunteer & Youth Program Staff Training">Formación de voluntarios y personal de programas juveniles</h3><p data-en="For NGOs with volunteer programs, camps and youth projects.">Para ONG con programas de voluntariado, campamentos y proyectos juveniles.</p></article>
+                    <article class="info-card"><h3 data-en="Monitoring, Evaluation & Impact Measurement">Monitoreo, evaluación y medición de impacto</h3><p data-en="For NGOs that report results to foundations, donors and funders.">Para ONG que presentan resultados a fundaciones, donantes y organismos financiadores.</p></article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="site-footer">
+        <noscript><div class="container footer-legal"><a href="./catalogo.html">Catálogo</a><a href="./escuelas.html">Escuelas</a><a href="./precios.html">Precios</a><a href="./contacto.html">Contacto</a></div></noscript>
+    </footer>
+
+    <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+        <div class="dialog-heading"><h2 id="cart-title" data-en="Your cart">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito" data-en-label="Close cart" data-en="Close">Cerrar</button></form></div>
+        <p class="muted" data-en="Demo checkout. You will not be charged.">Compra de demostración. No se enviará ningún cobro.</p>
+        <div id="cart-items"></div>
+        <div class="dialog-footer"><strong id="cart-total"></strong><button class="button dark" id="checkout" type="button" data-en="Simulate purchase">Simular compra</button></div>
+        <p id="checkout-status" class="muted" role="status"></p>
+    </dialog>
+</body>
+</html>
