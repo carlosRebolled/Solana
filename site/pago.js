@@ -1,7 +1,7 @@
 // Página de pago con PayPal. VISTA PREVIA: no se conecta a PayPal, no cobra ni envía datos.
 // Para activarlo hará falta una cuenta de PayPal Business, su Client ID y un Worker que cree
 // y capture la orden en el servidor (ver README, «Pagos»).
-import { courses, payments } from './data.js';
+import { courses, payments, discountCodes } from './data.js';
 import { $, tr, esc, courseText, onLanguage, setTitle } from './ui.js';
 
 const money = (amount) => new Intl.NumberFormat(tr('es-CR', 'en-US'), { style: 'currency', currency: 'USD', currencyDisplay: 'code', maximumFractionDigits: 2 }).format(amount);
@@ -20,15 +20,30 @@ function items() {
     return courses.filter((course) => cart.has(course.id) && course.price !== null);
 }
 
+// Código de descuento aplicado (solo en esta página; no se guarda).
+let discount = null;
+const normalizeCode = (value) => value.trim().toUpperCase().replace(/\s+/g, '');
+const discountValue = (subtotal) => {
+    if (!discount || !subtotal) return 0;
+    const value = discount.percent ? (subtotal * discount.percent) / 100 : discount.amount;
+    return Math.min(subtotal, Math.round(value * 100) / 100);
+};
+
 function renderSummary() {
     setTitle(tr('Pago', 'Payment'));
     const list = items();
-    const total = list.reduce((sum, course) => sum + course.price, 0);
+    const subtotal = list.reduce((sum, course) => sum + course.price, 0);
+    const off = discountValue(subtotal);
     $('order-items').innerHTML = list.length
         ? list.map((course) => `<li><img src="./media/${course.image}.jpg" alt="" width="64" height="48"><span>${esc(courseText(course).title)}</span><strong>${esc(money(course.price))}</strong></li>`).join('')
         : `<li class="empty">${tr('Tu carrito está vacío.', 'Your cart is empty.')} <a href="./catalogo.html">${tr('Ver cursos', 'Browse courses')}</a></li>`;
-    $('order-subtotal').textContent = money(total);
-    $('order-total').textContent = money(total);
+    $('order-subtotal').textContent = money(subtotal);
+    $('discount-line').hidden = !discount;
+    $('discount-label').textContent = discount ? `(${discount.code})` : '';
+    $('order-discount').textContent = discount ? `− ${money(off)}` : '';
+    $('order-total').textContent = money(subtotal - off);
+    $('discount-code').disabled = !list.length;
+    $('discount-apply').disabled = !list.length;
     $('paypal-button').disabled = !list.length;
 }
 
@@ -61,6 +76,40 @@ $('checkout-form').addEventListener('submit', (event) => {
             'Everything is ready to pay, but PayPal is not connected yet. This is a preview: no charge was made and your details were not sent or stored.'
         );
     }
+});
+
+function showDiscountMessage(text, isError) {
+    const node = $('discount-message');
+    node.textContent = text;
+    node.classList.toggle('is-error', isError);
+    $('discount-code').setAttribute('aria-invalid', String(isError));
+}
+
+$('discount-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const code = normalizeCode($('discount-code').value);
+    if (!code) {
+        showDiscountMessage(tr('Escribe un código de descuento.', 'Enter a discount code.'), true);
+        $('discount-code').focus();
+        return;
+    }
+    const found = discountCodes.find((entry) => entry.code === code);
+    if (!found) {
+        showDiscountMessage(tr(`El código «${code}» no es válido o ya venció.`, `The code “${code}” is not valid or has expired.`), true);
+        $('discount-code').focus();
+        return;
+    }
+    discount = found;
+    $('discount-code').value = '';
+    showDiscountMessage(tr(`Código aplicado: ${found.label[0]}.`, `Code applied: ${found.label[1]}.`), false);
+    renderSummary();
+});
+
+$('discount-remove').addEventListener('click', () => {
+    discount = null;
+    showDiscountMessage(tr('Se quitó el código de descuento.', 'The discount code was removed.'), false);
+    renderSummary();
+    $('discount-code').focus();
 });
 
 onLanguage(renderSummary);

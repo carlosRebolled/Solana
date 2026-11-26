@@ -351,6 +351,13 @@ export const demoAccount = {
 // Medios de pago. PayPal está en vista previa: sin cuenta ni Client ID no se abre ni se cobra nada.
 // Para activarlo: cuenta de PayPal Business, Client ID público aquí y un Worker que cree y capture
 // la orden con la clave secreta (guardada con `wrangler secret put`, nunca en este archivo).
+// Códigos de descuento. `percent` o `amount` (USD). Son de DEMOSTRACIÓN mientras no haya pagos reales:
+// la versión real debe validar el código y recalcular el total en el servidor.
+export const discountCodes = [
+    { code: 'BIENVENIDA10', percent: 10, label: ['10 % de bienvenida', '10% welcome discount'] },
+    { code: 'CAMPO5', amount: 5, label: ['USD 5 de descuento', 'USD 5 off'] }
+];
+
 export const payments = {
     paypal: { enabled: false, clientId: null, currency: 'USD' }
 };

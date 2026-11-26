@@ -85,8 +85,17 @@
                 <aside class="order-summary" aria-labelledby="summary-title">
                     <h2 id="summary-title" data-en="Order summary">Resumen del pedido</h2>
                     <ul id="order-items"></ul>
+                    <form class="discount-form" id="discount-form" novalidate>
+                        <label for="discount-code" data-en="Discount code">Código de descuento</label>
+                        <div class="discount-row">
+                            <input id="discount-code" name="discount" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="32" placeholder="Escribe tu código" data-en-placeholder="Enter your code" aria-describedby="discount-message">
+                            <button class="btn btn-outline btn-small" id="discount-apply" type="submit" data-en="Apply">Aplicar</button>
+                        </div>
+                        <p class="discount-message" id="discount-message" role="status" aria-live="polite"></p>
+                    </form>
                     <dl>
                         <div><dt data-en="Subtotal">Subtotal</dt><dd id="order-subtotal"></dd></div>
+                        <div class="discount-line" id="discount-line" hidden><dt><span data-en="Discount">Descuento</span> <span id="discount-label"></span> <button class="link-button" id="discount-remove" type="button" data-en="Remove">Quitar</button></dt><dd id="order-discount"></dd></div>
                         <div><dt data-en="Taxes">Impuestos</dt><dd data-en="To be calculated">Por calcular</dd></div>
                         <div class="total"><dt data-en="Total">Total</dt><dd id="order-total"></dd></div>
                     </dl>

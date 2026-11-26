@@ -291,3 +291,27 @@ test('acceso: botón arriba a la derecha, cuenta de demostración y cierre de se
     await expect(page.locator('h1')).toHaveText('Mi cuenta');
     await expect(page.locator('#account-page a.btn')).toHaveAttribute('href', './login.html');
 });
+
+test('pago: código de descuento válido, inválido y quitar', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('solara-demo-cart', JSON.stringify(['campo', 'biodiversidad'])));
+    await page.goto('/pago.html');
+    await expect(page.locator('#order-total')).toContainText('68');
+    await page.locator('#discount-apply').click();
+    await expect(page.locator('#discount-message')).toContainText('Escribe un código');
+    await page.fill('#discount-code', 'NOEXISTE');
+    await page.locator('#discount-apply').click();
+    await expect(page.locator('#discount-message')).toContainText('no es válido');
+    await expect(page.locator('#discount-line')).toBeHidden();
+    await page.fill('#discount-code', ' bienvenida10 ');
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#discount-line')).toBeVisible();
+    await expect(page.locator('#order-discount')).toContainText('6,8');
+    await expect(page.locator('#order-total')).toContainText('61,2');
+    await page.fill('#discount-code', 'CAMPO5');
+    await page.locator('#discount-apply').click();
+    await expect(page.locator('#order-total')).toContainText('63');
+    await page.locator('#discount-remove').click();
+    await expect(page.locator('#discount-line')).toBeHidden();
+    await expect(page.locator('#order-total')).toContainText('68');
+});

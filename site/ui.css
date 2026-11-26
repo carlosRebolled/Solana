@@ -748,3 +748,18 @@
     .data-table tfoot th, .data-table tfoot td { padding: 0; border: 0; }
 }
 @media (max-width: 640px) { .stat-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stat-cards dd { font-size: 1.35rem; } .stat-cards div:last-child { grid-column: 1 / -1; } }
+
+/* Código de descuento en el resumen del pedido. */
+.discount-form { display: grid; gap: 8px; margin: 0 0 16px; padding: 14px 0 0; border-top: 1px solid var(--color-border-soft); }
+.discount-form label { color: var(--color-text-secondary); font-size: .85rem; font-weight: 650; }
+.discount-row { display: flex; gap: 8px; }
+.discount-row input { flex: 1; min-width: 0; height: var(--control-height-small); padding: 0 12px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-background); color: var(--color-text-primary); font: 600 .92rem var(--font-body); letter-spacing: .04em; text-transform: uppercase; }
+.discount-row input::placeholder { text-transform: none; letter-spacing: normal; font-weight: 400; color: var(--color-text-muted); }
+.discount-row input[aria-invalid="true"] { border-color: #f19a8a; }
+.discount-message { margin: 0; font-size: .85rem; color: var(--color-accent); }
+.discount-message:empty { display: none; }
+.discount-message.is-error { color: #f19a8a; }
+.order-summary dl .discount-line { color: var(--color-accent); }
+.order-summary dl .discount-line dt { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.link-button { padding: 0; border: 0; background: none; color: var(--color-text-secondary); font: inherit; font-size: .82rem; text-decoration: underline; cursor: pointer; }
+.link-button:hover { color: var(--color-text-primary); }
