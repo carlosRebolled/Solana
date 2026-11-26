@@ -1,6 +1,6 @@
 // 16–18 · Catálogo: filtros sincronizados con la URL y cursos agrupados por escuela.
 import { courses, schools, paths, findCourse, findPath } from './data.js';
-import { $, t, tr, esc, courseText, levelText, onLanguage, setTitle } from './ui.js';
+import { $, t, tr, esc, courseText, levelText, onLanguage, setTitle, link } from './ui.js';
 import { courseRow } from './edu.js';
 
 const normalize = (value) => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
@@ -61,10 +61,11 @@ function render() {
         return;
     }
     $('catalog-results').innerHTML = schools.map((school) => {
-        const list = matching.filter((course) => course.topic === school.topic);
+        // Primero los cursos que ya tienen clases, luego los que están en preparación.
+        const list = matching.filter((course) => course.topic === school.topic).sort((a, b) => Number(b.sample) - Number(a.sample));
         if (!list.length) return '';
         return `<section class="course-section" aria-labelledby="group-${school.id}">
-            <div class="section-head" style="margin-bottom:20px"><h2 id="group-${school.id}">${esc(t(school.title))}</h2><a class="link-arrow" href="./escuelas.html?area=${school.id}">${tr('Ver escuela', 'View school')}</a></div>
+            <div class="section-head" style="margin-bottom:20px"><h2 id="group-${school.id}">${esc(t(school.title))}</h2><a class="link-arrow" href="${link('school', school.id)}">${tr('Ver escuela', 'View school')}</a></div>
             <div class="course-row-grid">${list.map((course) => courseRow(course)).join('')}</div>
         </section>`;
     }).join('');

@@ -1,6 +1,6 @@
 // 19–20 · Escuelas: directorio y ficha de cada escuela con un único diseño.
 import { schools, findSchool, coursesForSchool, pathsForSchool } from './data.js';
-import { $, t, tr, esc, params, shapeSvg, onLanguage, setTitle } from './ui.js';
+import { $, t, tr, esc, params, shapeSvg, onLanguage, setTitle, link } from './ui.js';
 import { pathCard, setupPathCards, teacherCards, courseRow } from './edu.js';
 
 function renderDirectory() {
@@ -14,7 +14,7 @@ function renderDirectory() {
             <div class="course-grid-ui">${schools.map((school) => {
                 const count = coursesForSchool(school).length;
                 const routes = pathsForSchool(school).length;
-                return `<a class="school-tile" href="./escuelas.html?area=${school.id}">
+                return `<a class="school-tile" href="${link('school', school.id)}">
                     <div class="school-media tone-${school.color}" style="height:260px">${shapeSvg(school.shape)}</div>
                     <span class="school-name">${esc(t(school.title))}</span>
                     <span class="result-count" style="margin:0">${routes} ${routes === 1 ? tr('ruta', 'path') : tr('rutas', 'paths')} · ${count} ${count === 1 ? tr('curso', 'course') : tr('cursos', 'courses')}</span>
@@ -66,7 +66,8 @@ function renderMissing() {
 }
 
 onLanguage(() => {
-    if (!params.has('area')) return renderDirectory();
-    const school = findSchool(params.get('area'));
+    const area = document.body.dataset.school ?? params.get('area');
+    if (!area) return renderDirectory();
+    const school = findSchool(area);
     return school ? renderSchool(school) : renderMissing();
 });

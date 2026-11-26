@@ -2,7 +2,7 @@
 // DEMOSTRACIÓN: la cuenta y sus pagos vienen de `demoAccount` (data.js); el progreso de las clases
 // es el real de este navegador. Con cuentas reales, los mismos números salen de cloudflare/schema.sql.
 import { demoAccount, findCourse, paths } from './data.js';
-import { $, t, tr, esc, courseText, levelText, lessonVideo, videoDuration, formatDuration, readProgress, onLanguage, setTitle, getSession, endSession } from './ui.js';
+import { $, t, tr, esc, courseText, levelText, lessonVideo, videoDuration, formatDuration, readProgress, onLanguage, setTitle, getSession, endSession, link } from './ui.js';
 
 const money = (amount) => new Intl.NumberFormat(tr('es-CR', 'en-US'), { style: 'currency', currency: 'USD', currencyDisplay: 'code', maximumFractionDigits: 2 }).format(amount);
 const day = (iso) => new Intl.DateTimeFormat(tr('es-CR', 'en-US'), { dateStyle: 'medium' }).format(new Date(`${iso}T12:00:00`));
@@ -97,7 +97,7 @@ function render() {
                         <p class="eyebrow-tag">${resume.status === 'new' ? tr('Empieza aquí', 'Start here') : tr('Continúa donde lo dejaste', 'Pick up where you left off')}</p>
                         <h3>${esc(courseText(resume.course).title)}</h3>
                         <p class="muted">${tr('Clase', 'Lesson')} ${resume.next + 1}: ${esc(courseText(resume.course).lessons[resume.next][0])}</p>
-                        <a class="btn btn-primary btn-small" href="./curso.html?curso=${resume.id}&amp;leccion=${resume.next + 1}">${resume.status === 'new' ? tr('Empezar', 'Start') : tr('Continuar', 'Continue')}</a>
+                        <a class="btn btn-primary btn-small" href="${link('course', resume.id)}?leccion=${resume.next + 1}">${resume.status === 'new' ? tr('Empezar', 'Start') : tr('Continuar', 'Continue')}</a>
                     </div>
                 </article>` : `<p class="muted">${tr('Completaste todas tus clases. ¡Buen trabajo!', 'You completed all your lessons. Great work!')}</p>`}
             </section>
@@ -112,17 +112,17 @@ function render() {
                         <td data-label="${tr('Acceso', 'Access')}">${item.source === 'purchase' ? tr('Comprado', 'Purchased') : tr('Clases gratuitas', 'Free lessons')}<small>${tr('desde', 'since')} ${day(item.since)}</small></td>
                         <td data-label="${tr('Progreso', 'Progress')}"><div class="cell-progress"><progress max="${item.total}" value="${item.completed}" aria-label="${item.percent}%"></progress><span>${item.completed}/${item.total}</span></div></td>
                         <td data-label="${tr('Estado', 'Status')}"><span class="status-pill" data-status="${item.status}">${statusLabel(item.status)}</span></td>
-                        <td><a class="btn btn-outline btn-small" href="./curso.html?curso=${item.id}${item.next >= 0 ? `&amp;leccion=${item.next + 1}` : ''}">${item.status === 'done' ? tr('Repasar', 'Review') : item.status === 'new' ? tr('Empezar', 'Start') : tr('Continuar', 'Continue')}</a></td>
+                        <td><a class="btn btn-outline btn-small" href="${link('course', item.id)}${item.next >= 0 ? `?leccion=${item.next + 1}` : ''}">${item.status === 'done' ? tr('Repasar', 'Review') : item.status === 'new' ? tr('Empezar', 'Start') : tr('Continuar', 'Continue')}</a></td>
                     </tr>`).join('')}</tbody>
                 </table></div>
                 <h3 class="account-sub">${tr('Guardados para más adelante', 'Saved for later')}</h3>
-                <ul class="chip-links">${demoAccount.wishlist.map((id) => `<li><a href="./curso.html?curso=${id}">${esc(courseText(findCourse(id)).title)}</a></li>`).join('')}</ul>
+                <ul class="chip-links">${demoAccount.wishlist.map((id) => `<li><a href="${link('course', id)}">${esc(courseText(findCourse(id)).title)}</a></li>`).join('')}</ul>
             </section>
 
             <section id="rutas" aria-labelledby="paths-heading">
                 <h2 id="paths-heading">${tr('Rutas en las que avanzas', 'Paths you are progressing in')}</h2>
                 <ul class="path-progress">${pathProgress.map(({ path, owned, done, total }) => `<li>
-                    <a href="./ruta.html?ruta=${path.id}">${esc(t(path.title))}</a>
+                    <a href="${link('path', path.id)}">${esc(t(path.title))}</a>
                     <progress max="${total}" value="${done}"></progress>
                     <span>${done}/${total} ${tr('cursos completados', 'courses completed')} · ${owned} ${tr('con acceso', 'with access')}</span>
                 </li>`).join('')}</ul>

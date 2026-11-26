@@ -1,6 +1,6 @@
 import { renderHelpChat } from './help-chat.js';
 import { renderEditorial } from './editorial.js';
-import { courses, englishCourses, schools, coursesForSchool, findSchool } from './data.js';
+import { courses, englishCourses, schools, coursesForSchool, findSchool, pageHref } from './data.js';
 
 // Enter verified figures only. Set period to { es: '…', en: '…' } for their reporting period.
 const metrics = { students: null, clients: null, graduates: null, hours: null, period: null };
@@ -30,12 +30,19 @@ const translations = [
     ['data-en-label', 'aria-label'],
     ['data-en-placeholder', 'placeholder']
 ].flatMap(([attribute, target]) => [...document.querySelectorAll(`[${attribute}]`)].map((element) => ({
-    element, target, es: target ? element.getAttribute(target) : element.textContent, en: element.getAttribute(attribute)
+    // En las páginas estáticas en inglés, data-es* guarda el texto en español.
+    element, target, en: element.getAttribute(attribute),
+    es: element.getAttribute(attribute.replace('data-en', 'data-es')) ?? (target ? element.getAttribute(target) : element.textContent)
 })));
+
+const baseTitle = document.title;
 
 function renderLanguage() {
     document.documentElement.lang = language;
-    document.title = tr('Solara Field School | Programas y academia', 'Solara Field School | Programs and academy');
+    // Cada página conserva su título; en inglés usa <body data-title-en> si lo tiene.
+    document.title = language === 'en' && document.body.dataset.titleEn && !document.body.classList.contains('info-page')
+        ? document.body.dataset.titleEn
+        : baseTitle;
     for (const { element, target, es, en } of translations) {
         if (target) element.setAttribute(target, tr(es, en));
         else element.textContent = tr(es, en);
@@ -77,7 +84,8 @@ const player = $('player');
 let featuredCourse = courses[0];
 const cartDialog = $('cart-dialog');
 const params = new URLSearchParams(location.search);
-const activeCourse = player ? courses.find((course) => course.id === params.get('curso')) : undefined;
+// En las páginas estáticas el curso va en <body data-course>; en curso.html, en ?curso=.
+const activeCourse = player ? courses.find((course) => course.id === (document.body.dataset.course ?? params.get('curso'))) : undefined;
 let activeLesson = activeCourse && !params.has('muestra')
     ? Math.max(0, activeCourse.lessons.findIndex((_, index) => !completed.has(lessonKey(index))))
     : 0;
@@ -108,8 +116,8 @@ function renderFeaturedCourse() {
                 <span>${count}/${lessons.length} ${tr('lecciones completadas', 'lessons completed')}</span>
             </div>
             <div class="actions">
-                <a class="button primary" href="./curso.html?curso=${id}&amp;muestra=1#lecciones" target="_blank" rel="noopener">${tr('Ver clase de muestra', 'Watch sample lesson')}</a>
-                <a class="button glass" href="./curso.html?curso=${id}" target="_blank" rel="noopener">${tr('Ver temario', 'View syllabus')}</a>
+                <a class="button primary" href="${pageHref('course', id, language)}?muestra=1#lecciones">${tr('Ver clase de muestra', 'Watch sample lesson')}</a>
+                <a class="button glass" href="${pageHref('course', id, language)}">${tr('Ver temario', 'View syllabus')}</a>
             </div>
         </div>`;
 }
@@ -136,15 +144,15 @@ function courseCard(course) {
         const { title, description } = courseText(course);
         const levelLabel = levelText(course.level);
         return `
-        <article class="card">
-            <img src="./media/${course.image}.jpg" alt="" loading="lazy" width="560" height="320">
+        <article class="card" data-available="${course.sample}">
+            <div class="card-media"><img src="./media/${course.image}.jpg" alt="" loading="lazy" width="560" height="320"><span class="card-badge">${course.sample ? tr('Clases de muestra', 'Sample lessons') : tr('Próximamente', 'Coming soon')}</span></div>
             <div class="card-body">
                 <p class="card-meta">${levelLabel} · ${course.lessons.length} ${tr('lecciones', 'lessons')}</p>
                 <h3>${title}</h3>
                 <p>${description}</p>
                 <div class="card-bottom">
-                    <strong>${currency(course.price)}</strong>
-                    <a class="button outline" href="./curso.html?curso=${course.id}" target="_blank" rel="noopener" aria-label="${tr('Ver curso', 'View course')}: ${title} (${tr('nueva pestaña', 'new tab')})">${tr('Ver curso', 'View course')}</a>
+                    <strong>${course.price === null ? tr('Precio por confirmar', 'Price to be confirmed') : currency(course.price)}</strong>
+                    <a class="button outline" href="${pageHref('course', course.id, language)}" aria-label="${tr('Ver curso', 'View course')}: ${title}">${tr('Ver curso', 'View course')}</a>
                 </div>
             </div>
         </article>`;
@@ -157,7 +165,7 @@ function renderDirectories() {
         container.innerHTML = schools.map((school) => {
             const label = tr(...school.title);
             const count = coursesForSchool(school).length;
-            return `<a class="school-card" href="./escuelas.html?area=${school.id}">
+            return `<a class="school-card" href="${pageHref('school', school.id, language)}">
                 <img src="./media/${school.image}.jpg" alt="" width="448" height="240" loading="lazy">
                 <div><h2>${label}</h2><p>${count} ${count === 1 ? tr('curso', 'course') : tr('cursos', 'courses')}</p></div>
             </a>`;
@@ -299,9 +307,9 @@ function renderCart() {
     const selected = courses.filter((course) => cart.has(course.id) && course.price !== null);
     $('cart-count').textContent = selected.length;
     $('cart-items').innerHTML = selected.length ? selected.map((course) => `
-        <div class="cart-row"><div><strong>${courseText(course).title}</strong><br>${currency(course.price)}</div>
+        <div class="cart-row"><img class="cart-thumb" src="./media/${course.image}.jpg" alt="" width="64" height="48"><div class="cart-info"><strong>${courseText(course).title}</strong><br>${currency(course.price)}</div>
             <button class="button outline" type="button" data-remove="${course.id}" aria-label="${tr('Quitar', 'Remove')} ${courseText(course).title}">${tr('Quitar', 'Remove')}</button></div>
-    `).join('') : tr('<p>Tu carrito está vacío.</p>', '<p>Your cart is empty.</p>');
+    `).join('') : `<p class="cart-empty">${tr('Tu carrito está vacío.', 'Your cart is empty.')} <a href="./catalogo.html">${tr('Explorar cursos', 'Browse courses')}</a></p>`;
     $('cart-total').textContent = `Total: ${currency(selected.reduce((sum, course) => sum + course.price, 0))}`;
     $('checkout').disabled = !selected.length;
 }
@@ -393,15 +401,28 @@ $('checkout').addEventListener('click', () => {
     location.href = './pago.html';
 });
 
-const savedLanguage = readSet('solara-language').has('en') ? 'en' : 'es';
+// Las páginas estáticas (curso-*, course-*, escuela-*…) tienen un idioma propio y enlazan su versión
+// en el otro idioma con <link rel="alternate" hreflang>. Si la persona eligió otro idioma, se la lleva ahí.
+const pageLanguage = document.documentElement.dataset.pageLang;
+// data-file es el archivo local de la versión en ese idioma (href es la dirección pública).
+const alternateFor = (lang) => document.querySelector(`link[rel="alternate"][hreflang="${lang}"]`)?.dataset.file;
+const goToAlternate = (lang) => {
+    const target = alternateFor(lang);
+    if (!pageLanguage || lang === pageLanguage || !target) return false;
+    location.replace(`./${target}${location.search}${location.hash}`);
+    return true;
+};
+const storedLanguage = readSet('solara-language');
+const savedLanguage = storedLanguage.size ? (storedLanguage.has('en') ? 'en' : 'es') : (pageLanguage ?? 'es');
 $('language').value = savedLanguage;
 language = savedLanguage;
 $('language').addEventListener('change', () => {
     language = $('language').value;
     storeSet('solara-language', new Set([language]));
+    if (goToAlternate(language)) return;
     renderLanguage();
 });
-renderLanguage();
+if (!goToAlternate(savedLanguage)) renderLanguage();
 
 if (activeCourse && location.hash === '#lecciones') {
     requestAnimationFrame(() => $('lecciones').scrollIntoView());

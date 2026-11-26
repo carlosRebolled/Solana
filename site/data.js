@@ -368,7 +368,7 @@ export const payments = {
 export const footerColumns = [
     {
         title: ['Escuelas', 'Schools'], wide: true,
-        links: schools.map((school) => [school.title, `./escuelas.html?area=${school.id}`])
+        links: schools.map((school) => [school.title, `./escuela-${school.id}.html`])
     },
     {
         title: ['Solara', 'Solara'],
@@ -404,3 +404,19 @@ export const coursesForSchool = (school) => courses.filter((course) => course.to
 export const pathsForSchool = (school) => paths.filter((path) => path.school === school.id || path.courses.some((id) => findCourse(id)?.topic === school.topic));
 export const pathsForCourse = (id) => paths.filter((path) => path.courses.includes(id));
 export const teachersForCourse = (id) => teachers.filter((teacher) => teacher.courses.includes(id));
+
+// Direcciones limpias para buscadores. Cada curso, escuela y ruta tiene una página estática en español
+// (curso-<id>.html) y otra en inglés con las palabras clave del título (course-<slug>.html).
+// Se generan con `npm run seo:build`; en Cloudflare se sirven sin «.html» (por ejemplo /curso-campo).
+export const siteUrl = 'https://solarafieldschool.com';
+const slugify = (text) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+    .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 70).replace(/-[^-]*$/, (rest) => (rest.length > 1 ? rest : ''));
+const englishTitle = (id) => englishCourses[id]?.[0] ?? id;
+
+export function pageFile(kind, id, lang = 'es') {
+    if (kind === 'course') return lang === 'en' ? `course-${slugify(englishTitle(id))}.html` : `curso-${id}.html`;
+    if (kind === 'school') return lang === 'en' ? `school-${slugify(findSchool(id).title[1])}.html` : `escuela-${id}.html`;
+    return lang === 'en' ? `path-${slugify(findPath(id).title[1])}.html` : `ruta-${id}.html`;
+}
+export const pageHref = (kind, id, lang = 'es') => `./${pageFile(kind, id, lang)}`;
+export const pageUrl = (kind, id, lang = 'es') => `${siteUrl}/${pageFile(kind, id, lang).replace(/\.html$/, '')}`;

@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /pago
+Disallow: /login
+Disallow: /mi-cuenta
+
+Sitemap: https://solarafieldschool.com/sitemap.xml

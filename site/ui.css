@@ -765,3 +765,45 @@
 .link-button:hover { color: var(--color-text-primary); }
 .discount-help { margin: 2px 0 0; color: var(--color-text-secondary); font-size: .82rem; line-height: 1.45; }
 .discount-help a { color: var(--color-accent); overflow-wrap: anywhere; }
+
+/* Ficha del curso: columna lateral con vista previa y tarjeta de compra. */
+.course-hero-grid { align-items: start; }
+.course-hero-side { display: grid; gap: 0; border: 1px solid var(--color-border-soft); border-radius: 20px; overflow: hidden; background: var(--color-section); box-shadow: 0 24px 60px rgb(0 0 0 / .35); }
+.course-hero-side .lesson-preview { border-radius: 0; aspect-ratio: 16 / 9; }
+.buy-card { display: grid; gap: 12px; padding: 22px; }
+.buy-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 0; }
+.buy-price strong { font: 700 2rem/1 var(--font-body); font-variant-numeric: tabular-nums; }
+.buy-price span { color: var(--color-text-muted); font-size: .85rem; }
+.buy-card .btn { width: 100%; min-height: 48px; }
+.buy-card[data-for-sale="false"] #add-course { display: none; }
+.buy-card .form-message:empty { display: none; }
+.buy-includes-title { margin: 8px 0 0; font: 700 .95rem var(--font-body); letter-spacing: 0; }
+.buy-includes { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; color: var(--color-text-secondary); font-size: .9rem; }
+.buy-includes li { display: grid; grid-template-columns: 1.1rem 1fr; gap: 8px; }
+.buy-includes li::before { content: "✓"; color: var(--color-accent); font-weight: 900; }
+.buy-trust { margin: 4px 0 0; padding-top: 12px; border-top: 1px solid var(--color-border-soft); color: var(--color-text-muted); font-size: .8rem; text-align: center; }
+.course-actions .btn-outline { min-height: 46px; }
+
+/* Para quién es este curso. */
+.fit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 16px; }
+.fit-card { padding: 20px; border: 1px solid var(--color-border-soft); border-radius: var(--radius-card); background: var(--color-section); }
+.fit-card h3 { margin: 0 0 8px; color: var(--color-accent); font: 750 .8rem var(--font-body); letter-spacing: .08em; text-transform: uppercase; }
+.fit-card p { margin: 0; color: var(--color-text-primary); }
+.fit-card a { color: var(--color-accent); }
+
+/* Barra fija de compra. */
+.sticky-buy { position: fixed; inset: auto 0 0; z-index: 20; border-top: 1px solid var(--color-border-soft); background: rgb(15 31 24 / .96); backdrop-filter: blur(8px); transform: translateY(110%); transition: transform 260ms var(--ease); }
+.sticky-buy[data-visible="true"] { transform: none; }
+.sticky-buy-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; }
+.sticky-buy-inner div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; min-width: 0; }
+.sticky-buy-inner strong { overflow: hidden; font: 650 1.02rem var(--font-heading); text-overflow: ellipsis; white-space: nowrap; max-width: 60vw; }
+.sticky-buy-inner span { color: var(--color-accent); font-weight: 800; }
+.course-ui:has(.sticky-buy[data-visible="true"]) .help-chat { bottom: max(5.2rem, env(safe-area-inset-bottom)); }
+@media (max-width: 640px) { .sticky-buy-inner strong { max-width: 52vw; font-size: .92rem; } }
+
+.hero-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 32px 0 0; padding: 24px 0 0; border-top: 1px solid var(--color-border-soft); list-style: none; }
+.hero-points li { display: grid; gap: 4px; }
+.hero-points strong { color: var(--color-accent); font-size: .95rem; }
+.hero-points span { color: var(--color-text-secondary); font-size: .86rem; line-height: 1.45; }
+@media (max-width: 640px) { .hero-points { grid-template-columns: 1fr; } }
+.sticky-buy-inner .btn { flex: none; white-space: nowrap; }

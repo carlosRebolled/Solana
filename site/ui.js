@@ -1,9 +1,15 @@
 // Utilidades compartidas por las páginas con el sistema visual nuevo.
-import { courses, englishCourses, footerColumns, findCourse, teachersForCourse } from './data.js';
+import { courses, englishCourses, footerColumns, findCourse, teachersForCourse, pageHref, pageUrl, findSchool as findSchoolEntry } from './data.js';
+const findSchoolId = (id) => findSchoolEntry(id)?.id;
 
 export const lang = () => (document.documentElement.lang === 'en' ? 'en' : 'es');
 export const t = (pair) => (Array.isArray(pair) ? pair[lang() === 'en' ? 1 : 0] : pair);
 export const tr = (es, en) => (lang() === 'en' ? en : es);
+// Dirección limpia de un curso, escuela o ruta en el idioma actual.
+export const link = (kind, id) => pageHref(kind, id, lang());
+const kinds = { curso: 'course', escuela: 'school', ruta: 'path' };
+// Pasa ./curso-x.html, ./escuela-x.html o ./ruta-x.html a la versión del idioma actual.
+export const localHref = (href) => href.replace(/^\.\/(curso|escuela|ruta)-([a-z0-9-]+)\.html/,(_, kind, id) => link(kinds[kind], id));
 export const $ = (id) => document.getElementById(id);
 export const params = new URLSearchParams(location.search);
 export const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -88,7 +94,7 @@ export const icons = {
 export function courseCardUI(course, { pathId } = {}) {
     const { title } = courseText(course);
     const lessons = course.lessons.length;
-    const href = `./curso.html?curso=${course.id}${pathId ? `&ruta=${pathId}` : ''}`;
+    const href = `${link('course', course.id)}${pathId ? `?ruta=${pathId}` : ''}`;
     return `<a class="course-card-ui" href="${href}">
         <figure><img src="./media/${course.image}.jpg" alt="" loading="lazy" width="560" height="315">
             <span class="status ${course.sample ? 'is-sample' : ''}">${course.sample ? tr('Clases de muestra', 'Sample lessons') : tr('En preparación', 'In preparation')}</span></figure>
@@ -180,7 +186,7 @@ export function renderFooter() {
         </div>
         ${footerColumns.map((column) => `<section class="footer-column ${column.wide ? 'is-wide' : ''}">
             <h3>${esc(t(column.title))}</h3>
-            <ul>${column.links.map(([label, href]) => `<li><a href="${href}">${esc(t(label))}</a></li>`).join('')}</ul>
+            <ul>${column.links.map(([label, href]) => `<li><a href="${localHref(href)}">${esc(t(label))}</a></li>`).join('')}</ul>
         </section>`).join('')}
     </div>
     <div class="container footer-legal">
@@ -280,7 +286,22 @@ function renderAccountLink() {
 // Páginas informativas: conservan su propio título (app.js pone el de la portada al cambiar el idioma).
 const titleEn = document.body.dataset.titleEn;
 const titleEs = document.title.replace(' | Solara Field School', '');
-if (titleEn) onLanguage(() => setTitle(tr(titleEs, titleEn)));
+if (titleEn && document.body.classList.contains('info-page')) onLanguage(() => setTitle(tr(titleEs, titleEn)));
+
+// Direcciones antiguas con parámetros (curso.html?curso=, escuelas.html?area=, ruta.html?ruta=):
+// la canónica apunta a la página estática equivalente.
+function canonicalForParams() {
+    const pairs = [['curso', 'course'], ['area', 'school'], ['ruta', 'path']];
+    const page = location.pathname.split('/').pop();
+    const [param, kind] = pairs.find(([key]) => params.has(key) && page.startsWith({ curso: 'curso.html', area: 'escuelas', ruta: 'ruta.html' }[key])) ?? [];
+    if (!param) return;
+    let id = params.get(param);
+    if (kind === 'school') id = findSchoolId(id);
+    if (!id) return;
+    const canonical = document.querySelector('link[rel="canonical"]') ?? document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'canonical' }));
+    canonical.href = pageUrl(kind, id, 'es');
+}
+try { canonicalForParams(); } catch { /* identificador desconocido */ }
 
 onLanguage(renderFooter);
 onLanguage(renderAccountLink);

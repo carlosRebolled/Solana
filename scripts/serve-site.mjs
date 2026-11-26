@@ -12,6 +12,10 @@ createServer(async (request, response) => {
     let file = normalize(join(root, path));
     if (!file.startsWith(root)) { response.writeHead(403).end(); return; }
     try {
+        // Como Cloudflare: /curso-campo sirve curso-campo.html.
+        if (!extname(file)) {
+            try { await stat(`${file}.html`); file = `${file}.html`; } catch { /* no hay versión .html */ }
+        }
         if ((await stat(file)).isDirectory()) file = join(file, 'index.html');
         const body = await readFile(file);
         const range = request.headers.range?.match(/bytes=(\d+)-(\d*)/);

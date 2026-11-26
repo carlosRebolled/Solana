@@ -118,7 +118,7 @@ export function renderEditorial(locale) {
         <img class="article-cover" src="./media/${post.image}.jpg" width="960" height="480" alt="">
         <div class="article-body">
             ${sections.map(([heading, body]) => `<section><h2>${heading}</h2><p>${body}</p></section>`).join('')}
-            ${post.course ? `<a class="button dark" href="./curso.html?curso=${post.course}" target="_blank" rel="noopener">${tr('Ver curso relacionado', 'View related course')}</a>` : ''}
+            ${post.course ? `<a class="button dark" href="./curso-${post.course}.html">${tr('Ver curso relacionado', 'View related course')}</a>` : ''}
         </div>
         <section class="related-posts"><h2>${tr('También te puede interesar', 'You may also like')}</h2>
             <div class="editorial-grid">${posts.filter((entry) => entry.id !== id).slice(0, 2).map((entry) => card(entry)).join('')}</div>

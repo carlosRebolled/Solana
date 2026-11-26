@@ -110,3 +110,17 @@ El botón «Iniciar sesión» de la esquina superior derecha lleva a `site/login
 La cuenta y sus pagos vienen de `demoAccount` en `site/data.js` y se muestran con la etiqueta «Demostración». El progreso de las clases es el real de este navegador. La sesión de demostración solo guarda una marca en `localStorage` (`solara-demo-session`).
 
 Para las cuentas reales, `cloudflare/schema.sql` propone las tablas para Cloudflare D1: usuarios, sesiones, organizaciones, cursos, clases, pedidos, pagos, accesos, progreso, certificados, becas y cursos guardados. Al final del archivo se indica de qué tablas sale cada estadística del panel. Hará falta además un Worker que gestione el registro, el inicio de sesión con contraseñas cifradas y las cookies de sesión.
+
+## Buscadores (SEO)
+
+Cada curso, escuela y ruta tiene una página estática en español y otra en inglés, con dirección limpia y el contenido ya escrito en el HTML, por ejemplo `/curso-gestion-riesgos` y `/course-outdoor-risk-management-for-schools-camps-and-youth-programs`. Las direcciones antiguas con parámetros (`curso.html?curso=`, `escuelas.html?area=`, `ruta.html?ruta=`) siguen funcionando y apuntan a la página estática con su enlace canónico.
+
+Después de cambiar `site/data.js` o las plantillas `curso.html`, `escuelas.html` o `ruta.html`, vuelve a generar las páginas y el sitemap:
+
+```powershell
+npm.cmd run seo:build
+```
+
+El comando también genera `site/sitemap.xml`. Las páginas llevan título y descripción propios, enlace canónico, `hreflang` entre los dos idiomas, Open Graph y datos estructurados (`Course`, `ItemList` y `BreadcrumbList`). `site/robots.txt` excluye el pago, el acceso y el panel de la cuenta. Una prueba avisa si alguna página generada quedó desactualizada respecto a su plantilla.
+
+Para reducir el peso de las fotos de `site/media/`, usa `node scripts/optimize-images.mjs`.

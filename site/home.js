@@ -1,6 +1,6 @@
 // Componentes de la portada: banner, hero, historias, vitrina, escuelas, comunidad, metas y planes.
 import { courses, schools, testimonials, events, goals, promotion, paths, findCourse } from './data.js';
-import { $, t, tr, esc, params, courseText, lessonVideo, fillDurations, readProgress, teacherName, shapeSvg, icons, setupCarousel, setupReveal, onLanguage, reducedMotion } from './ui.js';
+import { $, t, tr, esc, params, courseText, lessonVideo, fillDurations, readProgress, teacherName, shapeSvg, icons, setupCarousel, setupReveal, onLanguage, reducedMotion, link } from './ui.js';
 import { renderPlans } from './pricing.js';
 
 /* 02 · PromotionBanner: solo con campaña activa o en vista previa (?promo=preview). */
@@ -39,7 +39,7 @@ function renderHeroLessons() {
     const picks = [tiles[0], tiles[2], tiles[4], tiles[1]].filter(Boolean);
     $('hero-lessons').innerHTML = picks.map(({ course, index }) => {
         const { title, lessons } = courseText(course);
-        return `<li class="lesson-tile"><a href="./curso.html?curso=${course.id}&amp;leccion=${index + 1}#lecciones">
+        return `<li class="lesson-tile"><a href="${link('course', course.id)}?leccion=${index + 1}#lecciones">
             <figure><img src="./media/${course.image}.jpg" alt="" width="300" height="210" loading="eager">
                 <span class="tile-meta"><span data-duration-src="${lessonVideo(course, index)}">${tr('Video', 'Video')}</span></span></figure>
             <h3>${esc(lessons[index][0])}</h3>
@@ -113,9 +113,9 @@ function renderPathPreview() {
     $('path-preview').innerHTML = path.courses.map((id) => {
         const course = findCourse(id);
         const done = course.lessons.filter((_, index) => progress.has(`${id}:${index}`)).length;
-        return `<li><div><a href="./curso.html?curso=${id}&amp;ruta=${path.id}">${esc(courseText(course).title)}</a><br>
+        return `<li><div><a href="${link('course', id)}?ruta=${path.id}">${esc(courseText(course).title)}</a><br>
             <small>${course.sample ? `${done}/${course.lessons.length} ${tr('clases completadas', 'lessons completed')}` : tr('En preparación', 'In preparation')}</small></div>
-            <a class="btn btn-outline btn-small" href="./ruta.html?ruta=${path.id}">${tr('Ruta', 'Path')}</a></li>`;
+            <a class="btn btn-outline btn-small" href="${link('path', path.id)}">${tr('Ruta', 'Path')}</a></li>`;
     }).join('');
 }
 
@@ -227,7 +227,7 @@ function renderSchools() {
     $('schools-prev-ui').innerHTML = icons.prev;
     $('schools-next-ui').innerHTML = icons.next;
     $('schools-track').innerHTML = schools.map((school) => `
-        <a class="school-tile" href="./escuelas.html?area=${school.id}">
+        <a class="school-tile" href="${link('school', school.id)}">
             <div class="school-media tone-${school.color}"><span class="pill">${esc(t(school.title).split(' ')[0])}</span>${shapeSvg(school.shape)}</div>
             <span class="school-name">${esc(t(school.title))}</span>
         </a>`).join('');

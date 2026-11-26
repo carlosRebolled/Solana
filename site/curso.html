@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Consulta el temario y las lecciones de muestra de Solara Field School.">
     <title>Curso | Solara Field School</title>
+    <meta name="robots" content="noindex, follow">
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="./ui.css">
@@ -55,18 +56,34 @@
                             <li><span data-en="Level">Nivel</span>: <strong id="course-level"></strong></li>
                             <li><strong id="course-count"></strong> <span data-en="lessons">clases</span></li>
                             <li><span data-en="Video">Video</span>: <strong id="course-duration">—</strong></li>
-                            <li><span data-en="Price">Precio</span>: <strong id="course-price"></strong></li>
+                            <li hidden><span data-en="Price">Precio</span>: <strong id="course-price"></strong></li>
                             <li id="course-rating"></li>
                         </ul>
                         <div class="course-actions">
-                            <a class="btn btn-primary" id="course-start" href="#lecciones"></a>
-                            <button class="btn btn-outline" id="add-course" type="button"></button>
+                            <a class="btn btn-outline" id="course-start" href="#lecciones"></a>
                         </div>
+                        <ul class="hero-points">
+                            <li><strong data-en="At your own pace">A tu ritmo</strong><span data-en="Watch the lessons whenever you want, from any device.">Mira las clases cuando quieras, desde cualquier dispositivo.</span></li>
+                            <li><strong data-en="Learn by doing">Aprende haciendo</strong><span data-en="Every lesson ends with a practical field exercise.">Cada clase cierra con un ejercicio práctico de campo.</span></li>
+                            <li><strong data-en="Certificate">Certificado</strong><span data-en="Get a certificate of completion when you finish.">Recibe un certificado de finalización al terminar.</span></li>
+                        </ul>
                     </div>
-                    <div class="lesson-preview" id="lesson-preview" data-state="idle">
-                        <img id="course-cover" alt="" width="640" height="400">
-                        <button class="play" id="preview-play" type="button"><span></span></button>
-                        <p class="preview-caption" id="preview-caption"></p>
+                    <div class="course-hero-side">
+                        <div class="lesson-preview" id="lesson-preview" data-state="idle">
+                            <img id="course-cover" alt="" width="640" height="400">
+                            <button class="play" id="preview-play" type="button"><span></span></button>
+                            <p class="preview-caption" id="preview-caption"></p>
+                        </div>
+                        <!-- Tarjeta de compra -->
+                        <div class="buy-card" id="buy-card">
+                            <p class="buy-price"><strong id="buy-price"></strong> <span id="buy-price-note"></span></p>
+                            <button class="btn btn-primary" id="buy-now" type="button"></button>
+                            <button class="btn btn-outline" id="add-course" type="button"></button>
+                            <p class="form-message" id="buy-message" role="status" aria-live="polite"></p>
+                            <h2 class="buy-includes-title" data-en="This course includes">Este curso incluye</h2>
+                            <ul class="buy-includes" id="buy-includes"></ul>
+                            <p class="buy-trust" data-en="Secure payment with PayPal · Progress saved in your account">Pago seguro con PayPal · Progreso guardado en tu cuenta</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -82,6 +99,10 @@
             <section class="container section" id="aprendizaje" aria-labelledby="outcomes-title" style="padding-bottom:0">
                 <h2 class="section-title" id="outcomes-title" style="font-size:1.8rem" data-en="What you’ll learn">Qué aprenderás</h2>
                 <ul class="outcome-list" id="course-outcomes"></ul>
+            </section>
+            <section class="container section course-fit" id="para-quien" aria-labelledby="audience-title" style="padding-bottom:0">
+                <h2 class="section-title" id="audience-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Who this course is for">Para quién es este curso</h2>
+                <div class="fit-grid" id="course-fit"></div>
             </section>
             <!-- 26 · CourseSyllabus -->
             <section class="container section" id="temario" aria-labelledby="syllabus-title" style="padding-bottom:0">
@@ -118,6 +139,23 @@
                 <h2 class="section-title" id="reviews-title" style="font-size:1.8rem;margin-bottom:12px" data-en="Reviews">Opiniones</h2>
                 <div id="course-reviews"></div>
             </section>
+            <section class="container section" id="preguntas-curso" aria-labelledby="course-faq-title" style="padding-top:0">
+                <h2 class="section-title" id="course-faq-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Frequently asked questions">Preguntas frecuentes</h2>
+                <div class="accordion" id="course-faq"></div>
+            </section>
+            <section class="section band-section" id="relacionados" aria-labelledby="related-title">
+                <div class="container">
+                    <div class="section-head"><h2 class="section-title" id="related-title" style="font-size:1.8rem" data-en="Related courses">Cursos relacionados</h2><a class="link-arrow" href="./catalogo.html" data-en="View the full catalog">Ver todo el catálogo</a></div>
+                    <div class="course-grid-ui" id="related-courses"></div>
+                </div>
+            </section>
+            <!-- Barra de compra que aparece al bajar por la ficha -->
+            <div class="sticky-buy" id="sticky-buy" aria-hidden="true">
+                <div class="container sticky-buy-inner">
+                    <div><strong id="sticky-title"></strong><span id="sticky-price"></span></div>
+                    <button class="btn btn-primary btn-small" id="sticky-action" type="button" tabindex="-1"></button>
+                </div>
+            </div>
         </div>
         <noscript class="container" data-en="Enable JavaScript to view the course.">Activa JavaScript para ver el curso.</noscript>
     </main>

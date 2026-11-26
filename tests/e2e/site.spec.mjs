@@ -134,11 +134,11 @@ test('catálogo: filtros, URL y estado vacío', async ({ page }) => {
 test('navegación: portada �  escuela �  ruta �  curso �  vista previa', async ({ page }) => {
     await page.goto('/');
     await page.locator('#schools-track a').first().click();
-    await expect(page).toHaveURL(/escuelas\.html\?area=campo/);
+    await expect(page).toHaveURL(/escuela-campo\.html/);
     await page.locator('.path-card a.btn-primary').first().click();
-    await expect(page).toHaveURL(/ruta\.html\?ruta=/);
+    await expect(page).toHaveURL(/ruta-[a-z-]+\.html/);
     await page.locator('.path-course h3 a').first().click();
-    await expect(page).toHaveURL(/curso\.html\?curso=campo/);
+    await expect(page).toHaveURL(/curso-campo\.html/);
     await page.locator('#preview-play').click();
     await expect(page.locator('#lesson-preview')).toHaveAttribute('data-state', /loading|ready/);
     await expect(page.locator('#lesson-preview video')).toBeVisible();
@@ -236,8 +236,9 @@ test('menú: cada enlace abre su propia página, sin anclas a la portada', async
 test('curso: las pestañas abren cada sección en una ventana sin mover la página', async ({ page }) => {
     await page.goto('/curso.html?curso=campo');
     await page.waitForLoadState('networkidle');
-    const before = await page.evaluate(() => scrollY);
     const tab = page.locator('.course-tabs a[href="#temario"]');
+    await tab.scrollIntoViewIfNeeded();
+    const before = await page.evaluate(() => scrollY);
     await tab.click();
     const dialog = page.locator('#section-dialog');
     await expect(dialog).toBeVisible();
@@ -282,7 +283,7 @@ test('acceso: botón arriba a la derecha, cuenta de demostración y cierre de se
     await expect(page.locator('#resumen .stat-cards dd').nth(1)).toHaveText('1/6');
     await expect(page.locator('#pagos tbody tr')).toHaveCount(2);
     await expect(page.locator('#pagos tfoot')).toContainText('68');
-    await expect(page.locator('.resume-card a')).toHaveAttribute('href', /curso=campo&leccion=2/);
+    await expect(page.locator('.resume-card a')).toHaveAttribute('href', /curso-campo\.html\?leccion=2/);
     await expect(page.locator('#stat-watched')).toHaveText(/^\d+:\d{2}$/);
     await page.locator('#logout').click();
     await expect(page).toHaveURL(/login.html/);

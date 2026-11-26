@@ -134,3 +134,27 @@ El primero sirve `site/` en http://127.0.0.1:8874. El tercero necesita el primer
   - Becas: las 5 propuestas, como programa todavía no abierto.
 - **Asignación a revisar:** el área de cada curso no aparece explícitamente en el documento; la elegí yo y está en `catalog` dentro de `data.js`.
 - **Pruebas:** `npm run test:site` → 77 superadas.
+
+## Cambios del 2026-11-26 (sin commit)
+
+**SEO**
+- **Páginas estáticas:** 70 en total (23 cursos, 6 escuelas y 6 rutas, cada una en español e inglés), generadas con `npm run seo:build`.
+- **Direcciones limpias:** en inglés llevan las palabras clave del documento maestro, por ejemplo `/course-outdoor-risk-management-for-schools-camps-and-youth-programs`.
+- **Metadatos:** título y descripción propios, canónica, `hreflang`, Open Graph y datos estructurados `Course`, `ItemList` y `BreadcrumbList`. Las páginas principales también tienen canónica y Open Graph, y la portada los datos de la organización.
+- **Archivos para buscadores:** `sitemap.xml` con 80 direcciones y `robots.txt`.
+- **Idioma:** al cambiarlo, se pasa a la página del otro idioma. Las direcciones antiguas siguen funcionando.
+- **Fotos:** de 2,45 MB a 1,52 MB en total.
+
+**Ficha del curso, para vender**
+- Tarjeta de compra con precio, «Comprar ahora», «Añadir al carrito» y la lista de lo que incluye el curso.
+- Barra fija de compra al bajar por la página.
+- Tres ventajas del curso en el hero.
+- Secciones «Para quién es este curso», «Preguntas frecuentes» y «Cursos relacionados».
+- En los cursos en preparación, el botón dice «Avísame cuando esté disponible».
+
+**Portada y carrito**
+- Las tarjetas del catálogo muestran «Clases de muestra» o «Próximamente» y abren el curso en la misma pestaña.
+- El carrito muestra la miniatura de cada curso y, si está vacío, un enlace al catálogo.
+- En el catálogo, los cursos con clases aparecen primero.
+
+**Pruebas:** `npm run test:site` → 114 superadas, 8 de ellas nuevas de SEO.
