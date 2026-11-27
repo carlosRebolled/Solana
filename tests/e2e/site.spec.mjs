@@ -282,7 +282,7 @@ test('acceso: botón arriba a la derecha, cuenta de demostración y cierre de se
     await expect(page.locator('#resumen .stat-cards dd').nth(1)).toHaveText('1/6');
     await expect(page.locator('#pagos tbody tr')).toHaveCount(2);
     await expect(page.locator('#pagos tfoot')).toContainText('68');
-    await expect(page.locator('.resume-card a')).toHaveAttribute('href', /curso-campo\.html\?leccion=2/);
+    await expect(page.locator('.resume-card a.btn-primary')).toHaveAttribute('href', /curso-campo\.html\?leccion=2/);
     await expect(page.locator('#stat-watched')).toHaveText(/^\d+:\d{2}$/);
     await page.locator('#logout').click();
     await expect(page).toHaveURL(/login.html/);
@@ -290,6 +290,40 @@ test('acceso: botón arriba a la derecha, cuenta de demostración y cierre de se
     await page.goto('/mi-cuenta.html');
     await expect(page.locator('h1')).toHaveText('Mi cuenta');
     await expect(page.locator('#account-page a.btn')).toHaveAttribute('href', './login.html');
+});
+
+test('mi cuenta: pestañas con dirección propia y hoja de progreso por curso', async ({ page }) => {
+    await page.goto('/login.html');
+    await page.evaluate(() => localStorage.setItem('solara-demo-progress', JSON.stringify(['campo:0'])));
+    await page.locator('#demo-login').click();
+    await expect(page).toHaveURL(/mi-cuenta.html/);
+    await expect(page.locator('#resumen')).toBeVisible();
+    await expect(page.locator('#pagos')).toBeHidden();
+    await page.locator('#tab-pagos').click();
+    await expect(page).toHaveURL(/#pagos$/);
+    await expect(page.locator('#pagos')).toBeVisible();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('#tab-perfil')).toBeFocused();
+    await expect(page.locator('#perfil')).toBeVisible();
+    await page.goto('/mi-cuenta.html#progreso/campo');
+    await expect(page.locator('#tab-progreso')).toHaveAttribute('aria-selected', 'true');
+    await expect(page.locator('.sheet-stats dd').first()).toHaveText('1/2');
+    await page.locator('[data-toggle-lesson="1"]').click();
+    await expect(page.locator('.sheet-stats dd').first()).toHaveText('2/2');
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem('solara-demo-progress')))).toContain('campo:1');
+    await page.fill('#course-note', 'Llevar lupa');
+    await expect(page.locator('#note-status')).toContainText('guardada');
+    await page.locator('.sheet-picker a', { hasText: 'Observación de biodiversidad' }).click();
+    await expect(page).toHaveURL(/#progreso\/biodiversidad$/);
+    await expect(page.locator('.sheet h3')).toHaveText('Observación de biodiversidad');
+    await page.goBack();
+    await expect(page.locator('.sheet h3')).toHaveText('Fundamentos de trabajo de campo');
+    await expect(page.locator('#course-note')).toHaveValue('Llevar lupa');
+    await page.locator('#tab-mis-cursos').click();
+    await page.locator('[data-filter="done"]').click();
+    await expect(page.locator('#mis-cursos tbody tr:visible')).toHaveCount(1);
+    await page.locator('[data-filter="new"]').click();
+    await expect(page.locator('#mis-cursos tbody tr:visible')).toHaveCount(2);
 });
 
 test('pago: código de descuento válido, inválido y quitar', async ({ page }) => {
