@@ -36,25 +36,57 @@
             <div class="nav-actions"><a class="button outline quick-search" href="./catalogo.html#cursos" data-en="Search">Buscar</a><label class="sr-only" for="language" data-en="Language">Idioma</label><select id="language"><option value="es" lang="es">Español</option><option value="en" lang="en">English</option></select><button class="button outline" id="open-cart" type="button"><span data-en="Cart">Carrito</span> <span id="cart-count">0</span></button></div>
         </div>
     </header>
-    <main class="wrap info-section editorial-index" id="main">
-        <p class="eyebrow green" data-en="FIELD JOURNAL">BITÁCORA DE CAMPO</p>
-        <h1 data-en="The latest from Solara">Lo último del blog de Solara</h1>
-        <div id="blog-featured"></div>
-        <section aria-labelledby="articles-title" id="articulos">
-            <div class="section-heading">
-                <h2 id="articles-title" data-en="Articles">Artículos</h2>
-                <div class="filters editorial-filters">
-                    <label for="blog-search"><span data-en="Search articles">Buscar artículos</span>
-                        <input id="blog-search" type="search" placeholder="Ej. cuaderno" data-en-placeholder="e.g. notebook"></label>
-                    <label for="blog-topic"><span data-en="Topic">Tema</span>
-                        <select id="blog-topic"><option value="" data-en="All topics">Todos los temas</option><option value="campo" data-en="Fieldwork">Trabajo de campo</option><option value="biodiversidad" data-en="Biodiversity">Biodiversidad</option><option value="educacion" data-en="Education">Educación</option></select>
-                    </label>
-                </div>
+    <main class="editorial-index" id="main">
+        <section class="blog-hero" aria-labelledby="blog-title">
+            <div class="wrap">
+                <p class="eyebrow" data-en="FIELD JOURNAL">BITÁCORA DE CAMPO</p>
+                <h1 id="blog-title" data-en="The latest from Solara">Lo último del blog de Solara</h1>
+                <p class="blog-lead" data-en="Guides, ideas and stories for learning outdoors.">Guías, ideas y experiencias para aprender al aire libre.</p>
+                <form class="blog-search" id="blog-search-form" role="search">
+                    <label class="sr-only" for="blog-search" data-en="Search articles">Buscar artículos</label>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <input id="blog-search" type="search" placeholder="Busca artículos, ideas o guías…" data-en-placeholder="Search articles, ideas, guides…">
+                    <button class="button dark" type="submit" data-en="Search">Buscar</button>
+                </form>
             </div>
-            <p class="muted" id="blog-results" role="status"></p>
-            <div class="editorial-grid" id="blog-posts"></div>
-            <noscript>Activa JavaScript para leer los artículos y usar los filtros.</noscript>
         </section>
+        <div class="blog-topics-bar">
+            <div class="wrap blog-topics" id="blog-topics" role="group" aria-label="Temas" data-en-label="Topics">
+                <button type="button" data-topic="" aria-pressed="true" data-en="All posts">Todos</button>
+                <button type="button" data-topic="campo" aria-pressed="false" data-en="Fieldwork">Trabajo de campo</button>
+                <button type="button" data-topic="biodiversidad" aria-pressed="false" data-en="Biodiversity">Biodiversidad</button>
+                <button type="button" data-topic="educacion" aria-pressed="false" data-en="Education">Educación</button>
+            </div>
+        </div>
+        <div class="wrap blog-body">
+            <div id="blog-featured"></div>
+            <section aria-labelledby="articles-title" id="articulos">
+                <div class="blog-section-head">
+                    <div>
+                        <h2 id="articles-title" data-en="Latest articles">Últimos artículos</h2>
+                        <p data-en="Guides and ideas from the field.">Guías e ideas desde el campo.</p>
+                    </div>
+                    <p class="blog-count" id="blog-results" role="status"></p>
+                </div>
+                <div class="editorial-grid" id="blog-posts"></div>
+                <noscript>Activa JavaScript para leer los artículos y usar los filtros.</noscript>
+            </section>
+            <section class="blog-newsletter" aria-labelledby="newsletter-title">
+                <div>
+                    <p class="eyebrow" data-en="FIELD NEWSLETTER">BOLETÍN DE CAMPO</p>
+                    <h2 id="newsletter-title" data-en="New guides and ideas for your next outing.">Nuevas guías e ideas para tu próxima salida.</h2>
+                    <p class="blog-newsletter-note" data-en="Demo: we don’t send emails yet.">Demostración: todavía no enviamos correos.</p>
+                </div>
+                <form id="blog-newsletter" novalidate>
+                    <label class="sr-only" for="newsletter-email" data-en="Email">Correo electrónico</label>
+                    <div class="blog-newsletter-row">
+                        <input id="newsletter-email" type="email" autocomplete="email" placeholder="tu@correo.com" data-en-placeholder="you@email.com" required>
+                        <button class="button primary-lime" type="submit" data-en="Subscribe">Suscribirme</button>
+                    </div>
+                    <p class="blog-newsletter-message" id="newsletter-message" role="status"></p>
+                </form>
+            </section>
+        </div>
     </main>
     <footer class="wrap footer">
         <span>Solara Field School</span>

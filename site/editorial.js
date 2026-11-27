@@ -58,27 +58,44 @@ let language = 'es';
 const tr = (es, en) => language === 'en' ? en : es;
 const normalize = (value) => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
 
+// Minutos de lectura calculados con el texto real del artículo (unas 200 palabras por minuto).
+function readingTime(post) {
+    const [title, excerpt, sections] = post[language];
+    const words = [title, excerpt, ...sections.flat()].join(' ').split(/s+/).length;
+    return Math.max(1, Math.round(words / 200));
+}
+
 function card(post, featured = false) {
     const [title, excerpt] = post[language];
     const category = tr(...topics[post.topic]);
+    const heading = featured ? 'h2' : 'h3';
     return `<article class="editorial-card${featured ? ' editorial-featured' : ''}">
         <a href="./articulo.html?post=${post.id}">
-            <img src="./media/${post.image}.jpg" width="640" height="360" alt="" ${featured ? '' : 'loading="lazy"'}>
+            <figure class="post-media">
+                <img src="./media/${post.image}.jpg" width="640" height="360" alt="" ${featured ? '' : 'loading="lazy"'}>
+                ${featured ? `<span class="post-flag">${tr('Destacado', 'Featured')}</span>` : ''}
+            </figure>
             <div class="editorial-card-copy">
-                <p class="editorial-meta">${featured ? tr('Destacado', 'Featured') + ' · ' : ''}${category}</p>
-                <${featured ? 'h2' : 'h3'}>${title}</${featured ? 'h2' : 'h3'}>
-                <p>${excerpt}</p>
-                <span class="editorial-read">${tr('Leer artículo', 'Read article')}</span>
+                <p class="editorial-meta"><span class="post-chip">${category}</span><span>${readingTime(post)} ${tr('min de lectura', 'min read')}</span></p>
+                <${heading}>${title}</${heading}>
+                <p class="post-excerpt">${excerpt}</p>
+                <div class="post-foot">
+                    <span class="post-author"><span class="post-avatar" aria-hidden="true">S</span>${tr('Equipo Solara', 'Solara team')}</span>
+                    <span class="editorial-read">${featured ? tr('Leer artículo', 'Read article') : tr('Leer', 'Read')}</span>
+                </div>
             </div>
         </a>
     </article>`;
 }
 
+// Tema elegido con las píldoras del blog ('' = todos).
+let activeTopic = '';
+
 function filterPosts() {
     const results = byId('blog-posts');
     if (!results) return;
     const term = normalize(byId('blog-search').value.trim());
-    const topic = byId('blog-topic').value;
+    const topic = activeTopic;
     const matching = posts.filter((post, index) =>
         (term || topic || index > 0) &&
         (!topic || post.topic === topic) &&
@@ -126,4 +143,28 @@ export function renderEditorial(locale) {
 }
 
 byId('blog-search')?.addEventListener('input', filterPosts);
-byId('blog-topic')?.addEventListener('change', filterPosts);
+byId('blog-search-form')?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    filterPosts();
+    byId('articulos').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+});
+byId('blog-topics')?.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-topic]');
+    if (!button) return;
+    activeTopic = button.dataset.topic;
+    for (const item of byId('blog-topics').querySelectorAll('button')) item.setAttribute('aria-pressed', String(item === button));
+    filterPosts();
+});
+
+// Boletín de DEMOSTRACIÓN: valida el correo, pero no lo guarda ni lo envía.
+byId('blog-newsletter')?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const input = byId('newsletter-email');
+    const message = byId('newsletter-message');
+    const valid = input.checkValidity() && input.value.trim() !== '';
+    input.setAttribute('aria-invalid', String(!valid));
+    message.textContent = valid
+        ? tr('Gracias. Es una demostración: tu correo no se guardó ni se envió.', 'Thank you. This is a demo: your email was not saved or sent.')
+        : tr('Escribe un correo válido.', 'Enter a valid email.');
+    if (valid) input.value = '';
+});
