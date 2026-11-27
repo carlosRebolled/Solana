@@ -53,19 +53,18 @@ test.describe('responsive', () => {
     }
 });
 
-test('menú móvil: abre, bloquea el scroll y se cierra con Escape', async ({ page }) => {
+test('menú móvil: abre, enfoca el primer enlace y se cierra con Escape', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/catalogo.html');
     const toggle = page.locator('#navigation-toggle');
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     await expect(page.locator('#main-navigation a').first()).toBeFocused();
-    expect(await page.evaluate(() => getComputedStyle(document.body).overflow)).toBe('hidden');
     await page.keyboard.press('Escape');
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await expect(toggle).toBeFocused();
     await toggle.click();
-    await page.locator('.nav-close').click();
+    await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 

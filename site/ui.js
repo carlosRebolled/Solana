@@ -77,12 +77,12 @@ export const teacherName = (courseId) => {
 
 // Ilustraciones propias para cada escuela (formas geométricas simples).
 const shapes = {
-    compass: '<circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" stroke-width="8"/><path d="M60 22 72 60 60 98 48 60Z" fill="currentColor"/><circle cx="60" cy="60" r="7" fill="#fff"/>',
-    leaf: '<path d="M18 102C18 50 52 18 104 18c0 52-32 86-86 84Z" fill="currentColor"/><path d="M26 94 88 32" stroke="#fff" stroke-width="6" stroke-linecap="round"/>',
-    mountain: '<path d="M6 104 44 36l22 34 14-20 34 54Z" fill="currentColor"/><path d="M44 36 54 54 44 50 34 54Z" fill="#fff"/><circle cx="92" cy="26" r="12" fill="currentColor"/>',
+    compass: '<circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" stroke-width="8"/><path d="M60 22 72 60 60 98 48 60Z" fill="currentColor"/><circle cx="60" cy="60" r="7" fill="#F3F5ED"/>',
+    leaf: '<path d="M18 102C18 50 52 18 104 18c0 52-32 86-86 84Z" fill="currentColor"/><path d="M26 94 88 32" stroke="#F3F5ED" stroke-width="6" stroke-linecap="round"/>',
+    mountain: '<path d="M6 104 44 36l22 34 14-20 34 54Z" fill="currentColor"/><path d="M44 36 54 54 44 50 34 54Z" fill="#F3F5ED"/><circle cx="92" cy="26" r="12" fill="currentColor"/>',
     sun: '<circle cx="60" cy="60" r="26" fill="currentColor"/><g stroke="currentColor" stroke-width="8" stroke-linecap="round"><path d="M60 8v14M60 98v14M8 60h14M98 60h14M23 23l10 10M87 87l10 10M97 23 87 33M33 87 23 97"/></g>',
     people: '<circle cx="38" cy="38" r="16" fill="currentColor"/><circle cx="82" cy="38" r="16" fill="currentColor"/><path d="M8 104c0-24 14-40 30-40s30 16 30 40ZM52 104c0-24 14-40 30-40s30 16 30 40Z" fill="currentColor"/>',
-    tent: '<path d="M60 14 8 104h104Z" fill="currentColor"/><path d="M60 50 38 104h44Z" fill="#fff"/><path d="M60 14V4" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>'
+    tent: '<path d="M60 14 8 104h104Z" fill="currentColor"/><path d="M60 50 38 104h44Z" fill="#F3F5ED"/><path d="M60 14V4" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>'
 };
 export const shapeSvg = (name) => `<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">${shapes[name] ?? shapes.compass}</svg>`;
 export const icons = {
