@@ -1,6 +1,7 @@
 // Perfil editable de la cuenta. DEMOSTRACIÓN: se guarda solo en este navegador (localStorage) y no se
 // envía a ningún servidor. Nunca guarda contraseñas ni datos de pago. Lo usan el campus y Mi cuenta.
 import { demoAccount, goals } from './data.js';
+import { esc } from './ui.js';
 
 export const profileKey = 'solara-demo-profile';
 
@@ -27,16 +28,29 @@ const defaults = () => ({
     bio: '',
     interests: [],
     color: 'forest',
+    photo: '',
     updated: null
 });
 
 export function readProfile() {
     let stored = {};
     try { stored = JSON.parse(localStorage.getItem(profileKey)) ?? {}; } catch { stored = {}; }
-    return { ...defaults(), ...stored };
+    const profile = { ...defaults(), ...stored };
+    // La foto solo se acepta como imagen incrustada (data URL) que genera el recorte del campus.
+    if (!safePhoto(profile.photo)) profile.photo = '';
+    return profile;
+}
+
+export const safePhoto = (value) => typeof value === 'string' && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(value);
+
+// Avatar: la foto si hay una; si no, las iniciales sobre el color elegido.
+export function avatarMarkup({ name, color = 'forest', photo = '', extra = '' }) {
+    const hasPhoto = safePhoto(photo);
+    return `<span class="teacher-avatar campus-avatar${hasPhoto ? ' has-photo' : ''}${extra ? ` ${extra}` : ''}" data-color="${esc(color)}" aria-hidden="true">${hasPhoto ? `<img src="${photo}" alt="">` : esc(initials(name))}</span>`;
 }
 
 export function saveProfile(profile) {
+    if (profile.photo && !safePhoto(profile.photo)) profile = { ...profile, photo: '' };
     try {
         localStorage.setItem(profileKey, JSON.stringify({ ...profile, updated: Date.now() }));
         dispatchEvent(new CustomEvent('solara:profile'));

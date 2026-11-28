@@ -69,6 +69,22 @@
         <div class="certificate-body" id="certificate-body"></div>
     </dialog>
 
+    <dialog class="photo-dialog" id="photo-dialog" aria-labelledby="photo-dialog-title" aria-describedby="photo-dialog-help">
+        <div class="section-dialog-head">
+            <h2 id="photo-dialog-title" data-en="Adjust your photo">Ajusta tu foto</h2>
+            <button class="icon-btn" id="photo-close" type="button" aria-label="Cerrar" data-en-label="Close">✕</button>
+        </div>
+        <div class="photo-body">
+            <div class="photo-frame" id="photo-frame" tabindex="0" role="img" aria-label="Vista previa del recorte" data-en-label="Crop preview"><img id="photo-image" alt="" draggable="false"></div>
+            <p class="photo-help" id="photo-dialog-help" data-en="Drag the photo or use the arrow keys to move it. Use the slider, the mouse wheel or + and − to zoom.">Arrastra la foto o usa las flechas para moverla. Usa el control, la rueda del ratón o + y − para acercar.</p>
+            <label class="photo-zoom"><span data-en="Zoom">Zoom</span><input id="photo-zoom" type="range" min="1" max="3" step="0.01" value="1"></label>
+            <div class="photo-actions">
+                <button class="btn btn-outline btn-small" id="photo-cancel" type="button" data-en="Cancel">Cancelar</button>
+                <button class="btn btn-primary btn-small" id="photo-use" type="button" data-en="Use this photo">Usar esta foto</button>
+            </div>
+        </div>
+    </dialog>
+
     <dialog class="keys-dialog" id="keys-dialog" aria-labelledby="keys-dialog-title">
         <div class="section-dialog-head">
             <h2 id="keys-dialog-title" data-en="Keyboard shortcuts">Atajos de teclado</h2>

@@ -550,3 +550,43 @@ test('campus: Mi perfil se edita, valida el correo y se refleja en el campus y e
     await expect(page.locator('#perfil')).toContainText('Leer el paisaje');
     await expect(page.locator('#perfil a[href="./campus.html#perfil"]')).toBeVisible();
 });
+
+test('campus: Mi perfil permite subir, recortar y quitar una foto personalizada', async ({ page }) => {
+    await page.goto('/login.html');
+    await page.locator('#demo-login').click();
+    await page.goto('/campus.html#perfil');
+    // Un archivo que no es imagen se rechaza con un mensaje.
+    await page.locator('#profile-photo-input').setInputFiles({ name: 'notas.txt', mimeType: 'text/plain', buffer: Buffer.from('hola') });
+    await expect(page.locator('#profile-photo-error')).toContainText('Usa una imagen');
+    // Una imagen abre el recorte; se acerca, se mueve y se usa.
+    await page.locator('#profile-photo-input').setInputFiles('site/media/field.jpg');
+    await expect(page.locator('#photo-dialog')).toBeVisible();
+    await expect(page.locator('#profile-photo-error')).toBeHidden();
+    await page.locator('#photo-zoom').fill('1.6');
+    await page.locator('#photo-frame').focus();
+    await page.keyboard.press('ArrowLeft');
+    await page.locator('#photo-use').click();
+    await expect(page.locator('#photo-dialog')).toBeHidden();
+    await expect(page.locator('#profile-photo-drop img')).toHaveAttribute('src', /^data:image\/jpeg;base64,/);
+    await expect(page.locator('#profile-status')).toContainText('Foto lista');
+    await page.locator('#profile-save').click();
+    await expect(page.locator('#campus-user .campus-avatar img')).toBeVisible();
+    await expect(page.locator('#profile-photo-pick')).toHaveText('Cambiar foto');
+    const size = await page.locator('#campus-user .campus-avatar img').evaluate((img) => [img.naturalWidth, img.naturalHeight]);
+    expect(size).toEqual([320, 320]);
+    // Se ve también en Mi cuenta.
+    await page.goto('/mi-cuenta.html');
+    await expect(page.locator('.account-avatar img')).toBeVisible();
+    // Cancelar el recorte no cambia nada; quitar la foto vuelve a las iniciales.
+    await page.goto('/campus.html#perfil');
+    await page.locator('#profile-photo-input').setInputFiles('site/media/field.jpg');
+    await expect(page.locator('#photo-dialog')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#photo-dialog')).toBeHidden();
+    await expect(page.locator('#profile-discard')).toBeDisabled();
+    await page.locator('#profile-photo-remove').click();
+    await expect(page.locator('#profile-photo-drop img')).toHaveCount(0);
+    await page.locator('#profile-save').click();
+    await expect(page.locator('#campus-user .campus-avatar img')).toHaveCount(0);
+    await expect(page.locator('#campus-user .campus-avatar')).toHaveText('CD');
+});

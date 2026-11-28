@@ -9,7 +9,8 @@ import {
     readPosition, savePosition, readMarks, addMark, removeMark, readSaved, toggleSaved, readPrefs, savePrefs,
     readLog, recommendations, badges, clearActivity
 } from './campus-activity.js';
-import { readProfile, saveProfile, resetProfile, displayName, initials, validEmail, countries, avatarColors, interestOptions, profileKey } from './profile.js';
+import { readProfile, saveProfile, resetProfile, displayName, initials, validEmail, countries, avatarColors, interestOptions, profileKey, avatarMarkup } from './profile.js';
+import { cropPhoto, photoProblem } from './photo-crop.js';
 
 const progressKey = 'solara-demo-progress';
 const notesKey = 'solara-demo-notes';
@@ -31,7 +32,10 @@ const count = (n, es, esMany, en, enMany) => `${n} ${n === 1 ? tr(es, en) : tr(e
 const minutes = (seconds) => (seconds < 60 ? `${Math.round(seconds)} s` : `${Math.round(seconds / 60)} min`);
 const clock = (seconds) => formatDuration(seconds) || '0:00';
 const userName = () => displayName(t(demoAccount.name));
-const avatar = (extra = '') => `<span class="teacher-avatar campus-avatar ${extra}" data-color="${readProfile().color}" aria-hidden="true">${esc(initials(userName()))}</span>`;
+const avatar = (extra = '') => { const profile = readProfile(); return avatarMarkup({ name: userName(), color: profile.color, photo: profile.photo, extra }); };
+// Foto elegida en el formulario y aún sin guardar: null = sin cambios, '' = quitarla.
+let pendingPhoto = null;
+const currentPhoto = () => pendingPhoto ?? readProfile().photo;
 const demoBadge = () => `<span class="demo-badge">${tr('Demostración', 'Demo')}</span>`;
 const statusLabel = (status) => ({ new: tr('Sin empezar', 'Not started'), active: tr('En curso', 'In progress'), done: tr('Completado', 'Completed') })[status];
 const actionLabel = (status) => (status === 'done' ? tr('Repasar', 'Review') : status === 'new' ? tr('Empezar', 'Start') : tr('Continuar', 'Continue'));
@@ -374,6 +378,7 @@ function profileView() {
     const profile = readProfile();
     const prefs = readPrefs();
     const goal = readGoal();
+    pendingPhoto = null;
     const updated = profile.updated ? new Intl.DateTimeFormat(locale(), { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(profile.updated)) : null;
     const field = (id, label, input, hint = '') => `<div class="profile-field">
             <label for="${id}">${label}</label>${input}
@@ -387,9 +392,16 @@ function profileView() {
         <form class="profile-form" id="profile-form" novalidate>
             <section class="profile-card profile-identity" aria-labelledby="profile-id-title">
                 <div class="profile-preview">
-                    ${avatar('is-large')}
-                    <div><p class="profile-preview-name" id="profile-preview-name">${esc(userName())}</p>
-                        <p class="muted" id="profile-preview-role">${esc(profile.role || tr('Sin descripción', 'No description'))}</p></div>
+                    <div class="profile-photo" id="profile-photo-drop">${avatar('is-large')}</div>
+                    <div class="profile-preview-text"><p class="profile-preview-name" id="profile-preview-name">${esc(userName())}</p>
+                        <p class="muted" id="profile-preview-role">${esc(profile.role || tr('Sin descripción', 'No description'))}</p>
+                        <div class="profile-photo-actions">
+                            <button class="btn btn-outline btn-small" type="button" id="profile-photo-pick" aria-describedby="profile-photo-hint">${profile.photo ? tr('Cambiar foto', 'Change photo') : tr('Subir foto', 'Upload photo')}</button>
+                            <input id="profile-photo-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+                            <button class="link-btn" type="button" id="profile-photo-remove" ${profile.photo ? '' : 'hidden'}>${tr('Quitar foto', 'Remove photo')}</button>
+                        </div>
+                        <p class="profile-hint" id="profile-photo-hint">${tr('JPG, PNG, WebP o GIF de hasta 8 MB. También puedes arrastrarla al círculo. Se recorta en este navegador y no se sube a ningún servidor.', 'JPG, PNG, WebP or GIF up to 8 MB. You can also drop it on the circle. It is cropped in this browser and not uploaded to any server.')}</p>
+                        <p class="profile-error" id="profile-photo-error" role="alert" hidden></p></div>
                 </div>
                 <h2 id="profile-id-title">${tr('Datos personales', 'Personal details')}</h2>
                 ${field('profile-name', tr('Nombre completo', 'Full name'), `<input id="profile-name" name="name" type="text" maxlength="60" autocomplete="name" value="${esc(profile.name)}" placeholder="${esc(t(demoAccount.name))}" aria-describedby="profile-name-hint">`, tr('Así aparece en tu saludo y en tus certificados. Si lo dejas vacío, se usa «Cuenta de demostración».', 'Shown in your greeting and on your certificates. Leave it empty to use “Demo account”.'))}
@@ -399,7 +411,7 @@ function profileView() {
                     ${field('profile-country', tr('País', 'Country'), `<select id="profile-country" name="country">${countries.map(([code, es, en]) => `<option value="${code}" ${profile.country === code ? 'selected' : ''}>${tr(es, en)}</option>`).join('')}</select>`)}
                 </div>
                 ${field('profile-bio', tr('Sobre ti', 'About you'), `<textarea id="profile-bio" name="bio" rows="4" maxlength="280" aria-describedby="profile-bio-hint" placeholder="${tr('Dónde trabajas, con qué grupos, qué te gustaría lograr…', 'Where you work, with which groups, what you want to achieve…')}">${esc(profile.bio)}</textarea>`, `<span id="profile-bio-count">${profile.bio.length}</span>/280`)}
-                <fieldset class="profile-colors"><legend>${tr('Color del avatar', 'Avatar color')}</legend>
+                <fieldset class="profile-colors"><legend>${tr('Color del avatar', 'Avatar color')} <span class="muted">· ${tr('se usa cuando no hay foto', 'used when there is no photo')}</span></legend>
                     ${avatarColors.map(([value, es, en]) => `<label class="color-swatch" data-color="${value}"><input type="radio" name="color" value="${value}" ${profile.color === value ? 'checked' : ''}><span aria-hidden="true">${esc(initials(userName()))}</span><span class="sr-only">${tr(es, en)}</span></label>`).join('')}
                 </fieldset>
             </section>
@@ -853,18 +865,82 @@ function profileErrors(form) {
     }
     return errors;
 }
-document.addEventListener('input', (event) => {
-    const form = event.target.closest('#profile-form');
-    if (!form) return;
+function refreshPreview(form) {
     const name = form.elements.name.value.trim() || t(demoAccount.name);
     $('profile-preview-name').textContent = name;
     $('profile-preview-role').textContent = form.elements.role.value.trim() || tr('Sin descripción', 'No description');
-    for (const node of document.querySelectorAll('.profile-preview .campus-avatar, .color-swatch > span[aria-hidden]')) node.textContent = initials(name);
-    document.querySelector('.profile-preview .campus-avatar').dataset.color = form.elements.color.value;
-    $('profile-bio-count').textContent = form.elements.bio.value.length;
+    $('profile-photo-drop').innerHTML = avatarMarkup({ name, color: form.elements.color.value, photo: currentPhoto(), extra: 'is-large' });
+    for (const node of document.querySelectorAll('.color-swatch > span[aria-hidden]')) node.textContent = initials(name);
+    $('profile-photo-remove').hidden = !currentPhoto();
+    $('profile-photo-pick').textContent = currentPhoto() ? tr('Cambiar foto', 'Change photo') : tr('Subir foto', 'Upload photo');
+}
+function markProfileDirty() {
     $('profile-discard').disabled = false;
     $('profile-status').textContent = tr('Tienes cambios sin guardar.', 'You have unsaved changes.');
+}
+document.addEventListener('input', (event) => {
+    const form = event.target.closest('#profile-form');
+    if (!form || event.target.type === 'file') return;
+    refreshPreview(form);
+    $('profile-bio-count').textContent = form.elements.bio.value.length;
+    markProfileDirty();
     if (event.target.matches('[aria-invalid]')) profileErrors(form);
+});
+
+// Foto de perfil: elegir, arrastrar, recortar y quitar.
+function photoError(message) {
+    const box = $('profile-photo-error');
+    if (!box) return;
+    box.hidden = !message;
+    box.textContent = message ?? '';
+}
+async function usePhotoFile(file) {
+    const problem = photoProblem(file);
+    if (problem) { photoError(problem); $('profile-photo-pick').focus(); return; }
+    photoError(null);
+    try {
+        const photo = await cropPhoto(file);
+        if (photo === null) { $('profile-photo-pick')?.focus(); return; }
+        pendingPhoto = photo;
+        refreshPreview($('profile-form'));
+        markProfileDirty();
+        $('profile-status').textContent = tr('Foto lista. Guarda los cambios para usarla.', 'Photo ready. Save your changes to use it.');
+        $('profile-save').focus();
+    } catch (error) {
+        photoError(error.message === 'small' ? tr('La imagen es muy pequeña: usa una de al menos 64 × 64 px.', 'The image is too small: use one of at least 64 × 64 px.') : tr('No se pudo abrir la imagen. Prueba con otro archivo.', 'The image could not be opened. Try another file.'));
+        $('profile-photo-pick')?.focus();
+    }
+}
+document.addEventListener('click', (event) => {
+    if (event.target.closest('#profile-photo-pick')) $('profile-photo-input').click();
+    if (event.target.closest('#profile-photo-remove')) {
+        pendingPhoto = '';
+        photoError(null);
+        refreshPreview($('profile-form'));
+        markProfileDirty();
+        $('profile-photo-pick').focus();
+    }
+});
+document.addEventListener('change', (event) => {
+    if (event.target.id !== 'profile-photo-input') return;
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (file) usePhotoFile(file);
+});
+document.addEventListener('dragover', (event) => {
+    const zone = event.target.closest?.('#profile-photo-drop');
+    if (!zone) return;
+    event.preventDefault();
+    zone.classList.add('is-over');
+});
+document.addEventListener('dragleave', (event) => event.target.closest?.('#profile-photo-drop')?.classList.remove('is-over'));
+document.addEventListener('drop', (event) => {
+    const zone = event.target.closest?.('#profile-photo-drop');
+    if (!zone) return;
+    event.preventDefault();
+    zone.classList.remove('is-over');
+    const file = event.dataTransfer?.files?.[0];
+    if (file) usePhotoFile(file);
 });
 document.addEventListener('change', (event) => {
     if (event.target.closest('#profile-form') && event.target.name === 'color') event.target.dispatchEvent(new Event('input', { bubbles: true }));
@@ -888,6 +964,7 @@ document.addEventListener('submit', (event) => {
         country: String(data.get('country')),
         bio: String(data.get('bio')).trim(),
         color: String(data.get('color') || 'forest'),
+        photo: currentPhoto(),
         interests: data.getAll('interests').map(Number)
     });
     saveGoal(Number(data.get('goal')));
@@ -903,7 +980,7 @@ document.addEventListener('click', (event) => {
         toast(tr('Cambios descartados.', 'Changes discarded.'));
     }
     if (event.target.closest('#profile-reset')) {
-        if (!confirm(tr('¿Restablecer el perfil de demostración? Se borran el nombre, la descripción y los intereses guardados en este navegador.', 'Reset the demo profile? The name, description and interests saved in this browser are cleared.'))) return;
+        if (!confirm(tr('¿Restablecer el perfil de demostración? Se borran la foto, el nombre, la descripción y los intereses guardados en este navegador.', 'Reset the demo profile? The photo, name, description and interests saved in this browser are cleared.'))) return;
         resetProfile();
         render();
         toast(tr('Perfil restablecido.', 'Profile reset.'));

@@ -439,3 +439,27 @@ label.ws-switch { padding-right: 12px; }
     .profile-card { padding: 16px; }
     .profile-actions .btn { flex: 1; }
 }
+
+/* Foto de perfil */
+.profile-photo { flex: none; border-radius: 50%; transition: box-shadow var(--duration); }
+.profile-photo.is-over { box-shadow: 0 0 0 3px var(--natural-white), 0 0 0 6px var(--forest-green); }
+.profile-preview { align-items: flex-start; }
+.profile-preview .campus-avatar.is-large { width: 96px; height: 96px; font-size: 1.8rem; }
+.profile-preview-text { display: grid; gap: 4px; min-width: 0; }
+.profile-photo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 8px; }
+.profile-colors legend .muted { font-weight: 500; }
+.ui .photo-dialog { width: min(420px, calc(100% - 24px)); padding: 0; border: 0; border-radius: 18px; background: var(--natural-white); }
+.ui .photo-dialog::backdrop { background: rgb(38 51 47 / .6); }
+.photo-body { display: grid; justify-items: center; gap: 14px; padding: 8px 24px 22px; }
+.photo-frame { position: relative; width: 260px; height: 260px; overflow: hidden; border-radius: 50%; background: var(--deep-charcoal); box-shadow: 0 0 0 1px var(--color-border-soft); cursor: grab; touch-action: none; user-select: none; }
+.photo-frame.is-dragging { cursor: grabbing; }
+.photo-frame:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 4px; }
+.photo-frame img { position: absolute; top: 0; left: 0; max-width: none; transform-origin: 0 0; pointer-events: none; }
+.photo-help { margin: 0; color: var(--color-text-muted); font-size: .84rem; text-align: center; }
+.photo-zoom { display: flex; align-items: center; gap: 12px; width: 100%; font-weight: 650; font-size: .9rem; }
+.photo-zoom input { flex: 1; accent-color: var(--forest-green); }
+.photo-actions { display: flex; justify-content: flex-end; gap: 10px; width: 100%; }
+@media (max-width: 560px) {
+    .profile-preview { flex-direction: column; }
+    .photo-frame { width: 220px; height: 220px; }
+}

@@ -3,7 +3,7 @@
 // y las notas son los reales de este navegador (localStorage). Con cuentas reales, los mismos
 // números saldrían de cloudflare/schema.sql.
 import { demoAccount, findCourse, paths, pathsForCourse } from './data.js';
-import { readProfile, displayName, initials, countries, interestOptions } from './profile.js';
+import { readProfile, displayName, countries, interestOptions, avatarMarkup } from './profile.js';
 import { $, t, tr, esc, courseText, levelText, lessonVideo, videoDuration, formatDuration, readProgress, onLanguage, setTitle, getSession, endSession, link, ring } from './ui.js';
 
 const money = (amount) => new Intl.NumberFormat(tr('es-CR', 'en-US'), { style: 'currency', currency: 'USD', currencyDisplay: 'code', maximumFractionDigits: 2 }).format(amount);
@@ -278,7 +278,7 @@ function render() {
     $('account-page').innerHTML = `
     <section class="account-hero"><div class="container">
         <div class="account-id">
-            <span class="teacher-avatar account-avatar campus-avatar" data-color="${readProfile().color}" aria-hidden="true">${esc(initials(name))}</span>
+            ${avatarMarkup({ name, color: readProfile().color, photo: readProfile().photo, extra: 'account-avatar' })}
             <div><p class="eyebrow-tag">${tr('Mi cuenta', 'My account')} ${demoBadge()}</p>
                 <h1>${tr('Hola', 'Hello')}, ${esc(name)}</h1>
                 <p class="muted">${esc(readProfile().email)} · ${tr('Miembro desde', 'Member since')} ${day(demoAccount.memberSince)}</p></div>
