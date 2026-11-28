@@ -92,11 +92,6 @@ function renderStories() {
 function renderPricing() {
     const { guarantee } = salesPage;
     $('price-compare').textContent = tr(`Es la suma de los tres cursos por separado: ${courses.map((course) => price(course.price)).join(' + ')}.`, `It is the sum of the three courses bought separately: ${courses.map((course) => price(course.price)).join(' + ')}.`);
-    $('price-includes').innerHTML = [
-        ...courses.map((course) => `${esc(courseText(course).title)} <small>${course.lessons.length} ${tr('clases', 'lessons')}</small>`),
-        tr('Campus con progreso, notas y marcas en cada video', 'Campus with progress, notes and marks on every video'),
-        tr('Certificado de finalización por curso', 'Certificate of completion for each course')
-    ].map((item) => `<li>${item}</li>`).join('');
     $('guarantee').innerHTML = `<span class="sales-guarantee-seal" aria-hidden="true"><strong>${guarantee.days}</strong><small>${tr('días', 'days')}</small></span>
         <span><strong>${tr(`Garantía de ${guarantee.days} días`, `${guarantee.days}-day guarantee`)}</strong><small>${tr('Si no es para ti, te devolvemos el pago.', 'If it is not for you, we refund your payment.')}</small>${demoTag(guarantee.demo)}</span>`;
     $('faq-guarantee').innerHTML = `${tr(`Tienes ${guarantee.days} días para pedir la devolución completa, sin explicar por qué.`, `You have ${guarantee.days} days to ask for a full refund, no questions asked.`)} ${guarantee.demo ? `<span class="sales-tag is-demo">${tr('Condición por confirmar', 'Terms to be confirmed')}</span>` : ''}`;

@@ -611,6 +611,11 @@ test('portada: venta de la ruta con temario, prueba social de ejemplo, CTA fijo 
     await expect(page.locator('#curriculum-toggle')).toHaveText('Cerrar todos');
     // Garantía y preguntas.
     await expect(page.locator('#guarantee')).toContainText('Garantía de 14 días');
+    // Dos cuadros: para estudiantes (precio e inscripción) y para consejeros (contacto).
+    await expect(page.locator('#precio .offer-box')).toHaveCount(2);
+    await expect(page.locator('#precio .offer-box').first()).toContainText('USD 97');
+    await expect(page.locator('#offer-counselors')).toHaveText('Para consejeros y personas que recomiendan');
+    await expect(page.locator('#precio .offer-box').nth(1).locator('a[href="./contacto.html"]')).toHaveText('Contactar');
     await page.locator('#faq summary', { hasText: '¿Y si no es lo que esperaba?' }).click();
     await expect(page.locator('#faq-guarantee')).toContainText('14 días');
     await expect(page.locator('#faq details[open]')).toHaveCount(1);

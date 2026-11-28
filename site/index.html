@@ -189,24 +189,44 @@
             </div>
         </section>
 
-        <!-- Precio con garantía -->
+        <!-- Dos cuadros: para estudiantes (la ruta con su precio) y para consejeros que recomiendan -->
         <section class="sales-section is-band" id="precio" aria-labelledby="pricing-title">
-            <div class="sales-wrap sales-grid">
-                <div class="sales-section-head">
-                    <p class="sales-eyebrow" data-en="Pricing">Precio</p>
-                    <h2 id="pricing-title" data-en="One payment, the three courses">Un solo pago, los tres cursos</h2>
-                    <p class="sales-lead" data-en="Lifetime access in your campus, with your progress, notes and certificate.">Acceso en tu campus, con tu progreso, tus notas y tu certificado.</p>
+            <div class="sales-wrap">
+                <div class="sales-section-head is-wide">
+                    <p class="sales-eyebrow" data-en="Ways to start">Cómo empezar</p>
+                    <h2 id="pricing-title" data-en="For students and for those who recommend us">Para estudiantes y para quienes nos recomiendan</h2>
                 </div>
-                <article class="sales-price-card" aria-labelledby="price-name">
-                    <div class="sales-guarantee" id="guarantee"></div>
-                    <h3 id="price-name" data-en="First steps in the field">Primeros pasos en el campo</h3>
-                    <p class="sales-price"><span class="sales-price-value" data-price-total>—</span> <span class="sales-price-note" data-en="single payment">pago único</span></p>
-                    <p class="sales-price-compare" id="price-compare"></p>
-                    <ul class="sales-includes" id="price-includes"></ul>
-                    <button class="sales-btn is-primary is-block" type="button" id="enroll" data-enroll data-en="Enroll and go to payment">Inscribirme e ir al pago</button>
-                    <p class="sales-status" id="enroll-status" role="status"></p>
-                    <p class="sales-fine" data-en="Demo checkout: PayPal is in preview and no payment is collected.">Pago de demostración: PayPal está en vista previa y no se cobra nada.</p>
-                </article>
+                <div class="offer-grid">
+                    <article class="offer-box is-featured" aria-labelledby="offer-students">
+                        <span class="offer-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="22"/><path d="M40 24l-5 11-11 5 5-11z"/><path d="M32 6v6M32 52v6M6 32h6M52 32h6"/></svg></span>
+                        <h3 id="offer-students" data-en="For students">Para estudiantes</h3>
+                        <span class="offer-dash" aria-hidden="true"></span>
+                        <p data-en="The three courses of the “First steps in the field” path in a single payment, with your progress, notes and certificate in your campus.">Los tres cursos de la ruta «Primeros pasos en el campo» en un solo pago, con tu avance, tus notas y tu certificado en tu campus.</p>
+                        <p class="offer-price"><strong data-price-total>—</strong> <span data-en="single payment">pago único</span></p>
+                        <p class="offer-note" id="price-compare"></p>
+                        <div class="offer-guarantee" id="guarantee"></div>
+                        <div class="offer-actions">
+                            <button class="sales-btn is-primary" type="button" id="enroll" data-enroll data-en="Enroll and go to payment">Inscribirme e ir al pago</button>
+                        </div>
+                    </article>
+                    <article class="offer-box" aria-labelledby="offer-counselors">
+                        <span class="offer-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="22" cy="22" r="8"/><circle cx="44" cy="24" r="6"/><path d="M8 52c0-9 6-16 14-16s14 7 14 16"/><path d="M36 40c2-3 5-4 8-4 6 0 12 5 12 14"/></svg></span>
+                        <h3 id="offer-counselors" data-en="For counselors and people who recommend us">Para consejeros y personas que recomiendan</h3>
+                        <span class="offer-dash" aria-hidden="true"></span>
+                        <p data-en="Counselors, teachers and guides who send students to Solara: write to us and we will help you choose courses, organize groups and follow their progress.">Orientadores, docentes y guías que envían estudiantes a Solara: escríbenos y te ayudamos a elegir cursos, organizar grupos y acompañar su avance.</p>
+                        <ul class="offer-list">
+                            <li data-en="Guidance to choose the right course or path">Orientación para elegir el curso o la ruta adecuada</li>
+                            <li data-en="Options for groups and institutions">Opciones para grupos e instituciones</li>
+                            <li data-en="Answers about certificates and payments">Respuestas sobre certificados y pagos</li>
+                        </ul>
+                        <div class="offer-actions">
+                            <a class="sales-btn is-primary" href="./contacto.html" data-en="Contact us">Contactar</a>
+                            <a class="sales-btn is-ghost" href="./precios.html" data-en="Plans for institutions">Planes para instituciones</a>
+                        </div>
+                    </article>
+                </div>
+                <p class="sales-status" id="enroll-status" role="status"></p>
+                <p class="sales-fine" data-en="Demo checkout: PayPal is in preview and no payment is collected.">Pago de demostración: PayPal está en vista previa y no se cobra nada.</p>
             </div>
         </section>
 

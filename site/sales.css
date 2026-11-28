@@ -350,3 +350,38 @@ a.sales-social:active { background: var(--s-surface-2); }
     .sales-accordion.is-faq details p { margin: 0 16px 16px 16px; }
     .faq-help-actions .sales-btn { flex: 1; }
 }
+
+/* Cómo empezar: dos cuadros con la misma estética del resto de la portada */
+.offer-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-gutter); }
+.offer-box { position: relative; display: flex; flex-direction: column; align-items: flex-start; padding: 48px; border: 1px solid var(--s-line); border-radius: 24px; background: var(--s-bg); transition: border-color 200ms var(--s-ease); }
+.offer-box:hover { border-color: color-mix(in srgb, #D9EE92 40%, var(--s-line)); }
+.offer-box.is-featured { border-color: color-mix(in srgb, #D9EE92 60%, var(--s-line)); }
+.sales-page .offer-box h3 { max-width: 24rem; margin: 0; padding-right: 88px; font-size: clamp(1.6rem, 2vw, 2.2rem); line-height: 1.15; }
+.offer-icon { position: absolute; top: 44px; right: 44px; width: 64px; height: 64px; color: var(--s-accent); }
+.offer-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.offer-dash { display: block; width: 56px; height: 3px; margin: 24px 0; background: var(--s-accent); }
+.offer-box > p { max-width: 34rem; margin: 0; color: var(--s-muted); font-size: 1.08rem; }
+.offer-price { display: flex; align-items: baseline; gap: 12px; margin-top: 24px !important; }
+.offer-price strong { color: var(--s-text); font: 400 clamp(2.4rem, 3vw, 3.4rem)/1 var(--font-heading); font-variant-numeric: tabular-nums; }
+.offer-price span { color: var(--s-muted); font-weight: 650; }
+.offer-note { margin-top: 8px !important; font-size: .9rem !important; }
+.offer-guarantee { display: flex; align-items: center; gap: 16px; margin-top: 24px; }
+.offer-guarantee .sales-guarantee-seal { width: 56px; height: 56px; }
+.offer-guarantee .sales-guarantee-seal strong { font-size: 1.3rem; }
+.offer-guarantee .sales-guarantee-seal small { font-size: .6rem; }
+.offer-guarantee > span:last-child { display: grid; gap: 2px; justify-items: start; }
+.offer-guarantee small { color: var(--s-muted); font-size: .88rem; }
+.offer-list { display: grid; gap: 12px; margin: 24px 0 0; padding: 0; list-style: none; }
+.offer-list li { display: flex; gap: 12px; align-items: baseline; }
+.offer-list li::before { content: "✓"; color: var(--s-accent); font-weight: 800; }
+.offer-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 40px; }
+#precio .sales-status, #precio .sales-fine { text-align: center; }
+@media (max-width: 1024px) {
+    .offer-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+    .offer-box { padding: 28px 20px; }
+    .offer-icon { top: 24px; right: 20px; width: 44px; height: 44px; }
+    .sales-page .offer-box h3 { padding-right: 56px; }
+    .offer-actions .sales-btn { width: 100%; }
+}
