@@ -1,8 +1,8 @@
 // Página de acceso. Las cuentas reales todavía no existen: el formulario valida los campos y
-// explica la situación sin guardar ni enviar la contraseña. La cuenta de demostración abre el panel.
+// explica la situación sin guardar ni enviar la contraseña. La cuenta de demostración abre el campus.
 import { $, tr, onLanguage, setTitle, getSession, startDemoSession } from './ui.js';
 
-if (getSession()) location.replace('./mi-cuenta.html');
+if (getSession()) location.replace('./campus.html');
 
 const message = $('login-message');
 const show = (text, isError = false) => {
@@ -12,7 +12,7 @@ const show = (text, isError = false) => {
 
 $('demo-login').addEventListener('click', () => {
     startDemoSession();
-    location.href = './mi-cuenta.html';
+    location.href = './campus.html';
 });
 
 $('login-form').addEventListener('submit', (event) => {

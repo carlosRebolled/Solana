@@ -60,13 +60,14 @@
                         <h1 id="course-title">Outdoor Leadership &amp; Team Building Facilitation</h1>
                         <p id="course-description">Outdoor leadership, group dynamics, communication, trust building, collaborative problem solving and facilitating learning experiences.</p>
                         <p class="muted" id="course-audience">For: Facilitators and group leaders</p>
-                        <ul class="course-stats" id="course-stats">
-                            <li><span data-en="Level" data-es="Nivel">Level</span>: <strong id="course-level">To be defined</strong></li>
-                            <li><strong id="course-count">5</strong> <span data-en="lessons" data-es="clases">lessons</span></li>
-                            <li><span data-en="Video" data-es="Video">Video</span>: <strong id="course-duration">To be defined</strong></li>
-                            <li hidden=""><span data-en="Price" data-es="Precio">Price</span>: <strong id="course-price">To be confirmed</strong></li>
-                            <li id="course-rating">No published ratings</li>
-                        </ul>
+                        <dl class="course-facts" id="course-stats">
+                            <div><dt data-en="Level" data-es="Nivel">Level</dt><dd id="course-level">To be defined</dd></div>
+                            <div><dt data-en="Lessons" data-es="Clases">Lessons</dt><dd id="course-count">5</dd></div>
+                            <div><dt data-en="Video" data-es="Video">Video</dt><dd id="course-duration">To be defined</dd></div>
+                            <div><dt data-en="Ratings" data-es="Valoraciones">Ratings</dt><dd id="course-rating">None yet</dd></div>
+                        </dl>
+                        <span id="course-price" hidden="">To be confirmed</span>
+                        <div class="course-progress-card" id="course-progress-card" hidden=""></div>
                         <div class="course-actions">
                             <a class="btn btn-outline" id="course-start" href="#temario">View the syllabus</a>
                         </div>
@@ -117,27 +118,33 @@
                 <h2 class="section-title" id="syllabus-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Syllabus" data-es="Temario">Syllabus</h2>
                 <div class="syllabus" id="course-syllabus"><section class="syllabus-module">
         <h3><button class="module-toggle" type="button" aria-expanded="true" aria-controls="module-0">
-            <span>Course topics</span><small>5 lessons</small></button></h3>
+            <span class="module-name">Course topics<small>5 lessons · in preparation</small></span>
+            </button></h3>
         <div class="module-panel" id="module-0" data-open="true">
-            <ol><li class="lesson-row" data-locked="true">
-                    <span class="num">01</span>
-                    <span class="title">Outdoor leadership</span>
+            <ol><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">01</span>
+                    <span class="lesson-text"><span class="title">Outdoor leadership</span>
+                        <small>Outdoor leadership.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">02</span>
-                    <span class="title">Group dynamics</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">02</span>
+                    <span class="lesson-text"><span class="title">Group dynamics</span>
+                        <small>Group dynamics.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">03</span>
-                    <span class="title">Trust building</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">03</span>
+                    <span class="lesson-text"><span class="title">Trust building</span>
+                        <small>Trust building.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">04</span>
-                    <span class="title">Collaborative problem solving</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">04</span>
+                    <span class="lesson-text"><span class="title">Collaborative problem solving</span>
+                        <small>Collaborative problem solving.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">05</span>
-                    <span class="title">Facilitating experiences</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">05</span>
+                    <span class="lesson-text"><span class="title">Facilitating experiences</span>
+                        <small>Facilitating experiences.</small></span>
                     <span class="duration">In preparation</span>
                 </li></ol>
         </div>
@@ -158,21 +165,27 @@
                         <aside aria-labelledby="lesson-list-title">
                             <h3 id="lesson-list-title" style="margin-top:0" data-en="Lessons" data-es="Clases">Lessons</h3>
                             <p class="muted" id="progress" role="status">0 of 5 lessons completed</p>
-                            <div id="lessons">
-        <button class="lesson" type="button" data-lesson="0" aria-current="true">
-            1. Outdoor leadership
-        </button>
-        <button class="lesson" type="button" data-lesson="1" aria-current="false">
-            2. Group dynamics
-        </button>
-        <button class="lesson" type="button" data-lesson="2" aria-current="false">
-            3. Trust building
-        </button>
-        <button class="lesson" type="button" data-lesson="3" aria-current="false">
-            4. Collaborative problem solving
-        </button>
-        <button class="lesson" type="button" data-lesson="4" aria-current="false">
-            5. Facilitating experiences
+                            <span class="cpl-bar" aria-hidden="true"><span id="progress-bar" style="width:0%"></span></span>
+                            <div id="lessons"><button class="lesson" type="button" data-lesson="0" data-done="false" aria-current="true">
+            <span class="check-mark" aria-hidden="true">1</span>
+            <span class="lesson-name">Outdoor leadership</span>
+            
+        </button><button class="lesson" type="button" data-lesson="1" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">2</span>
+            <span class="lesson-name">Group dynamics</span>
+            
+        </button><button class="lesson" type="button" data-lesson="2" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">3</span>
+            <span class="lesson-name">Trust building</span>
+            
+        </button><button class="lesson" type="button" data-lesson="3" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">4</span>
+            <span class="lesson-name">Collaborative problem solving</span>
+            
+        </button><button class="lesson" type="button" data-lesson="4" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">5</span>
+            <span class="lesson-name">Facilitating experiences</span>
+            
         </button></div>
                         </aside>
                     </div>

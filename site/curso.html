@@ -44,13 +44,14 @@
                         <h1 id="course-title"></h1>
                         <p id="course-description"></p>
                         <p class="muted" id="course-audience" hidden></p>
-                        <ul class="course-stats" id="course-stats">
-                            <li><span data-en="Level">Nivel</span>: <strong id="course-level"></strong></li>
-                            <li><strong id="course-count"></strong> <span data-en="lessons">clases</span></li>
-                            <li><span data-en="Video">Video</span>: <strong id="course-duration">—</strong></li>
-                            <li hidden><span data-en="Price">Precio</span>: <strong id="course-price"></strong></li>
-                            <li id="course-rating"></li>
-                        </ul>
+                        <dl class="course-facts" id="course-stats">
+                            <div><dt data-en="Level">Nivel</dt><dd id="course-level"></dd></div>
+                            <div><dt data-en="Lessons">Clases</dt><dd id="course-count"></dd></div>
+                            <div><dt data-en="Video">Video</dt><dd id="course-duration">—</dd></div>
+                            <div><dt data-en="Ratings">Valoraciones</dt><dd id="course-rating"></dd></div>
+                        </dl>
+                        <span id="course-price" hidden></span>
+                        <div class="course-progress-card" id="course-progress-card" hidden></div>
                         <div class="course-actions">
                             <a class="btn btn-outline" id="course-start" href="#lecciones"></a>
                         </div>
@@ -116,6 +117,7 @@
                         <aside aria-labelledby="lesson-list-title">
                             <h3 id="lesson-list-title" style="margin-top:0" data-en="Lessons">Clases</h3>
                             <p class="muted" id="progress" role="status"></p>
+                            <span class="cpl-bar" aria-hidden="true"><span id="progress-bar" style="width:0%"></span></span>
                             <div id="lessons"></div>
                         </aside>
                     </div>

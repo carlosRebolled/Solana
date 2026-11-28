@@ -60,13 +60,14 @@
                         <h1 id="course-title">Ocean Literacy &amp; Marine Conservation Education</h1>
                         <p id="course-description">Marine ecosystems, pollution, marine biodiversity, conservation and ocean pedagogy, with a special connection to Costa Rica.</p>
                         <p class="muted" id="course-audience">For: Teachers and environmental educators</p>
-                        <ul class="course-stats" id="course-stats">
-                            <li><span data-en="Level" data-es="Nivel">Level</span>: <strong id="course-level">To be defined</strong></li>
-                            <li><strong id="course-count">4</strong> <span data-en="lessons" data-es="clases">lessons</span></li>
-                            <li><span data-en="Video" data-es="Video">Video</span>: <strong id="course-duration">To be defined</strong></li>
-                            <li hidden=""><span data-en="Price" data-es="Precio">Price</span>: <strong id="course-price">To be confirmed</strong></li>
-                            <li id="course-rating">No published ratings</li>
-                        </ul>
+                        <dl class="course-facts" id="course-stats">
+                            <div><dt data-en="Level" data-es="Nivel">Level</dt><dd id="course-level">To be defined</dd></div>
+                            <div><dt data-en="Lessons" data-es="Clases">Lessons</dt><dd id="course-count">4</dd></div>
+                            <div><dt data-en="Video" data-es="Video">Video</dt><dd id="course-duration">To be defined</dd></div>
+                            <div><dt data-en="Ratings" data-es="Valoraciones">Ratings</dt><dd id="course-rating">None yet</dd></div>
+                        </dl>
+                        <span id="course-price" hidden="">To be confirmed</span>
+                        <div class="course-progress-card" id="course-progress-card" hidden=""></div>
                         <div class="course-actions">
                             <a class="btn btn-outline" id="course-start" href="#temario">View the syllabus</a>
                         </div>
@@ -117,23 +118,28 @@
                 <h2 class="section-title" id="syllabus-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Syllabus" data-es="Temario">Syllabus</h2>
                 <div class="syllabus" id="course-syllabus"><section class="syllabus-module">
         <h3><button class="module-toggle" type="button" aria-expanded="true" aria-controls="module-0">
-            <span>Course topics</span><small>4 lessons</small></button></h3>
+            <span class="module-name">Course topics<small>4 lessons · in preparation</small></span>
+            </button></h3>
         <div class="module-panel" id="module-0" data-open="true">
-            <ol><li class="lesson-row" data-locked="true">
-                    <span class="num">01</span>
-                    <span class="title">Marine ecosystems</span>
+            <ol><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">01</span>
+                    <span class="lesson-text"><span class="title">Marine ecosystems</span>
+                        <small>Marine ecosystems.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">02</span>
-                    <span class="title">Pollution</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">02</span>
+                    <span class="lesson-text"><span class="title">Pollution</span>
+                        <small>Pollution.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">03</span>
-                    <span class="title">Marine biodiversity</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">03</span>
+                    <span class="lesson-text"><span class="title">Marine biodiversity</span>
+                        <small>Marine biodiversity.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">04</span>
-                    <span class="title">Ocean pedagogy</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">04</span>
+                    <span class="lesson-text"><span class="title">Ocean pedagogy</span>
+                        <small>Ocean pedagogy.</small></span>
                     <span class="duration">In preparation</span>
                 </li></ol>
         </div>
@@ -154,18 +160,23 @@
                         <aside aria-labelledby="lesson-list-title">
                             <h3 id="lesson-list-title" style="margin-top:0" data-en="Lessons" data-es="Clases">Lessons</h3>
                             <p class="muted" id="progress" role="status">0 of 4 lessons completed</p>
-                            <div id="lessons">
-        <button class="lesson" type="button" data-lesson="0" aria-current="true">
-            1. Marine ecosystems
-        </button>
-        <button class="lesson" type="button" data-lesson="1" aria-current="false">
-            2. Pollution
-        </button>
-        <button class="lesson" type="button" data-lesson="2" aria-current="false">
-            3. Marine biodiversity
-        </button>
-        <button class="lesson" type="button" data-lesson="3" aria-current="false">
-            4. Ocean pedagogy
+                            <span class="cpl-bar" aria-hidden="true"><span id="progress-bar" style="width:0%"></span></span>
+                            <div id="lessons"><button class="lesson" type="button" data-lesson="0" data-done="false" aria-current="true">
+            <span class="check-mark" aria-hidden="true">1</span>
+            <span class="lesson-name">Marine ecosystems</span>
+            
+        </button><button class="lesson" type="button" data-lesson="1" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">2</span>
+            <span class="lesson-name">Pollution</span>
+            
+        </button><button class="lesson" type="button" data-lesson="2" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">3</span>
+            <span class="lesson-name">Marine biodiversity</span>
+            
+        </button><button class="lesson" type="button" data-lesson="3" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">4</span>
+            <span class="lesson-name">Ocean pedagogy</span>
+            
         </button></div>
                         </aside>
                     </div>

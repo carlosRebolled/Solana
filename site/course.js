@@ -1,7 +1,7 @@
 // 25–29 · Ficha de curso. app.js gestiona el reproductor, el progreso y el carrito;
 // este módulo añade el hero, el temario plegable, la vista previa, el equipo y las opiniones.
 import { courses, findCourse, findPath, pathsForCourse, schools, waves } from './data.js';
-import { $, t, tr, esc, params, courseText, lessonVideo, videoDuration, formatDuration, icons, onLanguage, setTitle, readProgress, link, price, levelText, courseCardUI } from './ui.js';
+import { $, t, tr, esc, params, courseText, lessonVideo, videoDuration, formatDuration, fillDurations, icons, onLanguage, setTitle, readProgress, link, price, levelText, courseCardUI, ring } from './ui.js';
 import { teacherCards } from './edu.js';
 
 const course = findCourse(document.body.dataset.course ?? params.get('curso'));
@@ -19,27 +19,61 @@ function modules() {
 
 function renderSyllabus() {
     const progress = readProgress();
+    const wasOpen = [...$('course-syllabus').querySelectorAll('.module-toggle')].map((toggle) => toggle.getAttribute('aria-expanded') === 'true');
     let number = 0;
-    $('course-syllabus').innerHTML = modules().map((module, moduleIndex) => `<section class="syllabus-module">
-        <h3><button class="module-toggle" type="button" aria-expanded="${moduleIndex === 0}" aria-controls="module-${moduleIndex}">
-            <span>${esc(module.title)}</span><small>${module.lessons.length} ${tr('clases', 'lessons')}</small></button></h3>
-        <div class="module-panel" id="module-${moduleIndex}" data-open="${moduleIndex === 0}">
-            <ol>${module.lessons.map(([title], index) => {
+    $('course-syllabus').innerHTML = modules().map((module, moduleIndex) => {
+        const open = wasOpen[moduleIndex] ?? moduleIndex === 0;
+        const done = module.lessons.filter((_, index) => progress.has(`${course.id}:${index}`)).length;
+        const percent = Math.round((done / module.lessons.length) * 100);
+        return `<section class="syllabus-module">
+        <h3><button class="module-toggle" type="button" aria-expanded="${open}" aria-controls="module-${moduleIndex}">
+            <span class="module-name">${esc(module.title)}<small>${module.lessons.length} ${tr('clases', 'lessons')}${course.sample ? ` · ${done} ${tr('completadas', 'completed')}` : ` · ${tr('en preparación', 'in preparation')}`}</small></span>
+            ${course.sample ? `<span class="module-progress" aria-hidden="true"><span class="cpl-bar"><span style="width:${percent}%"></span></span>${percent}%</span>` : ''}</button></h3>
+        <div class="module-panel" id="module-${moduleIndex}" data-open="${open}">
+            <ol>${module.lessons.map(([title, summary], index) => {
                 number += 1;
-                const done = progress.has(`${course.id}:${index}`);
-                return `<li class="lesson-row" data-locked="${!course.sample}">
-                    <span class="num">${String(number).padStart(2, '0')}</span>
-                    ${course.sample
-                        ? `<a class="title" href="#lecciones" data-open-lesson="${index}">${esc(title)}${done ? ` <span class="sr-only">(${tr('completada', 'completed')})</span> ✓` : ''}</a>`
+                const isDone = progress.has(`${course.id}:${index}`);
+                return `<li class="lesson-row" data-locked="${!course.sample}" data-done="${isDone}">
+                    <span class="check-mark" aria-hidden="true">${isDone ? '✓' : String(number).padStart(2, '0')}</span>
+                    <span class="lesson-text">${course.sample
+                        ? `<a class="title" href="#lecciones" data-open-lesson="${index}">${esc(title)}${isDone ? ` <span class="sr-only">(${tr('completada', 'completed')})</span>` : ''}</a>`
                         : `<span class="title">${esc(title)}</span>`}
+                        ${summary ? `<small>${esc(summary)}</small>` : ''}</span>
                     <span class="duration" ${course.sample ? `data-duration-src="${lessonVideo(course, index)}"` : ''}>${course.sample ? '…' : tr('En preparación', 'In preparation')}</span>
                 </li>`;
             }).join('')}</ol>
         </div>
-    </section>`).join('');
+    </section>`;
+    }).join('');
     for (const node of $('course-syllabus').querySelectorAll('[data-duration-src]')) {
         videoDuration(node.dataset.durationSrc).then((seconds) => { node.textContent = formatDuration(seconds) || '—'; });
     }
+}
+
+// Tarjeta «Tu progreso» del hero: anillo, siguiente clase y enlace a la hoja de progreso de Mi cuenta.
+function renderProgressCard() {
+    const card = $('course-progress-card');
+    card.hidden = !course.sample;
+    if (!course.sample) return;
+    const progress = readProgress();
+    const { lessons } = courseText(course);
+    const done = lessons.filter((_, index) => progress.has(`${course.id}:${index}`)).length;
+    const percent = Math.round((done / lessons.length) * 100);
+    const next = lessons.findIndex((_, index) => !progress.has(`${course.id}:${index}`));
+    card.dataset.status = done === 0 ? 'new' : next === -1 ? 'done' : 'active';
+    card.innerHTML = `${ring(percent, 76)}
+        <div class="cpc-body">
+            <p class="cpc-label">${tr('Tu progreso', 'Your progress')}</p>
+            <strong>${tr(`${done} de ${lessons.length} clases completadas`, `${done} of ${lessons.length} lessons completed`)}</strong>
+            <small>${next === -1
+                ? tr('Curso completado. Ya puedes repasar cualquier clase.', 'Course completed. You can review any lesson.')
+                : `${done ? tr('Siguiente', 'Next') : tr('Empieza por', 'Start with')}: ${esc(lessons[next][0])}`}</small>
+        </div>
+        <div class="cpc-actions">
+            <a class="btn btn-primary btn-small" href="#lecciones" data-open-lesson="${next === -1 ? 0 : next}">${next === -1 ? tr('Repasar', 'Review') : done ? tr('Continuar', 'Continue') : tr('Empezar', 'Start')}</a>
+            <a class="link-arrow" href="./mi-cuenta.html#progreso/${course.id}">${tr('Hoja de progreso', 'Progress sheet')}</a>
+        </div>
+        <p class="cpc-note">${tr('Se guarda en este navegador.', 'Saved in this browser.')}</p>`;
 }
 
 function renderHero() {
@@ -53,10 +87,11 @@ function renderHero() {
     $('course-status').textContent = course.sample ? tr('Curso con clases de muestra', 'Course with sample lessons') : `${tr('Curso', 'Course')} ${String(course.number).padStart(2, '0')} · ${t(waves[course.wave])} · ${tr('en preparación', 'in preparation')}`;
     $('course-audience').hidden = !course.audience;
     $('course-audience').textContent = course.audience ? `${tr('Dirigido a', 'For')}: ${t(course.audience)}` : '';
-    $('course-rating').textContent = tr('Sin valoraciones publicadas', 'No published ratings');
+    $('course-rating').textContent = tr('Aún no hay', 'None yet');
     $('course-level').textContent = course.level ? levelText(course.level) : tr('Por definir', 'To be defined');
-    $('course-start').textContent = course.sample ? tr('Empezar la clase de muestra', 'Start the sample lesson') : tr('Ver el temario', 'View the syllabus');
-    $('course-start').href = course.sample ? '#lecciones' : '#temario';
+    // Con clases de muestra, la tarjeta de progreso ya lleva a la siguiente clase; este botón abre el temario.
+    $('course-start').textContent = tr('Ver el temario', 'View the syllabus');
+    $('course-start').href = '#temario';
     $('preview-play').querySelector('span').innerHTML = icons.play;
     $('preview-play').setAttribute('aria-label', course.sample ? tr(`Reproducir la primera clase de ${title}`, `Play the first lesson of ${title}`) : tr('Vista previa no disponible', 'Preview not available'));
     $('preview-caption').textContent = course.sample ? tr('Vista previa: primera clase', 'Preview: first lesson') : tr('Vista previa no disponible todavía', 'Preview not available yet');
@@ -121,6 +156,13 @@ function setupSectionDialog() {
     const body = $('section-dialog-body');
     let current = null;
 
+    // La pestaña de la sección abierta queda subrayada mientras la ventana está abierta.
+    const markTab = (id) => {
+        for (const tab of document.querySelectorAll('.course-tabs a')) {
+            if (tab.getAttribute('href') === `#${id}`) tab.setAttribute('aria-current', 'true');
+            else tab.removeAttribute('aria-current');
+        }
+    };
     const restore = () => {
         if (!current) return;
         current.placeholder.replaceWith(...current.nodes);
@@ -143,6 +185,7 @@ function setupSectionDialog() {
         current = { nodes, placeholder, trigger };
         $('section-dialog-title').textContent = heading.textContent;
         dialog.dataset.section = id;
+        markTab(id);
         if (!dialog.open) dialog.showModal();
         body.scrollTop = 0;
         $('section-dialog-close').focus();
@@ -152,6 +195,7 @@ function setupSectionDialog() {
     dialog.addEventListener('close', () => {
         const trigger = current?.trigger;
         restore();
+        markTab(null);
         if (trigger?.isConnected) trigger.focus({ preventScroll: true });
     });
     // Cerrar al pulsar fuera de la ventana.
@@ -260,6 +304,7 @@ function render() {
     renderFaq();
     renderRelated();
     renderSyllabus();
+    renderProgressCard();
     $('course-teachers').innerHTML = teacherCards([course.id]);
     renderReviews();
 }
@@ -276,18 +321,21 @@ if (course) {
             toggle.setAttribute('aria-expanded', String(open));
             $(toggle.getAttribute('aria-controls')).dataset.open = String(open);
         }
+    });
+    document.addEventListener('click', (event) => {
         const link = event.target.closest('[data-open-lesson]');
-        if (link) {
-            requestAnimationFrame(() => document.querySelector(`#lessons [data-lesson="${link.dataset.openLesson}"]`)?.click());
-        }
+        if (link) requestAnimationFrame(() => document.querySelector(`#lessons [data-lesson="${link.dataset.openLesson}"]`)?.click());
     });
     // Enlace directo a una clase: ?leccion=2 abre la segunda clase en el reproductor.
     const requested = Number(params.get('leccion')) - 1;
     if (course.sample && requested >= 0 && requested < course.lessons.length) {
         addEventListener('load', () => document.querySelector(`#lessons [data-lesson="${requested}"]`)?.click(), { once: true });
     }
-    document.addEventListener('click', (event) => {
-        if (event.target.closest('#complete-lesson')) requestAnimationFrame(renderSyllabus);
+    // app.js avisa cada vez que cambia el progreso (clase marcada, video terminado, otra pestaña).
+    document.addEventListener('solara:progress', () => {
+        renderSyllabus();
+        renderProgressCard();
+        fillDurations($('lessons'));
     });
     setupSectionDialog();
 } else {

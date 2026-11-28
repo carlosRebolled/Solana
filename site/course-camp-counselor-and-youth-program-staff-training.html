@@ -60,13 +60,14 @@
                         <h1 id="course-title">Camp Counselor &amp; Youth Program Staff Training</h1>
                         <p id="course-description">Supervising minors, effective communication, conflict resolution, group management, leading activities, counselor responsibilities and professionalism.</p>
                         <p class="muted" id="course-audience">For: Aspiring camp counselors, seasonal staff and camp operators</p>
-                        <ul class="course-stats" id="course-stats">
-                            <li><span data-en="Level" data-es="Nivel">Level</span>: <strong id="course-level">To be defined</strong></li>
-                            <li><strong id="course-count">6</strong> <span data-en="lessons" data-es="clases">lessons</span></li>
-                            <li><span data-en="Video" data-es="Video">Video</span>: <strong id="course-duration">To be defined</strong></li>
-                            <li hidden=""><span data-en="Price" data-es="Precio">Price</span>: <strong id="course-price">To be confirmed</strong></li>
-                            <li id="course-rating">No published ratings</li>
-                        </ul>
+                        <dl class="course-facts" id="course-stats">
+                            <div><dt data-en="Level" data-es="Nivel">Level</dt><dd id="course-level">To be defined</dd></div>
+                            <div><dt data-en="Lessons" data-es="Clases">Lessons</dt><dd id="course-count">6</dd></div>
+                            <div><dt data-en="Video" data-es="Video">Video</dt><dd id="course-duration">To be defined</dd></div>
+                            <div><dt data-en="Ratings" data-es="Valoraciones">Ratings</dt><dd id="course-rating">None yet</dd></div>
+                        </dl>
+                        <span id="course-price" hidden="">To be confirmed</span>
+                        <div class="course-progress-card" id="course-progress-card" hidden=""></div>
                         <div class="course-actions">
                             <a class="btn btn-outline" id="course-start" href="#temario">View the syllabus</a>
                         </div>
@@ -117,31 +118,38 @@
                 <h2 class="section-title" id="syllabus-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Syllabus" data-es="Temario">Syllabus</h2>
                 <div class="syllabus" id="course-syllabus"><section class="syllabus-module">
         <h3><button class="module-toggle" type="button" aria-expanded="true" aria-controls="module-0">
-            <span>Course topics</span><small>6 lessons</small></button></h3>
+            <span class="module-name">Course topics<small>6 lessons · in preparation</small></span>
+            </button></h3>
         <div class="module-panel" id="module-0" data-open="true">
-            <ol><li class="lesson-row" data-locked="true">
-                    <span class="num">01</span>
-                    <span class="title">Supervising minors</span>
+            <ol><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">01</span>
+                    <span class="lesson-text"><span class="title">Supervising minors</span>
+                        <small>Supervising minors.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">02</span>
-                    <span class="title">Effective communication</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">02</span>
+                    <span class="lesson-text"><span class="title">Effective communication</span>
+                        <small>Effective communication.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">03</span>
-                    <span class="title">Conflict resolution</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">03</span>
+                    <span class="lesson-text"><span class="title">Conflict resolution</span>
+                        <small>Conflict resolution.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">04</span>
-                    <span class="title">Group management</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">04</span>
+                    <span class="lesson-text"><span class="title">Group management</span>
+                        <small>Group management.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">05</span>
-                    <span class="title">Leading activities</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">05</span>
+                    <span class="lesson-text"><span class="title">Leading activities</span>
+                        <small>Leading activities.</small></span>
                     <span class="duration">In preparation</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">06</span>
-                    <span class="title">Responsibilities and professionalism</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">06</span>
+                    <span class="lesson-text"><span class="title">Responsibilities and professionalism</span>
+                        <small>Responsibilities and professionalism.</small></span>
                     <span class="duration">In preparation</span>
                 </li></ol>
         </div>
@@ -162,24 +170,31 @@
                         <aside aria-labelledby="lesson-list-title">
                             <h3 id="lesson-list-title" style="margin-top:0" data-en="Lessons" data-es="Clases">Lessons</h3>
                             <p class="muted" id="progress" role="status">0 of 6 lessons completed</p>
-                            <div id="lessons">
-        <button class="lesson" type="button" data-lesson="0" aria-current="true">
-            1. Supervising minors
-        </button>
-        <button class="lesson" type="button" data-lesson="1" aria-current="false">
-            2. Effective communication
-        </button>
-        <button class="lesson" type="button" data-lesson="2" aria-current="false">
-            3. Conflict resolution
-        </button>
-        <button class="lesson" type="button" data-lesson="3" aria-current="false">
-            4. Group management
-        </button>
-        <button class="lesson" type="button" data-lesson="4" aria-current="false">
-            5. Leading activities
-        </button>
-        <button class="lesson" type="button" data-lesson="5" aria-current="false">
-            6. Responsibilities and professionalism
+                            <span class="cpl-bar" aria-hidden="true"><span id="progress-bar" style="width:0%"></span></span>
+                            <div id="lessons"><button class="lesson" type="button" data-lesson="0" data-done="false" aria-current="true">
+            <span class="check-mark" aria-hidden="true">1</span>
+            <span class="lesson-name">Supervising minors</span>
+            
+        </button><button class="lesson" type="button" data-lesson="1" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">2</span>
+            <span class="lesson-name">Effective communication</span>
+            
+        </button><button class="lesson" type="button" data-lesson="2" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">3</span>
+            <span class="lesson-name">Conflict resolution</span>
+            
+        </button><button class="lesson" type="button" data-lesson="3" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">4</span>
+            <span class="lesson-name">Group management</span>
+            
+        </button><button class="lesson" type="button" data-lesson="4" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">5</span>
+            <span class="lesson-name">Leading activities</span>
+            
+        </button><button class="lesson" type="button" data-lesson="5" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">6</span>
+            <span class="lesson-name">Responsibilities and professionalism</span>
+            
         </button></div>
                         </aside>
                     </div>

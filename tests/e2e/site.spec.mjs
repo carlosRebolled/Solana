@@ -275,14 +275,16 @@ test('acceso: botón arriba a la derecha, cuenta de demostración y cierre de se
     expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain('contraseña-larga');
     await page.evaluate(() => localStorage.setItem('solara-demo-progress', JSON.stringify(['campo:0'])));
     await page.locator('#demo-login').click();
-    await expect(page).toHaveURL(/mi-cuenta.html/);
+    await expect(page).toHaveURL(/campus.html/);
     await expect(page.locator('h1')).toContainText('Cuenta de demostración');
-    await expect(page.locator('#account-link')).toHaveText('Mi cuenta');
+    await page.goto('/mi-cuenta.html');
+    await expect(page.locator('#account-link')).toHaveText('Mi campus');
+    await expect(page.locator('#account-link')).toHaveAttribute('href', './campus.html');
     await expect(page.locator('#mis-cursos tbody tr')).toHaveCount(3);
     await expect(page.locator('#resumen .stat-cards dd').nth(1)).toHaveText('1/6');
     await expect(page.locator('#pagos tbody tr')).toHaveCount(2);
     await expect(page.locator('#pagos tfoot')).toContainText('68');
-    await expect(page.locator('.resume-card a.btn-primary')).toHaveAttribute('href', /curso-campo\.html\?leccion=2/);
+    await expect(page.locator('.resume-card a.btn-primary')).toHaveAttribute('href', './campus.html#curso/campo/2');
     await expect(page.locator('#stat-watched')).toHaveText(/^\d+:\d{2}$/);
     await page.locator('#logout').click();
     await expect(page).toHaveURL(/login.html/);
@@ -296,7 +298,8 @@ test('mi cuenta: pestañas con dirección propia y hoja de progreso por curso', 
     await page.goto('/login.html');
     await page.evaluate(() => localStorage.setItem('solara-demo-progress', JSON.stringify(['campo:0'])));
     await page.locator('#demo-login').click();
-    await expect(page).toHaveURL(/mi-cuenta.html/);
+    await expect(page).toHaveURL(/campus.html/);
+    await page.goto('/mi-cuenta.html');
     await expect(page.locator('#resumen')).toBeVisible();
     await expect(page.locator('#pagos')).toBeHidden();
     await page.locator('#tab-pagos').click();
@@ -356,4 +359,97 @@ test('pago: debajo del código aparece el correo para pedir un descuento', async
     await expect(page.locator('#discount-help')).toContainText('¿No tienes un código de descuento?');
     await expect(link).toHaveText('prueba@prueba.com');
     await expect(link).toHaveAttribute('href', /^mailto:prueba@prueba\.com\?subject=/);
+});
+
+test('curso: tarjeta de progreso con anillo y temario con casillas que siguen al reproductor', async ({ page }) => {
+    await page.goto('/curso.html?curso=campo');
+    const card = page.locator('#course-progress-card');
+    await expect(card).toBeVisible();
+    await expect(card).toHaveAttribute('data-status', 'new');
+    await expect(card.locator('.progress-ring')).toHaveAttribute('aria-label', /^0%/);
+    await expect(page.locator('#course-start')).toHaveAttribute('href', '#temario');
+    await card.getByRole('link', { name: 'Empezar' }).click();
+    const dialog = page.locator('#section-dialog');
+    await expect(page.locator('#section-dialog-title')).toHaveText('Clases');
+    await expect(page.locator('.course-tabs a[href="#lecciones"]')).toHaveAttribute('aria-current', 'true');
+    await dialog.locator('#complete-lesson').click();
+    await expect(page.locator('#lessons [data-lesson="0"]')).toHaveAttribute('data-done', 'true');
+    await expect(page.locator('#progress-bar')).toHaveAttribute('style', /width: ?50%/);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.course-tabs a[aria-current]')).toHaveCount(0);
+    await expect(card).toHaveAttribute('data-status', 'active');
+    await expect(card.locator('.progress-ring')).toHaveAttribute('aria-label', /^50%/);
+    await expect(card.getByRole('link', { name: 'Hoja de progreso' })).toHaveAttribute('href', './mi-cuenta.html#progreso/campo');
+    await expect(page.locator('#course-syllabus .lesson-row[data-done="true"]')).toHaveCount(1);
+    await expect(page.locator('#course-syllabus .module-progress')).toContainText('50%');
+    await page.goto('/curso.html?curso=gestion-riesgos');
+    await expect(page.locator('#course-progress-card')).toBeHidden();
+});
+
+test('campus: al iniciar sesión se abre el campus con su propia navegación y espacio de clase', async ({ page }) => {
+    await page.goto('/campus.html');
+    await expect(page).toHaveURL(/login.html/);
+    await page.evaluate(() => localStorage.setItem('solara-demo-progress', JSON.stringify(['campo:0'])));
+    await page.locator('#demo-login').click();
+    await expect(page).toHaveURL(/campus.html/);
+    await expect(page.locator('header.top')).toHaveCount(0);
+    await expect(page.locator('#campus-nav a[data-view="inicio"]')).toHaveAttribute('aria-current', 'page');
+    await expect(page.locator('.campus-stats dd').first()).toHaveText('1/6');
+    await expect(page.locator('.campus-resume a.btn-primary')).toHaveAttribute('href', '#curso/campo/2');
+    await expect(page.locator('#stat-watched')).toHaveText(/^\d+:\d{2}$/);
+
+    // Espacio de clase: reproductor, completar, siguiente y temario lateral.
+    await page.locator('.campus-resume a.btn-primary').click();
+    await expect(page.locator('#view-title')).toHaveText('Tu cuaderno de campo');
+    await expect(page.locator('#ws-player')).toHaveAttribute('src', './media/campo-2.mp4');
+    await expect(page.locator('.ws-lessons a[aria-current="step"]')).toContainText('Tu cuaderno de campo');
+    await expect(page.locator('.ws-actions [data-step="next"]')).toHaveAttribute('aria-disabled', 'true');
+    await page.locator('#ws-complete').click();
+    await expect(page.locator('#ws-complete')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.ws-outline .progress-ring')).toHaveAttribute('aria-label', /^100%/);
+    await expect(page.locator('.ws-cert button[data-certificate="campo"]')).toBeVisible();
+    await page.locator('.ws-actions [data-step="prev"]').click();
+    await expect(page).toHaveURL(/#curso\/campo\/1$/);
+    await page.locator('#tab-ws-notas').click();
+    await page.fill('#ws-note', 'Llevar lupa');
+    await expect(page.locator('[data-note-status="campo"]')).toContainText('guardada');
+
+    // Certificado, notas, filtros y buscador.
+    await page.locator('#campus-nav a[data-view="certificados"]').click();
+    await page.locator('[data-certificate="campo"]').click();
+    await expect(page.locator('#certificate-dialog')).toBeVisible();
+    await expect(page.locator('.certificate-course')).toHaveText('Fundamentos de trabajo de campo');
+    await expect(page.locator('.certificate-demo')).toContainText('DEMOSTRACIÓN');
+    await page.keyboard.press('Escape');
+    await page.locator('#campus-nav a[data-view="notas"]').click();
+    await expect(page.locator('#note-campo')).toHaveValue('Llevar lupa');
+    await page.locator('#campus-nav a[data-view="cursos"]').click();
+    await page.locator('[data-filter="done"]').click();
+    await expect(page.locator('#campus-course-grid .campus-card:visible')).toHaveCount(1);
+    await page.fill('#campus-q', 'cuaderno');
+    await expect(page.locator('#campus-results a')).toHaveCount(1);
+    await page.locator('#campus-results a').click();
+    await expect(page).toHaveURL(/#curso\/campo\/2$/);
+
+    // Curso sin acceso y cierre de sesión.
+    await page.goto('/campus.html#curso/gestion-riesgos');
+    await expect(page.locator('.campus-empty')).toContainText('no está en tu cuenta');
+    await page.locator('#campus-logout').click();
+    await expect(page).toHaveURL(/login.html/);
+});
+
+test('campus: en móvil la barra lateral se abre como panel y sin desbordamiento', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 760 });
+    await page.goto('/login.html');
+    await page.locator('#demo-login').click();
+    await expect(page).toHaveURL(/campus.html/);
+    await expect(page.locator('#campus-side')).not.toBeInViewport();
+    await page.locator('#campus-menu').click();
+    await expect(page.locator('#campus-side')).toBeInViewport();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#campus-menu')).toHaveAttribute('aria-expanded', 'false');
+    for (const hash of ['#inicio', '#cursos', '#certificados', '#notas', '#curso/biodiversidad/1']) {
+        await page.goto('/campus.html' + hash);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
+    }
 });

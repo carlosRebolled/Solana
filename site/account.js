@@ -3,7 +3,7 @@
 // y las notas son los reales de este navegador (localStorage). Con cuentas reales, los mismos
 // números saldrían de cloudflare/schema.sql.
 import { demoAccount, findCourse, paths, pathsForCourse } from './data.js';
-import { $, t, tr, esc, courseText, levelText, lessonVideo, videoDuration, formatDuration, readProgress, onLanguage, setTitle, getSession, endSession, link } from './ui.js';
+import { $, t, tr, esc, courseText, levelText, lessonVideo, videoDuration, formatDuration, readProgress, onLanguage, setTitle, getSession, endSession, link, ring } from './ui.js';
 
 const money = (amount) => new Intl.NumberFormat(tr('es-CR', 'en-US'), { style: 'currency', currency: 'USD', currencyDisplay: 'code', maximumFractionDigits: 2 }).format(amount);
 const day = (iso) => new Intl.DateTimeFormat(tr('es-CR', 'en-US'), { dateStyle: 'medium' }).format(new Date(`${iso}T12:00:00`));
@@ -60,19 +60,7 @@ function library() {
 
 const statusLabel = (status) => ({ new: tr('Sin empezar', 'Not started'), active: tr('En curso', 'In progress'), done: tr('Completado', 'Completed') })[status];
 const actionLabel = (status) => status === 'done' ? tr('Repasar', 'Review') : status === 'new' ? tr('Empezar', 'Start') : tr('Continuar', 'Continue');
-const courseHref = (item, lesson = item.next) => `${link('course', item.id)}${lesson >= 0 ? `?leccion=${lesson + 1}` : ''}`;
-
-// Anillo de progreso en SVG (trazo sólido, sin degradados).
-function ring(percent, size = 64) {
-    const radius = 26;
-    const length = 2 * Math.PI * radius;
-    return `<svg class="progress-ring" viewBox="0 0 64 64" width="${size}" height="${size}" role="img" aria-label="${percent}% ${tr('completado', 'complete')}">
-        <circle cx="32" cy="32" r="${radius}" fill="none" stroke-width="7" class="ring-track"/>
-        <circle cx="32" cy="32" r="${radius}" fill="none" stroke-width="7" class="ring-value" stroke-linecap="round"
-            stroke-dasharray="${length.toFixed(2)}" stroke-dashoffset="${(length * (1 - percent / 100)).toFixed(2)}" transform="rotate(-90 32 32)"/>
-        <text x="32" y="36.5" text-anchor="middle">${percent}%</text>
-    </svg>`;
-}
+const courseHref = (item, lesson = item.next) => `./campus.html#curso/${item.id}/${Math.max(lesson, 0) + 1}`;
 
 async function watchedSeconds(items) {
     const durations = await Promise.all(items.flatMap((item) => item.course.lessons.map((_, index) => item.done[index] ? videoDuration(lessonVideo(item.course, index)) : 0)));
@@ -292,6 +280,7 @@ function render() {
         <div class="account-hero-side">
             ${ring(totals.percent, 64)}
             <p><strong>${tr('Progreso general', 'Overall progress')}</strong><span>${totals.done}/${totals.lessons} ${tr('clases', 'lessons')}</span></p>
+            <a class="btn btn-primary btn-small" href="./campus.html">${tr('Ir al campus', 'Go to campus')}</a>
             <button class="btn btn-outline btn-small" id="logout" type="button">${tr('Cerrar sesión', 'Sign out')}</button>
         </div>
     </div></section>

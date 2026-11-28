@@ -60,15 +60,30 @@
                         <h1 id="course-title">Observing biodiversity</h1>
                         <p id="course-description">Describe local diversity and compare what you find on different walks.</p>
                         <p class="muted" id="course-audience" hidden=""></p>
-                        <ul class="course-stats" id="course-stats">
-                            <li><span data-en="Level" data-es="Nivel">Level</span>: <strong id="course-level">Intermediate</strong></li>
-                            <li><strong id="course-count">2</strong> <span data-en="lessons" data-es="clases">lessons</span></li>
-                            <li><span data-en="Video" data-es="Video">Video</span>: <strong id="course-duration">0:24</strong></li>
-                            <li hidden=""><span data-en="Price" data-es="Precio">Price</span>: <strong id="course-price">USD&nbsp;39</strong></li>
-                            <li id="course-rating">No published ratings</li>
-                        </ul>
+                        <dl class="course-facts" id="course-stats">
+                            <div><dt data-en="Level" data-es="Nivel">Level</dt><dd id="course-level">Intermediate</dd></div>
+                            <div><dt data-en="Lessons" data-es="Clases">Lessons</dt><dd id="course-count">2</dd></div>
+                            <div><dt data-en="Video" data-es="Video">Video</dt><dd id="course-duration">0:24</dd></div>
+                            <div><dt data-en="Ratings" data-es="Valoraciones">Ratings</dt><dd id="course-rating">None yet</dd></div>
+                        </dl>
+                        <span id="course-price" hidden="">USD&nbsp;39</span>
+                        <div class="course-progress-card" id="course-progress-card" data-status="new"><svg class="progress-ring" viewBox="0 0 64 64" width="76" height="76" role="img" aria-label="0% complete">
+        <circle cx="32" cy="32" r="26" fill="none" stroke-width="7" class="ring-track"></circle>
+        <circle cx="32" cy="32" r="26" fill="none" stroke-width="7" class="ring-value" stroke-linecap="round" stroke-dasharray="163.36" stroke-dashoffset="163.36" transform="rotate(-90 32 32)"></circle>
+        <text x="32" y="36.5" text-anchor="middle">0%</text>
+    </svg>
+        <div class="cpc-body">
+            <p class="cpc-label">Your progress</p>
+            <strong>0 of 2 lessons completed</strong>
+            <small>Start with: Looking at different scales</small>
+        </div>
+        <div class="cpc-actions">
+            <a class="btn btn-primary btn-small" href="#lecciones" data-open-lesson="0">Start</a>
+            <a class="link-arrow" href="./mi-cuenta.html#progreso/biodiversidad">Progress sheet</a>
+        </div>
+        <p class="cpc-note">Saved in this browser.</p></div>
                         <div class="course-actions">
-                            <a class="btn btn-outline" id="course-start" href="#lecciones">Start the sample lesson</a>
+                            <a class="btn btn-outline" id="course-start" href="#temario">View the syllabus</a>
                         </div>
                         <ul class="hero-points">
                             <li><strong data-en="At your own pace" data-es="A tu ritmo">At your own pace</strong><span data-en="Watch the lessons whenever you want, from any device." data-es="Mira las clases cuando quieras, desde cualquier dispositivo.">Watch the lessons whenever you want, from any device.</span></li>
@@ -117,15 +132,18 @@
                 <h2 class="section-title" id="syllabus-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Syllabus" data-es="Temario">Syllabus</h2>
                 <div class="syllabus" id="course-syllabus"><section class="syllabus-module">
         <h3><button class="module-toggle" type="button" aria-expanded="true" aria-controls="module-0">
-            <span>Course lessons</span><small>2 lessons</small></button></h3>
+            <span class="module-name">Course lessons<small>2 lessons · 0 completed</small></span>
+            <span class="module-progress" aria-hidden="true"><span class="cpl-bar"><span style="width:0%"></span></span>0%</span></button></h3>
         <div class="module-panel" id="module-0" data-open="true">
-            <ol><li class="lesson-row" data-locked="false">
-                    <span class="num">01</span>
-                    <a class="title" href="#lecciones" data-open-lesson="0">Looking at different scales</a>
+            <ol><li class="lesson-row" data-locked="false" data-done="false">
+                    <span class="check-mark" aria-hidden="true">01</span>
+                    <span class="lesson-text"><a class="title" href="#lecciones" data-open-lesson="0">Looking at different scales</a>
+                        <small>Observe the ground, understory and canopy. Describe one difference between each layer.</small></span>
                     <span class="duration" data-duration-src="./media/biodiversidad-1.mp4">0:12</span>
-                </li><li class="lesson-row" data-locked="false">
-                    <span class="num">02</span>
-                    <a class="title" href="#lecciones" data-open-lesson="1">Comparing observations</a>
+                </li><li class="lesson-row" data-locked="false" data-done="false">
+                    <span class="check-mark" aria-hidden="true">02</span>
+                    <span class="lesson-text"><a class="title" href="#lecciones" data-open-lesson="1">Comparing observations</a>
+                        <small>Repeat the same route and observation period. Note what changes between two visits.</small></span>
                     <span class="duration" data-duration-src="./media/biodiversidad-2.mp4">0:12</span>
                 </li></ol>
         </div>
@@ -146,12 +164,15 @@
                         <aside aria-labelledby="lesson-list-title">
                             <h3 id="lesson-list-title" style="margin-top:0" data-en="Lessons" data-es="Clases">Lessons</h3>
                             <p class="muted" id="progress" role="status">0 of 2 lessons completed</p>
-                            <div id="lessons">
-        <button class="lesson" type="button" data-lesson="0" aria-current="true">
-            1. Looking at different scales
-        </button>
-        <button class="lesson" type="button" data-lesson="1" aria-current="false">
-            2. Comparing observations
+                            <span class="cpl-bar" aria-hidden="true"><span id="progress-bar" style="width:0%"></span></span>
+                            <div id="lessons"><button class="lesson" type="button" data-lesson="0" data-done="false" aria-current="true">
+            <span class="check-mark" aria-hidden="true">1</span>
+            <span class="lesson-name">Looking at different scales</span>
+            <small class="lesson-time" data-duration-src="./media/biodiversidad-1.mp4">0:12</small>
+        </button><button class="lesson" type="button" data-lesson="1" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">2</span>
+            <span class="lesson-name">Comparing observations</span>
+            <small class="lesson-time" data-duration-src="./media/biodiversidad-2.mp4">0:12</small>
         </button></div>
                         </aside>
                     </div>

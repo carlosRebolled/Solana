@@ -60,13 +60,14 @@
                         <h1 id="course-title">Introducción a Forest School y al aprendizaje basado en la naturaleza</h1>
                         <p id="course-description">Principios de Forest School, aprendizaje dirigido por el estudiante, juego en la naturaleza, exploración, observación y desarrollo integral. Es un curso introductorio, no una cualificación oficial Level 3.</p>
                         <p class="muted" id="course-audience">Dirigido a: Docentes, educadores de primera infancia, familias y practicantes del aprendizaje en la naturaleza</p>
-                        <ul class="course-stats" id="course-stats">
-                            <li><span data-en="Level">Nivel</span>: <strong id="course-level">Por definir</strong></li>
-                            <li><strong id="course-count">5</strong> <span data-en="lessons">clases</span></li>
-                            <li><span data-en="Video">Video</span>: <strong id="course-duration">Por definir</strong></li>
-                            <li hidden=""><span data-en="Price">Precio</span>: <strong id="course-price">Por confirmar</strong></li>
-                            <li id="course-rating">Sin valoraciones publicadas</li>
-                        </ul>
+                        <dl class="course-facts" id="course-stats">
+                            <div><dt data-en="Level">Nivel</dt><dd id="course-level">Por definir</dd></div>
+                            <div><dt data-en="Lessons">Clases</dt><dd id="course-count">5</dd></div>
+                            <div><dt data-en="Video">Video</dt><dd id="course-duration">Por definir</dd></div>
+                            <div><dt data-en="Ratings">Valoraciones</dt><dd id="course-rating">Aún no hay</dd></div>
+                        </dl>
+                        <span id="course-price" hidden="">Por confirmar</span>
+                        <div class="course-progress-card" id="course-progress-card" hidden=""></div>
                         <div class="course-actions">
                             <a class="btn btn-outline" id="course-start" href="#temario">Ver el temario</a>
                         </div>
@@ -117,27 +118,33 @@
                 <h2 class="section-title" id="syllabus-title" style="font-size:1.8rem;margin-bottom:20px" data-en="Syllabus">Temario</h2>
                 <div class="syllabus" id="course-syllabus"><section class="syllabus-module">
         <h3><button class="module-toggle" type="button" aria-expanded="true" aria-controls="module-0">
-            <span>Temas del curso</span><small>5 clases</small></button></h3>
+            <span class="module-name">Temas del curso<small>5 clases · en preparación</small></span>
+            </button></h3>
         <div class="module-panel" id="module-0" data-open="true">
-            <ol><li class="lesson-row" data-locked="true">
-                    <span class="num">01</span>
-                    <span class="title">Principios de Forest School</span>
+            <ol><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">01</span>
+                    <span class="lesson-text"><span class="title">Principios de Forest School</span>
+                        <small>Principios de Forest School.</small></span>
                     <span class="duration">En preparación</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">02</span>
-                    <span class="title">Aprendizaje dirigido por el estudiante</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">02</span>
+                    <span class="lesson-text"><span class="title">Aprendizaje dirigido por el estudiante</span>
+                        <small>Aprendizaje dirigido por el estudiante.</small></span>
                     <span class="duration">En preparación</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">03</span>
-                    <span class="title">Juego en la naturaleza</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">03</span>
+                    <span class="lesson-text"><span class="title">Juego en la naturaleza</span>
+                        <small>Juego en la naturaleza.</small></span>
                     <span class="duration">En preparación</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">04</span>
-                    <span class="title">Exploración y observación</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">04</span>
+                    <span class="lesson-text"><span class="title">Exploración y observación</span>
+                        <small>Exploración y observación.</small></span>
                     <span class="duration">En preparación</span>
-                </li><li class="lesson-row" data-locked="true">
-                    <span class="num">05</span>
-                    <span class="title">Desarrollo integral</span>
+                </li><li class="lesson-row" data-locked="true" data-done="false">
+                    <span class="check-mark" aria-hidden="true">05</span>
+                    <span class="lesson-text"><span class="title">Desarrollo integral</span>
+                        <small>Desarrollo integral.</small></span>
                     <span class="duration">En preparación</span>
                 </li></ol>
         </div>
@@ -158,21 +165,27 @@
                         <aside aria-labelledby="lesson-list-title">
                             <h3 id="lesson-list-title" style="margin-top:0" data-en="Lessons">Clases</h3>
                             <p class="muted" id="progress" role="status">0 de 5 lecciones completadas</p>
-                            <div id="lessons">
-        <button class="lesson" type="button" data-lesson="0" aria-current="true">
-            1. Principios de Forest School
-        </button>
-        <button class="lesson" type="button" data-lesson="1" aria-current="false">
-            2. Aprendizaje dirigido por el estudiante
-        </button>
-        <button class="lesson" type="button" data-lesson="2" aria-current="false">
-            3. Juego en la naturaleza
-        </button>
-        <button class="lesson" type="button" data-lesson="3" aria-current="false">
-            4. Exploración y observación
-        </button>
-        <button class="lesson" type="button" data-lesson="4" aria-current="false">
-            5. Desarrollo integral
+                            <span class="cpl-bar" aria-hidden="true"><span id="progress-bar" style="width:0%"></span></span>
+                            <div id="lessons"><button class="lesson" type="button" data-lesson="0" data-done="false" aria-current="true">
+            <span class="check-mark" aria-hidden="true">1</span>
+            <span class="lesson-name">Principios de Forest School</span>
+            
+        </button><button class="lesson" type="button" data-lesson="1" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">2</span>
+            <span class="lesson-name">Aprendizaje dirigido por el estudiante</span>
+            
+        </button><button class="lesson" type="button" data-lesson="2" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">3</span>
+            <span class="lesson-name">Juego en la naturaleza</span>
+            
+        </button><button class="lesson" type="button" data-lesson="3" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">4</span>
+            <span class="lesson-name">Exploración y observación</span>
+            
+        </button><button class="lesson" type="button" data-lesson="4" data-done="false" aria-current="false">
+            <span class="check-mark" aria-hidden="true">5</span>
+            <span class="lesson-name">Desarrollo integral</span>
+            
         </button></div>
                         </aside>
                     </div>

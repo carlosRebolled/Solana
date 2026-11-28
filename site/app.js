@@ -248,10 +248,16 @@ function lessonKey(index) {
 function renderProgress() {
     const count = activeCourse.lessons.filter((_, index) => completed.has(lessonKey(index))).length;
     $('progress').textContent = tr(`${count} de ${activeCourse.lessons.length} lecciones completadas`, `${count} of ${activeCourse.lessons.length} lessons completed`);
-    $('lessons').innerHTML = courseText(activeCourse).lessons.map(([title], index) => `
-        <button class="lesson" type="button" data-lesson="${index}" aria-current="${index === activeLesson}">
-            ${completed.has(lessonKey(index)) ? '✓' : index + 1 + '.'} ${title}
-        </button>`).join('');
+    if ($('progress-bar')) $('progress-bar').style.width = `${Math.round((count / activeCourse.lessons.length) * 100)}%`;
+    $('lessons').innerHTML = courseText(activeCourse).lessons.map(([title], index) => {
+        const done = completed.has(lessonKey(index));
+        return `<button class="lesson" type="button" data-lesson="${index}" data-done="${done}" aria-current="${index === activeLesson}">
+            <span class="check-mark" aria-hidden="true">${done ? '✓' : index + 1}</span>
+            <span class="lesson-name">${done ? `<span class="sr-only">${tr('Completada:', 'Completed:')} </span>` : ''}${title}</span>
+            ${activeCourse.sample ? `<small class="lesson-time" data-duration-src="./media/${activeCourse.id}-${index + 1}.mp4"></small>` : ''}
+        </button>`;
+    }).join('');
+    document.dispatchEvent(new CustomEvent('solara:progress'));
     $('complete-lesson').textContent = completed.has(lessonKey(activeLesson))
         ? tr('Marcar como pendiente', 'Mark as incomplete')
         : tr('Marcar como completada', 'Mark as complete');
@@ -304,6 +310,7 @@ function renderCourse() {
 }
 
 function renderCart() {
+    if (!$('cart-items')) return; // El campus no tiene carrito.
     const selected = courses.filter((course) => cart.has(course.id) && course.price !== null);
     $('cart-count').textContent = selected.length;
     $('cart-items').innerHTML = selected.length ? selected.map((course) => `
@@ -381,12 +388,12 @@ window.addEventListener('storage', ({ key }) => {
     }
 });
 
-$('open-cart').addEventListener('click', () => {
+$('open-cart')?.addEventListener('click', () => {
     $('checkout-status').textContent = '';
     player?.pause();
     cartDialog.showModal();
 });
-$('cart-items').addEventListener('click', (event) => {
+$('cart-items')?.addEventListener('click', (event) => {
     const button = event.target.closest('[data-remove]');
     if (!button) return;
     cart.delete(button.dataset.remove);
@@ -396,7 +403,7 @@ $('cart-items').addEventListener('click', (event) => {
     ($('cart-items').querySelector('[data-remove]') ?? cartDialog.querySelector('form button')).focus();
 });
 // El carrito lleva a la página de pago (pago.html), donde se elige el medio de pago.
-$('checkout').addEventListener('click', () => {
+$('checkout')?.addEventListener('click', () => {
     if (!cart.size) return;
     location.href = './pago.html';
 });

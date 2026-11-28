@@ -61,6 +61,18 @@ export function fillDurations(root = document) {
     }
 }
 
+// Anillo de progreso en SVG (trazo sólido, sin degradados).
+export function ring(percent, size = 64) {
+    const radius = 26;
+    const length = 2 * Math.PI * radius;
+    return `<svg class="progress-ring" viewBox="0 0 64 64" width="${size}" height="${size}" role="img" aria-label="${percent}% ${tr('completado', 'complete')}">
+        <circle cx="32" cy="32" r="${radius}" fill="none" stroke-width="7" class="ring-track"/>
+        <circle cx="32" cy="32" r="${radius}" fill="none" stroke-width="7" class="ring-value" stroke-linecap="round"
+            stroke-dasharray="${length.toFixed(2)}" stroke-dashoffset="${(length * (1 - percent / 100)).toFixed(2)}" transform="rotate(-90 32 32)"/>
+        <text x="32" y="36.5" text-anchor="middle">${percent}%</text>
+    </svg>`;
+}
+
 export function readProgress() {
     try {
         const stored = JSON.parse(localStorage.getItem('solara-demo-progress'));
@@ -276,8 +288,8 @@ function renderAccountLink() {
         cartButton.before(link);
     }
     const session = getSession();
-    const label = session ? tr('Mi cuenta', 'My account') : tr('Iniciar sesión', 'Sign in');
-    link.href = session ? './mi-cuenta.html' : './login.html';
+    const label = session ? tr('Mi campus', 'My campus') : tr('Iniciar sesión', 'Sign in');
+    link.href = session ? './campus.html' : './login.html';
     link.innerHTML = `${personIcon}<span class="account-label">${label}</span>`;
     link.setAttribute('aria-label', label);
     if (/(mi-cuenta|login)\.html$/.test(location.pathname)) link.setAttribute('aria-current', 'page');

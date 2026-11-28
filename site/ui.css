@@ -938,3 +938,55 @@ li[data-done="true"] .check-mark { border-color: var(--forest-green); background
     .course-progress-list .cpl-bar { grid-column: 2 / -1; grid-row: 2; }
     .row-actions { justify-content: flex-start; }
 }
+
+/* Ficha del curso con el estilo de Mi cuenta: datos en bloques, tarjeta de progreso con anillo,
+   pestañas subrayadas, temario con casillas y barras de avance. Todo plano, sin degradados. */
+.course-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 40rem; margin: 22px 0; }
+.course-facts div { padding: 12px 14px; border: 1px solid var(--color-border-soft); border-radius: 12px; background: var(--color-background); }
+.course-facts dt { color: var(--color-text-muted); font-size: .78rem; font-weight: 650; }
+.course-facts dd { margin: 4px 0 0; font-weight: 750; font-variant-numeric: tabular-nums; }
+.course-progress-card { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px 18px; align-items: center; max-width: 40rem; margin: 0 0 18px; padding: 14px 18px; border: 1px solid var(--color-border-soft); border-left: 3px solid var(--forest-green); border-radius: var(--radius-card); background: var(--color-background); }
+.course-progress-card[hidden] { display: none; }
+.course-progress-card[data-status="done"] { border-left-color: var(--earth-brown); }
+.cpc-body { display: grid; gap: 2px; min-width: 0; }
+.cpc-label { margin: 0; color: var(--earth-brown); font-size: .74rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+.cpc-body small { overflow: hidden; color: var(--color-text-secondary); font-size: .85rem; text-overflow: ellipsis; white-space: nowrap; }
+.cpc-actions { display: grid; gap: 8px; justify-items: end; }
+.cpc-actions .link-arrow { font-size: .85rem; }
+.cpc-note { grid-column: 1 / -1; margin: 6px 0 0; padding-top: 8px; border-top: 1px solid var(--color-border-soft); color: var(--color-text-muted); font-size: .76rem; }
+
+.course-tabs .container { gap: 4px; scrollbar-width: none; }
+.course-tabs .container::-webkit-scrollbar { display: none; }
+.course-tabs a { padding: 16px 14px 14px; border-bottom: 3px solid transparent; font-size: .95rem; transition: color var(--duration), border-color var(--duration), background-color var(--duration); }
+.course-tabs a:hover { color: var(--color-text-primary); background: var(--color-hover); border-bottom-color: var(--color-border); }
+.course-tabs a[aria-current="true"] { color: var(--color-text-primary); border-bottom-color: var(--forest-green); }
+
+.outcome-list { counter-reset: outcome; gap: 10px 16px; max-width: none; padding: 0; list-style: none; }
+.outcome-list li { counter-increment: outcome; display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 12px; align-items: start; padding: 14px 16px; border: 1px solid var(--color-border-soft); border-radius: 12px; background: var(--color-section); color: var(--color-text-primary); }
+.outcome-list li::before { content: counter(outcome, decimal-leading-zero); display: grid; place-items: center; width: 2rem; height: 2rem; border: 1px solid var(--color-border); border-radius: 50%; color: var(--forest-green); font-size: .78rem; font-weight: 800; }
+
+.module-toggle { gap: 18px; }
+.module-name { display: grid; gap: 3px; }
+.module-progress { display: inline-flex; flex: none; align-items: center; gap: 10px; margin-left: auto; color: var(--color-text-secondary); font: 750 .85rem var(--font-body); font-variant-numeric: tabular-nums; }
+.module-progress .cpl-bar { width: clamp(4rem, 12vw, 9rem); }
+.lesson-row { grid-template-columns: 2rem minmax(0, 1fr) auto; padding: 14px 0; }
+.lesson-row .check-mark { color: var(--color-text-muted); font-size: .78rem; }
+.lesson-row[data-done="true"] .check-mark { border-color: var(--forest-green); background: var(--forest-green); color: var(--natural-white); }
+.lesson-text { display: grid; gap: 3px; min-width: 0; }
+.lesson-text small { color: var(--color-text-muted); font-size: .84rem; line-height: 1.45; }
+.lesson-row[data-locked="true"] .check-mark { border-style: dashed; }
+
+.course-player-ui aside .cpl-bar { margin: -4px 0 14px; }
+.course-player-ui .lesson { display: grid; grid-template-columns: 1.8rem minmax(0, 1fr) auto; gap: 10px; align-items: center; transition: border-color var(--duration), background-color var(--duration); }
+.course-player-ui .lesson:hover { border-color: var(--color-border); }
+.course-player-ui .lesson[aria-current="true"] { border-color: var(--forest-green); box-shadow: inset 3px 0 0 var(--forest-green); background: var(--color-background); }
+.course-player-ui .lesson .check-mark { width: 1.8rem; height: 1.8rem; font-size: .78rem; }
+.course-player-ui .lesson[data-done="true"] .check-mark { border-color: var(--forest-green); background: var(--forest-green); color: var(--natural-white); }
+.course-player-ui .lesson .lesson-time { color: var(--color-text-muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 640px) {
+    .course-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .course-progress-card { grid-template-columns: auto minmax(0, 1fr); }
+    .cpc-actions { grid-column: 1 / -1; grid-auto-flow: column; justify-content: start; align-items: center; gap: 16px; }
+    .module-progress .cpl-bar { display: none; }
+}
