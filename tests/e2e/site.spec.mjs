@@ -448,8 +448,105 @@ test('campus: en móvil la barra lateral se abre como panel y sin desbordamiento
     await expect(page.locator('#campus-side')).toBeInViewport();
     await page.keyboard.press('Escape');
     await expect(page.locator('#campus-menu')).toHaveAttribute('aria-expanded', 'false');
-    for (const hash of ['#inicio', '#cursos', '#certificados', '#notas', '#curso/biodiversidad/1']) {
+    for (const hash of ['#inicio', '#cursos', '#progreso', '#certificados', '#notas', '#perfil', '#curso/biodiversidad/1']) {
         await page.goto('/campus.html' + hash);
         expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
     }
+});
+
+test('campus: meta semanal, marcas con tiempo, recomendaciones, logros y atajos', async ({ page }) => {
+    await page.goto('/login.html');
+    await page.locator('#demo-login').click();
+    await expect(page).toHaveURL(/campus.html/);
+    // Meta semanal editable.
+    await expect(page.locator('#goal-value')).toContainText('3 clases');
+    await page.locator('[data-goal="1"]').click();
+    await expect(page.locator('#goal-value')).toContainText('4 clases');
+    // Recomendaciones del catálogo: guardar y verlas en «Mis cursos».
+    const pick = page.locator('.reco-card [data-save]').first();
+    const id = await pick.getAttribute('data-save');
+    await pick.click();
+    await expect(page.locator(`.reco-card [data-save="${id}"]`)).toHaveAttribute('aria-pressed', 'true');
+    await page.locator('#campus-nav a[data-view="cursos"]').click();
+    await expect(page.locator(`#saved-list [data-save="${id}"]`)).toBeVisible();
+    // Marca con tiempo en una clase, con su atajo y su lista.
+    await page.goto('/campus.html#curso/campo/2');
+    await page.locator('#ws-player').evaluate((video) => new Promise((resolve) => (video.readyState ? resolve() : video.addEventListener('loadedmetadata', resolve, { once: true }))));
+    await page.locator('#view-title').click();
+    await page.keyboard.press('b');
+    await expect(page.locator('#mark-text')).toBeFocused();
+    await page.fill('#mark-text', 'Libreta con la fecha');
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#mark-list .mark-item')).toHaveCount(1);
+    await expect(page.locator('#tab-ws-notas .tab-count')).toHaveText('1');
+    await expect(page.locator('.campus-toast').last()).toContainText('Buena observación');
+    // Velocidad guardada y modo enfoque.
+    await page.selectOption('#ws-speed', '1.5');
+    expect(await page.locator('#ws-player').evaluate((video) => video.playbackRate)).toBe(1.5);
+    await page.locator('#ws-focus').click();
+    await expect(page.locator('#campus-side')).toBeHidden();
+    await page.locator('#ws-focus').click();
+    // Atajos: «?» abre la ventana y «M» marca la clase.
+    await page.locator('#view-title').click();
+    await page.keyboard.press('?');
+    await expect(page.locator('#keys-dialog')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('m');
+    await expect(page.locator('#ws-complete')).toHaveAttribute('aria-pressed', 'true');
+    // Mi progreso: racha, mapa, logros e historial.
+    await page.locator('#campus-nav a[data-view="progreso"]').click();
+    await expect(page.locator('#view-title')).toHaveText('Mi progreso');
+    await expect(page.locator('.heatmap .heat[data-level]:not([data-level="0"])')).toHaveCount(1);
+    await expect(page.locator('.badge-tile[data-earned="true"]')).not.toHaveCount(0);
+    await expect(page.locator('.campus-feed li').first()).toContainText('Completaste');
+    await expect(page.locator('#campus-streak')).toContainText('1');
+    // Mis notas: la marca aparece, se busca y enlaza al minuto del video.
+    await page.locator('#campus-nav a[data-view="notas"]').click();
+    await expect(page.locator('[data-note-card="campo"] .mark-item')).toHaveCount(1);
+    await page.fill('#notes-q', 'zzz');
+    await expect(page.locator('#notes-empty')).toBeVisible();
+    await page.fill('#notes-q', 'libreta');
+    await expect(page.locator('[data-note-card="campo"]')).toBeVisible();
+    await expect(page.locator('[data-note-card="campo"] .mark-time')).toHaveAttribute('href', /^#curso\/campo\/2(\/\d+)?$/);
+    // El buscador general también encuentra las marcas.
+    await page.fill('#campus-q', 'libreta con');
+    await expect(page.locator('#campus-results a')).toContainText('Libreta con la fecha');
+});
+
+test('campus: Mi perfil se edita, valida el correo y se refleja en el campus y en Mi cuenta', async ({ page }) => {
+    await page.goto('/login.html');
+    await page.locator('#demo-login').click();
+    await expect(page).toHaveURL(/campus.html/);
+    await page.locator('#campus-user a[href="#perfil"]').click();
+    await expect(page.locator('#view-title')).toHaveText('Mi perfil');
+    await expect(page.locator('#campus-nav a[data-view="perfil"]')).toHaveAttribute('aria-current', 'page');
+    await page.fill('#profile-name', 'Ana María Solís');
+    await expect(page.locator('#profile-preview-name')).toHaveText('Ana María Solís');
+    await expect(page.locator('.profile-preview .campus-avatar')).toHaveText('AS');
+    await expect(page.locator('#profile-discard')).toBeEnabled();
+    await page.fill('#profile-email', 'correo-invalido');
+    await page.locator('#profile-save').click();
+    await expect(page.locator('#profile-email')).toHaveAttribute('aria-invalid', '');
+    await expect(page.locator('#profile-email-error')).toContainText('Revisa el correo');
+    await expect(page.locator('#profile-email')).toBeFocused();
+    await page.fill('#profile-email', 'ana@example.com');
+    await page.fill('#profile-role', 'Docente de ciencias');
+    await page.fill('#profile-bio', 'Llevo grupos a la montaña.');
+    await expect(page.locator('#profile-bio-count')).toHaveText('26');
+    await page.locator('.color-swatch[data-color="earth"]').click();
+    await page.locator('.interest-chip', { hasText: 'Leer el paisaje' }).click();
+    await page.fill('#profile-goal', '5');
+    await page.locator('#profile-save').click();
+    await expect(page.locator('.campus-toast').last()).toContainText('Perfil guardado');
+    await expect(page.locator('#profile-discard')).toBeDisabled();
+    await expect(page.locator('#campus-user .campus-avatar')).toHaveAttribute('data-color', 'earth');
+    await expect(page.locator('#campus-user .campus-avatar')).toHaveText('AS');
+    await page.locator('#campus-nav a[data-view="inicio"]').click();
+    await expect(page.locator('#view-title')).toContainText('Ana María Solís');
+    await expect(page.locator('#goal-value')).toContainText('5 clases');
+    await page.goto('/mi-cuenta.html#perfil');
+    await expect(page.locator('.account-hero h1')).toContainText('Ana María Solís');
+    await expect(page.locator('#perfil')).toContainText('ana@example.com');
+    await expect(page.locator('#perfil')).toContainText('Leer el paisaje');
+    await expect(page.locator('#perfil a[href="./campus.html#perfil"]')).toBeVisible();
 });

@@ -3,6 +3,7 @@
 // y las notas son los reales de este navegador (localStorage). Con cuentas reales, los mismos
 // números saldrían de cloudflare/schema.sql.
 import { demoAccount, findCourse, paths, pathsForCourse } from './data.js';
+import { readProfile, displayName, initials, countries, interestOptions } from './profile.js';
 import { $, t, tr, esc, courseText, levelText, lessonVideo, videoDuration, formatDuration, readProgress, onLanguage, setTitle, getSession, endSession, link, ring } from './ui.js';
 
 const money = (amount) => new Intl.NumberFormat(tr('es-CR', 'en-US'), { style: 'currency', currency: 'USD', currencyDisplay: 'code', maximumFractionDigits: 2 }).format(amount);
@@ -234,15 +235,20 @@ function paymentsPanel(paid) {
 }
 
 function profilePanel(name) {
+    const profile = readProfile();
+    const country = countries.find(([code]) => code === profile.country);
     return `<h2 id="profile-heading">${tr('Perfil', 'Profile')}</h2>
         <dl class="profile-list">
             <div><dt>${tr('Nombre', 'Name')}</dt><dd>${esc(name)}</dd></div>
-            <div><dt>${tr('Correo', 'Email')}</dt><dd>${esc(demoAccount.email)}</dd></div>
-            <div><dt>${tr('País', 'Country')}</dt><dd>Costa Rica</dd></div>
+            ${profile.role ? `<div><dt>${tr('Descripción', 'Description')}</dt><dd>${esc(profile.role)}</dd></div>` : ''}
+            <div><dt>${tr('Correo', 'Email')}</dt><dd>${esc(profile.email)}</dd></div>
+            <div><dt>${tr('País', 'Country')}</dt><dd>${country ? tr(country[1], country[2]) : '—'}</dd></div>
+            ${profile.interests.length ? `<div><dt>${tr('Intereses', 'Interests')}</dt><dd>${profile.interests.map((index) => esc(t(interestOptions[index] ?? ''))).filter(Boolean).join(', ')}</dd></div>` : ''}
             <div><dt>${tr('Idioma', 'Language')}</dt><dd>${tr('Español', 'English')}</dd></div>
             <div><dt>${tr('Miembro desde', 'Member since')}</dt><dd>${day(demoAccount.memberSince)}</dd></div>
         </dl>
-        <p class="muted">${tr('En la cuenta de demostración el perfil no se puede editar.', 'The demo account profile cannot be edited.')}</p>`;
+        <p><a class="btn btn-primary btn-small" href="./campus.html#perfil">${tr('Editar mi perfil', 'Edit my profile')}</a></p>
+        <p class="muted">${tr('Cuenta de demostración: el perfil se guarda solo en este navegador.', 'Demo account: the profile is saved only in this browser.')}</p>`;
 }
 
 function render() {
@@ -257,7 +263,7 @@ function render() {
         finished: items.filter((item) => item.status === 'done').length,
         paid: demoAccount.purchases.filter((purchase) => purchase.status === 'paid').reduce((sum, purchase) => sum + purchase.amount, 0)
     };
-    const name = t(demoAccount.name);
+    const name = displayName(t(demoAccount.name));
     const { tab, course } = readHash();
     const panels = {
         resumen: overviewPanel(items, totals),
@@ -272,10 +278,10 @@ function render() {
     $('account-page').innerHTML = `
     <section class="account-hero"><div class="container">
         <div class="account-id">
-            <span class="teacher-avatar account-avatar" aria-hidden="true">CD</span>
+            <span class="teacher-avatar account-avatar campus-avatar" data-color="${readProfile().color}" aria-hidden="true">${esc(initials(name))}</span>
             <div><p class="eyebrow-tag">${tr('Mi cuenta', 'My account')} ${demoBadge()}</p>
                 <h1>${tr('Hola', 'Hello')}, ${esc(name)}</h1>
-                <p class="muted">${esc(demoAccount.email)} · ${tr('Miembro desde', 'Member since')} ${day(demoAccount.memberSince)}</p></div>
+                <p class="muted">${esc(readProfile().email)} · ${tr('Miembro desde', 'Member since')} ${day(demoAccount.memberSince)}</p></div>
         </div>
         <div class="account-hero-side">
             ${ring(totals.percent, 64)}

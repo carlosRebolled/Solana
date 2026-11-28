@@ -22,8 +22,10 @@
             <nav class="campus-nav" aria-label="Campus" id="campus-nav">
                 <a href="#inicio" data-view="inicio"><span class="campus-icon" aria-hidden="true">⌂</span><span data-en="Home">Inicio</span></a>
                 <a href="#cursos" data-view="cursos"><span class="campus-icon" aria-hidden="true">▤</span><span data-en="My courses">Mis cursos</span></a>
+                <a href="#progreso" data-view="progreso"><span class="campus-icon" aria-hidden="true">▦</span><span data-en="My progress">Mi progreso</span></a>
                 <a href="#certificados" data-view="certificados"><span class="campus-icon" aria-hidden="true">◎</span><span data-en="Certificates">Certificados</span></a>
                 <a href="#notas" data-view="notas"><span class="campus-icon" aria-hidden="true">✎</span><span data-en="My notes">Mis notas</span></a>
+                <a href="#perfil" data-view="perfil"><span class="campus-icon" aria-hidden="true">☺</span><span data-en="My profile">Mi perfil</span></a>
             </nav>
             <div class="campus-side-courses">
                 <p class="campus-side-label" data-en="Keep learning">Sigue aprendiendo</p>
@@ -56,6 +58,7 @@
             <main class="campus-main" id="campus-main" tabindex="-1"></main>
         </div>
     </div>
+    <div class="campus-toasts" id="campus-toasts" role="status" aria-live="polite"></div>
     <noscript data-en="Enable JavaScript to use the campus.">Activa JavaScript para usar el campus.</noscript>
 
     <dialog class="certificate-dialog" id="certificate-dialog" aria-labelledby="certificate-dialog-title">
@@ -64,6 +67,23 @@
             <button class="icon-btn" id="certificate-close" type="button" aria-label="Cerrar" data-en-label="Close">✕</button>
         </div>
         <div class="certificate-body" id="certificate-body"></div>
+    </dialog>
+
+    <dialog class="keys-dialog" id="keys-dialog" aria-labelledby="keys-dialog-title">
+        <div class="section-dialog-head">
+            <h2 id="keys-dialog-title" data-en="Keyboard shortcuts">Atajos de teclado</h2>
+            <button class="icon-btn" id="keys-close" type="button" aria-label="Cerrar" data-en-label="Close">✕</button>
+        </div>
+        <dl class="keys-list">
+            <div><dt><kbd>K</kbd> <kbd data-en="Space">Espacio</kbd></dt><dd data-en="Play or pause">Reproducir o pausar</dd></div>
+            <div><dt><kbd>J</kbd> <kbd>L</kbd></dt><dd data-en="Back or forward 10 seconds">Retroceder o adelantar 10 segundos</dd></div>
+            <div><dt><kbd>B</kbd></dt><dd data-en="Save a mark at the current time">Guardar una marca en el minuto actual</dd></div>
+            <div><dt><kbd>M</kbd></dt><dd data-en="Mark the lesson as complete">Marcar la clase como completada</dd></div>
+            <div><dt><kbd>P</kbd> <kbd>N</kbd></dt><dd data-en="Previous or next lesson">Clase anterior o siguiente</dd></div>
+            <div><dt><kbd>F</kbd></dt><dd data-en="Focus mode">Modo enfoque</dd></div>
+            <div><dt><kbd>/</kbd></dt><dd data-en="Search the campus">Buscar en el campus</dd></div>
+            <div><dt><kbd>?</kbd></dt><dd data-en="Show these shortcuts">Ver estos atajos</dd></div>
+        </dl>
     </dialog>
 </body>
 </html>
