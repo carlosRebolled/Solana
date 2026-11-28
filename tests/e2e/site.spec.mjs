@@ -620,7 +620,7 @@ test('portada: venta de la ruta con temario, prueba social de ejemplo, CTA fijo 
     await expect(page.locator('#faq-guarantee')).toContainText('14 días');
     await expect(page.locator('#faq details[open]')).toHaveCount(1);
     await expect(page.locator('.faq-facts li')).toHaveCount(3);
-    await expect(page.locator('.faq-help a[href="./contacto.html"]')).toBeVisible();
+    await expect(page.locator('.faq-help a[href="#escribenos"]')).toBeVisible();
     await page.locator('#faq-open-help').click();
     await expect(page.locator('.help-bubble')).toHaveAttribute('aria-expanded', 'true');
     await page.keyboard.press('Escape');
@@ -660,4 +660,48 @@ test('portada: en móvil el antes y después usa pestañas y no hay desbordamien
     await page.selectOption('#language', 'en');
     await expect(page.locator('h1')).toHaveText('Turn every outing into real learning');
     await expect(page.locator('#hero-proof')).toContainText('students');
+});
+
+test('ayuda: abre directo «Escríbenos» con pregunta, comentario, queja o ayuda, y aviso de demostración', async ({ page }) => {
+    await page.goto('/publico.html');
+    await page.locator('.help-bubble').click();
+    await expect(page.locator('#solara-help-title')).toHaveText('Escríbenos');
+    await expect(page.locator('.help-questions, .help-tabs')).toHaveCount(0);
+    const header = await page.locator('.help-header').evaluate((node) => [getComputedStyle(node).backgroundColor, getComputedStyle(node.querySelector('h2')).color]);
+    expect(header).toEqual(['rgb(29, 40, 36)', 'rgb(243, 245, 237)']);
+    const form = page.locator('#help-pane-write form');
+    await expect(form.locator('.feedback-kind')).toHaveText(['Tengo una pregunta', 'Quiero dejar un comentario', 'Quiero presentar una queja', 'Necesito ayuda']);
+    await expect(form.locator('.feedback-reference')).toBeHidden();
+    await form.locator('.feedback-kind', { hasText: 'queja' }).click();
+    await expect(form.locator('.feedback-submit')).toHaveText('Enviar queja');
+    await expect(form.locator('.feedback-reference')).toBeVisible();
+    await form.locator('.feedback-submit').click();
+    await expect(form.locator('[name="message"]')).toHaveAttribute('aria-invalid', '');
+    await expect(form.locator('[name="message"]')).toBeFocused();
+    await form.locator('[name="message"]').fill('El video de la segunda clase no carga en mi celular.');
+    await form.locator('[name="email"]').fill('correo-mal');
+    await form.locator('.feedback-submit').click();
+    await expect(form.locator('#help-email-error')).toContainText('Revisa el correo');
+    await form.locator('[name="email"]').fill('persona@example.com');
+    await form.locator('[name="reference"]').fill('DEMO-0001');
+    await form.locator('.feedback-submit').click();
+    await expect(form.locator('.feedback-status')).toContainText('todavía no se envió a Solara');
+    await expect(form.locator('[name="message"]')).toHaveValue('');
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('solara-demo-feedback')));
+    expect(saved.at(-1)).toMatchObject({ kind: 'queja', reference: 'DEMO-0001', email: 'persona@example.com', page: 'publico.html' });
+});
+
+test('portada: bloque «Escríbenos» debajo de las preguntas, también sin correo', async ({ page }) => {
+    await page.goto('/#escribenos');
+    const form = page.locator('#home-feedback form');
+    await form.locator('.feedback-kind', { hasText: 'comentario' }).click();
+    await expect(form.locator('.feedback-submit')).toHaveText('Enviar comentario');
+    await form.locator('[name="message"]').fill('Me gustó mucho el antes y después del cuaderno.');
+    await expect(form.locator('.feedback-count')).toHaveText('47/1000');
+    await form.locator('[name="anonymous"]').check();
+    await expect(form.locator('[name="email"]')).toBeDisabled();
+    await form.locator('.feedback-submit').click();
+    await expect(form.locator('.feedback-status')).toContainText('Es una demostración');
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('solara-demo-feedback')));
+    expect(saved.at(-1)).toMatchObject({ kind: 'comentario', email: null });
 });

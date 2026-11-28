@@ -385,3 +385,10 @@ a.sales-social:active { background: var(--s-surface-2); }
     .sales-page .offer-box h3 { padding-right: 56px; }
     .offer-actions .sales-btn { width: 100%; }
 }
+
+/* Escríbenos en la portada, debajo de las preguntas */
+.faq-write { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 48px; margin-top: 64px; padding: 48px; border: 1px solid var(--s-line); border-radius: 24px; background: var(--s-surface); scroll-margin-top: 100px; }
+.faq-write h3 { margin: 0; font-size: clamp(1.6rem, 2vw, 2.2rem); }
+.faq-write-head p:last-child { margin: 12px 0 0; color: var(--s-muted); }
+@media (max-width: 1024px) { .faq-write { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .faq-write { margin-top: 40px; padding: 24px 16px; } }

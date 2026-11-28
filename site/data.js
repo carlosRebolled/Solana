@@ -372,6 +372,12 @@ export const salesPage = {
     guarantee: { days: 14, demo: true }
 };
 
+// Mensajes del formulario «Escríbenos» (preguntas, comentarios, quejas y ayuda).
+// Sin canal real todavía: con `endpoint: null` el formulario es de DEMOSTRACIÓN y no envía nada.
+// Para activarlo: una dirección propia que reciba POST con JSON (por ejemplo, un Worker con su
+// propio almacenamiento o correo). No pongas aquí claves ni contraseñas.
+export const feedback = { endpoint: null };
+
 export const payments = {
     paypal: { enabled: false, clientId: null, currency: 'USD' }
 };

@@ -88,3 +88,10 @@ input, select, textarea { color-scheme: dark; }
 /* Ventanas y paneles flotantes: un escalón más claro que el fondo, para que se distingan. */
 .ui dialog, dialog { background: color-mix(in srgb, #F3F5ED 7%, #26332F); color: #F3F5ED; }
 .ui dialog::backdrop, dialog::backdrop { background: rgb(10 16 14 / .72); }
+
+/* Panel de Ayuda: encabezado en el verde oscuro del sitio con texto claro (no texto claro sobre lima). */
+.help-header { background: #1D2824; color: #F3F5ED; border-bottom: 1px solid color-mix(in srgb, #F3F5ED 14%, #26332F); }
+.ui .help-header h2, .help-header h2 { color: #F3F5ED; }
+.help-close { border-color: color-mix(in srgb, #F3F5ED 45%, #1D2824); color: #F3F5ED; }
+.help-close:hover { background: color-mix(in srgb, #F3F5ED 10%, #1D2824); }
+.help-panel { background: #26332F; color: #F3F5ED; border-color: color-mix(in srgb, #F3F5ED 18%, #26332F); }

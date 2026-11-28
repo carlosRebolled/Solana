@@ -3,6 +3,8 @@
 // `salesPage` y se marcan como «Dato de ejemplo» mientras `demo` sea true. El catálogo paginado
 // y el blog los dibuja app.js.
 import { findPath, findCourse, salesPage, testimonials } from './data.js';
+import { feedbackForm } from './feedback.js';
+import { openHelp } from './help-chat.js';
 import { $, t, tr, esc, courseText, levelText, lessonVideo, videoDuration, formatDuration, price, onLanguage, fillDurations, icons, setupCarousel } from './ui.js';
 
 const path = findPath(salesPage.path);
@@ -121,12 +123,7 @@ faq.addEventListener('toggle', (event) => {
     if (!event.target.open) return;
     for (const other of faq.querySelectorAll('details[open]')) if (other !== event.target) other.open = false;
 }, true);
-$('faq-open-help').addEventListener('click', () => {
-    const bubble = document.querySelector('.help-bubble');
-    if (!bubble) { location.href = './contacto.html'; return; }
-    if (bubble.getAttribute('aria-expanded') !== 'true') bubble.click();
-    bubble.focus();
-});
+$('faq-open-help').addEventListener('click', () => openHelp());
 
 // Video de la clase de muestra en una ventana.
 const dialog = $('video-dialog');
@@ -195,6 +192,7 @@ onLanguage(() => {
     renderTotals(times);
     renderPricing();
     renderStories();
+    $('home-feedback').innerHTML = feedbackForm('home');
     translateAlt();
     syncToggle();
 });
