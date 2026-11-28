@@ -88,7 +88,9 @@ test('las direcciones antiguas siguen funcionando y apuntan a la canónica está
 test('la portada conserva su título y los enlaces del catálogo van a páginas estáticas', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle('Solara Field School | Educación experiencial, naturaleza y liderazgo juvenil');
-    const hrefs = await page.$$eval('#course-list a', (links) => links.map((link) => link.getAttribute('href')));
+    await page.goto('/catalogo.html');
+    await expect(page.locator('#catalog-results a').first()).toBeVisible();
+    const hrefs = await page.$$eval('#catalog-results a[href*="curso-"]', (links) => links.map((link) => link.getAttribute('href')));
     expect(hrefs.length).toBeGreaterThan(20);
     expect(hrefs.every((href) => /^\.\/curso-[a-z0-9-]+\.html$/.test(href))).toBe(true);
 });

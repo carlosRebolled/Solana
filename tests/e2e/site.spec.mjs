@@ -68,52 +68,53 @@ test('menú móvil: abre, enfoca el primer enlace y se cierra con Escape', async
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('portada: hero anterior con «Explora por tema» y catálogo con la oferta', async ({ page }) => {
+test('portada: encabezado del sitio, blog, catálogo de 6 cursos por página con números e historias', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#hero-title')).toHaveText('Aprende más allá del aula');
-    await page.locator('#topic-buttons [data-topic="biodiversidad"]').click();
-    await expect(page.locator('#featured-course h3')).toHaveText('Observación de biodiversidad');
-    await expect(page.locator('#course-list .card')).toHaveCount(23);
+    await expect(page.locator('#main-navigation a')).toHaveText(['Cursos', 'Escuelas', 'Programas', 'Público', 'Blog', 'Precios', 'Contacto']);
+    await expect(page.locator('#find-lessons')).toBeVisible();
+    await expect(page.locator('#account-link')).toHaveText('Iniciar sesión');
+    await expect(page.locator('#open-cart')).toBeVisible();
+    await expect(page.locator('#language')).toBeVisible();
+    // Orden: temario, blog, catálogo, antes y después, historias, precio y preguntas.
+    const order = await page.evaluate(() => ['temario', 'blog', 'cursos', 'resultados', 'historias', 'precio', 'preguntas'].map((id) => document.getElementById(id).getBoundingClientRect().top));
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+    await expect(page.locator('#docente')).toHaveCount(0);
+    // Historias desde el campo: tarjetas de ejemplo en carrusel.
+    await expect(page.locator('#stories-track .testimonial-card')).toHaveCount(4);
+    await expect(page.locator('#stories-track .demo-badge').first()).toHaveText('Ejemplo');
+    await expect(page.locator('#stories-prev')).toBeDisabled();
+    await page.locator('#stories-next').click();
+    await expect(page.locator('#stories-prev')).toBeEnabled();
+    await expect(page.locator('#catalog-title')).toHaveText('¿Qué quieres aprender?');
     await expect(page.locator('#results')).toHaveText('23 cursos · 3 con clases de muestra');
+    await expect(page.locator('#course-list .card')).toHaveCount(6);
+    await expect(page.locator('#course-pages .page-dot')).toHaveText(['1', '2', '3', '4']);
+    await expect(page.locator('#course-pages [aria-current="page"]')).toHaveText('1');
+    await expect(page.locator('#course-pages .page-step').first()).toBeDisabled();
+    await page.locator('#course-pages .page-dot', { hasText: '2' }).click();
+    await expect(page.locator('#course-pages [aria-current="page"]')).toHaveText('2');
+    await expect(page.locator('#course-list .card')).toHaveCount(6);
+    await page.locator('#course-pages .page-step').last().click();
+    await page.locator('#course-pages .page-step').last().click();
+    await expect(page.locator('#course-pages [aria-current="page"]')).toHaveText('4');
+    await expect(page.locator('#course-list .card')).toHaveCount(5);
+    await expect(page.locator('#course-pages .page-step').last()).toBeDisabled();
+    // Al filtrar vuelve a la primera página; con 6 o menos cursos no hay números.
     await page.selectOption('#catalog-topic', 'camp-management');
     await expect(page.locator('#course-list .card')).toHaveCount(4);
+    await expect(page.locator('#course-pages')).toBeHidden();
+    await page.locator('#clear-filters').click();
+    await expect(page.locator('#course-pages [aria-current="page"]')).toHaveText('1');
+    // Blog: los 3 artículos más recientes.
+    await expect(page.locator('#home-posts > *')).toHaveCount(3);
 });
 
-test('portada: banner desactivado sin campaña y vista previa con cuenta regresiva real', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.locator('#promo-banner')).toBeHidden();
-    await page.goto('/?promo=preview');
-    const first = await page.locator('#countdown').innerText();
-    await page.waitForTimeout(1200);
-    expect(await page.locator('#countdown').innerText()).not.toBe(first);
-});
-
-test('portada: carrusel de escuelas con botones y límites', async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('/');
-    const prev = page.locator('#schools-prev-ui');
-    const next = page.locator('#schools-next-ui');
-    await expect(prev).toBeDisabled();
-    await next.click();
-    await expect(prev).toBeEnabled();
-    for (let i = 0; i < 6; i += 1) if (await next.isEnabled()) await next.click();
-    await expect(next).toBeDisabled();
-});
-
-test('portada: vitrina cambia de paso y el ejercicio se valida', async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('/');
-    const top = await page.locator('#showcase-steps').evaluate((node) => node.getBoundingClientRect().top + scrollY);
-    const height = await page.locator('#showcase-steps').evaluate((node) => node.offsetHeight);
-    await page.evaluate(([y]) => scrollTo(0, y), [top + (height - 900) * .85]);
-    await expect(page.locator('.feature-card[data-step="2"]')).toHaveAttribute('data-active', 'true');
-    await page.locator('#quiz-check').click();
-    await expect(page.locator('#quiz-result')).toContainText('Elige una respuesta');
-    await page.locator('#quiz-options input').first().check();
-    await page.locator('#quiz-check').click();
-    await expect(page.locator('#quiz-result')).toContainText('Correcto');
-    await page.locator('#quiz-next').click();
-    await expect(page.locator('#quiz-question')).toContainText('2/2');
+test('tema: todas las páginas usan el fondo verde oscuro de la portada', async ({ page }) => {
+    for (const route of ['/', '/publico.html', '/catalogo.html', '/blog.html', '/precios.html', '/curso-campo.html', '/login.html', '/contacto.html']) {
+        await page.goto(route);
+        const colors = await page.evaluate(() => [getComputedStyle(document.body).backgroundColor, getComputedStyle(document.querySelector('h1')).color]);
+        expect(colors, route).toEqual(['rgb(38, 51, 47)', 'rgb(243, 245, 237)']);
+    }
 });
 
 test('catálogo: filtros, URL y estado vacío', async ({ page }) => {
@@ -132,7 +133,7 @@ test('catálogo: filtros, URL y estado vacío', async ({ page }) => {
 
 test('navegación: portada �  escuela �  ruta �  curso �  vista previa', async ({ page }) => {
     await page.goto('/');
-    await page.locator('#schools-track a').first().click();
+    await page.locator('#site-footer a', { hasText: 'Estudios de campo' }).first().click();
     await expect(page).toHaveURL(/escuela-campo\.html/);
     await page.locator('.path-card a.btn-primary').first().click();
     await expect(page).toHaveURL(/ruta-[a-z-]+\.html/);
@@ -173,9 +174,9 @@ test('precios: el selector cambia las tarjetas y el selector de grupo respeta l�
 test('idioma: el cambio a inglés traduce las partes generadas', async ({ page }) => {
     await page.goto('/');
     await page.selectOption('#language', 'en');
-    await expect(page.locator('#hero-title')).toContainText('Learn');
+    await expect(page.locator('#hero-title')).toHaveText('Turn every outing into real learning');
     await expect(page.locator('#site-footer h3').first()).toHaveText('Schools');
-    await expect(page.locator('#schools-title')).toHaveText('Choose what to learn today');
+    await expect(page.locator('#catalog-title')).toHaveText('What would you like to learn?');
     await page.selectOption('#language', 'es');
 });
 
@@ -589,4 +590,69 @@ test('campus: Mi perfil permite subir, recortar y quitar una foto personalizada'
     await page.locator('#profile-save').click();
     await expect(page.locator('#campus-user .campus-avatar img')).toHaveCount(0);
     await expect(page.locator('#campus-user .campus-avatar')).toHaveText('CD');
+});
+
+test('portada: venta de la ruta con temario, prueba social de ejemplo, CTA fijo y pago', async ({ page }) => {
+    const errors = trackErrors(page);
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await page.goto('/');
+    await expect(page.locator('h1')).toHaveText('Convierte cada salida en aprendizaje real');
+    expect((await page.locator('h1').innerText()).split(/\s+/).length).toBeLessThanOrEqual(8);
+    await expect(page.locator('#main-navigation a')).toHaveCount(7);
+    await expect(page.locator('#hero-proof')).toContainText('alumnos');
+    await expect(page.locator('#hero-proof .is-demo')).toHaveText('Dato de ejemplo');
+    await expect(page.locator('[data-price-total]').first()).toContainText('97');
+    // Temario: tres módulos con duración real; el primero abierto y el botón abre o cierra todos.
+    await expect(page.locator('#curriculum details')).toHaveCount(3);
+    await expect(page.locator('#curriculum details').first()).toHaveAttribute('open', '');
+    await expect(page.locator('#curriculum .sales-module-time').first()).toHaveText(/^\d+:\d{2}$/);
+    await page.locator('#curriculum-toggle').click();
+    await expect(page.locator('#curriculum details[open]')).toHaveCount(3);
+    await expect(page.locator('#curriculum-toggle')).toHaveText('Cerrar todos');
+    // Garantía y preguntas.
+    await expect(page.locator('#guarantee')).toContainText('Garantía de 14 días');
+    await page.locator('#faq summary', { hasText: '¿Y si no es lo que esperaba?' }).click();
+    await expect(page.locator('#faq-guarantee')).toContainText('14 días');
+    await expect(page.locator('#faq details[open]')).toHaveCount(1);
+    await expect(page.locator('.faq-facts li')).toHaveCount(3);
+    await expect(page.locator('.faq-help a[href="./contacto.html"]')).toBeVisible();
+    await page.locator('#faq-open-help').click();
+    await expect(page.locator('.help-bubble')).toHaveAttribute('aria-expanded', 'true');
+    await page.keyboard.press('Escape');
+    // CTA fijo: aparece al pasar el hero y se esconde en el precio.
+    await expect(page.locator('#sales-sticky')).toHaveAttribute('data-visible', 'false');
+    await page.locator('#resultados').scrollIntoViewIfNeeded();
+    await expect(page.locator('#sales-sticky')).toHaveAttribute('data-visible', 'true');
+    await page.locator('#precio').scrollIntoViewIfNeeded();
+    await expect(page.locator('#sales-sticky')).toHaveAttribute('data-visible', 'false');
+    // Video de muestra en una ventana.
+    await page.evaluate(() => scrollTo(0, 0));
+    await page.locator('#video-open').click();
+    await expect(page.locator('#video-dialog')).toBeVisible();
+    await expect(page.locator('#video-player')).toHaveAttribute('src', './media/campo-1.mp4');
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#video-open')).toBeFocused();
+    const unnamed = await page.$$eval('button, a[href]', (items) => items.filter((item) => item.checkVisibility() && !(item.getAttribute('aria-label') || item.textContent.trim())).map((item) => item.outerHTML.slice(0, 80)));
+    expect(unnamed).toEqual([]);
+    // Inscribirse agrega los tres cursos al carrito y lleva al pago.
+    await page.locator('#enroll').click();
+    await expect(page).toHaveURL(/pago\.html/);
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem('solara-demo-cart')))).toEqual(expect.arrayContaining(['campo', 'biodiversidad', 'sendero']));
+    expect(errors).toEqual([]);
+});
+
+test('portada: en móvil el antes y después usa pestañas y no hay desbordamiento', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto('/');
+    await expect(page.locator('#panel-after')).toBeVisible();
+    await expect(page.locator('#panel-before')).toBeHidden();
+    await page.locator('#tab-before').click();
+    await expect(page.locator('#panel-before')).toBeVisible();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('#tab-after')).toBeFocused();
+    await expect(page.locator('#panel-after')).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
+    await page.selectOption('#language', 'en');
+    await expect(page.locator('h1')).toHaveText('Turn every outing into real learning');
+    await expect(page.locator('#hero-proof')).toContainText('students');
 });

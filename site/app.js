@@ -48,7 +48,7 @@ function renderLanguage() {
         else element.textContent = tr(es, en);
     }
     renderMetrics();
-    if ($('course-list')) renderCatalog();
+    if ($('course-list')) renderCatalog(catalogPage);
     if ($('featured-course')) renderFeaturedCourse();
     renderDirectories();
     renderEditorial(language);
@@ -122,7 +122,12 @@ function renderFeaturedCourse() {
         </div>`;
 }
 
-function renderCatalog() {
+const reducedMotionPref = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Portada: 6 cursos por página con paginación numerada (en otras páginas se muestran todos).
+const coursesPerPage = 6;
+let catalogPage = 1;
+function renderCatalog(page = 1) {
+    catalogPage = typeof page === 'number' ? page : 1;
     const term = normalize($('search').value.trim());
     const level = $('level').value;
     const topic = $('catalog-topic').value;
@@ -137,7 +142,18 @@ function renderCatalog() {
         ? `${matching.length} ${matching.length === 1 ? tr('curso', 'course') : tr('cursos', 'courses')} · ${matching.filter((course) => course.sample).length} ${tr('con clases de muestra', 'with sample lessons')}`
         : tr('No se encontraron cursos. Prueba otra búsqueda o cambia el nivel.', 'No courses found. Try another search or level.');
 
-    $('course-list').innerHTML = matching.map(courseCard).join('');
+    const pager = $('course-pages');
+    const pages = pager ? Math.max(1, Math.ceil(matching.length / coursesPerPage)) : 1;
+    catalogPage = Math.min(Math.max(catalogPage, 1), pages);
+    const shown = pager ? matching.slice((catalogPage - 1) * coursesPerPage, catalogPage * coursesPerPage) : matching;
+    $('course-list').innerHTML = shown.map(courseCard).join('');
+    if (pager) {
+        pager.hidden = pages <= 1;
+        const pageLabel = (number) => tr(`Página ${number}`, `Page ${number}`);
+        pager.innerHTML = `<button class="page-step" type="button" data-page="${catalogPage - 1}" ${catalogPage === 1 ? 'disabled' : ''} aria-label="${tr('Página anterior', 'Previous page')}">←</button>
+            <ol>${Array.from({ length: pages }, (_, index) => `<li><button class="page-dot" type="button" data-page="${index + 1}" aria-label="${pageLabel(index + 1)}" ${index + 1 === catalogPage ? 'aria-current="page"' : ''}>${index + 1}</button></li>`).join('')}</ol>
+            <button class="page-step" type="button" data-page="${catalogPage + 1}" ${catalogPage === pages ? 'disabled' : ''} aria-label="${tr('Página siguiente', 'Next page')}">→</button>`;
+    }
 }
 
 function courseCard(course) {
@@ -322,6 +338,14 @@ function renderCart() {
 }
 
 $('search')?.addEventListener('input', renderCatalog);
+$('course-pages')?.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-page]');
+    if (!button || button.disabled) return;
+    renderCatalog(Number(button.dataset.page));
+    const section = $('cursos');
+    if (section && section.getBoundingClientRect().top < 0) section.scrollIntoView({ behavior: reducedMotionPref() ? 'auto' : 'smooth', block: 'start' });
+    ($('course-pages').querySelector('[aria-current="page"]') ?? $('course-list').querySelector('a'))?.focus({ preventScroll: true });
+});
 $('level')?.addEventListener('change', renderCatalog);
 $('catalog-topic')?.addEventListener('change', renderCatalog);
 $('find-lessons')?.addEventListener('click', () => {

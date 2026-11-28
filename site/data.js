@@ -361,6 +361,17 @@ export const discountCodes = [
     { code: 'CAMPO5', amount: 5, label: ['USD 5 de descuento', 'USD 5 off'] }
 ];
 
+// Portada (index.html): presentación de la ruta «Primeros pasos en el campo».
+// Los datos marcados `demo: true` son de EJEMPLO y se muestran con la etiqueta «Dato de ejemplo»:
+// cámbialos por los reales (alumnos, calificación y garantía) y pon `demo: false`.
+export const salesPage = {
+    path: 'observador-de-campo',
+    previewVideo: './media/campo-1.mp4',
+    students: { value: 2000, demo: true },
+    rating: { value: 4.8, reviews: 120, demo: true },
+    guarantee: { days: 14, demo: true }
+};
+
 export const payments = {
     paypal: { enabled: false, clientId: null, currency: 'USD' }
 };

@@ -1,0 +1,90 @@
+/* Tema oscuro de Solara para todo el sitio (el de la portada): fondo carbón verdoso, texto blanco
+   natural y lima como acento. Se carga después de styles.css y ui.css en todas las páginas.
+   Truco: los tonos de la paleta se intercambian por pares (blanco ↔ carbón y bosque ↔ lima), así
+   cada combinación de fondo y texto que ya existía sigue teniendo buen contraste, pero en oscuro:
+   «texto carbón sobre blanco» pasa a «texto blanco sobre carbón» y «botón bosque con texto
+   blanco» pasa a «botón lima con texto carbón». La tierra y la salvia se ajustan para el fondo oscuro. */
+:root {
+    color-scheme: dark;
+    --natural-white: #26332F;
+    --deep-charcoal: #F3F5ED;
+    --forest-green: #D9EE92;
+    --solar-lime: #005044;
+    --earth-brown: #C9A47D;
+    --sage-green: #6F9384;
+
+    /* Superficies, bordes y estados de ui.css */
+    --color-background: #26332F;
+    --color-section: color-mix(in srgb, #F3F5ED 6%, #26332F);
+    --color-band: color-mix(in srgb, #F3F5ED 9%, #26332F);
+    --color-surface: color-mix(in srgb, #F3F5ED 8%, #26332F);
+    --color-surface-raised: color-mix(in srgb, #F3F5ED 13%, #26332F);
+    --color-text-primary: #F3F5ED;
+    --color-text-secondary: color-mix(in srgb, #F3F5ED 86%, #26332F);
+    --color-text-muted: color-mix(in srgb, #F3F5ED 74%, #26332F);
+    --color-accent: #D9EE92;
+    --color-accent-ink: #26332F;
+    --color-accent-strong: color-mix(in srgb, #D9EE92 72%, #F3F5ED);
+    --color-border: color-mix(in srgb, #F3F5ED 26%, #26332F);
+    --color-border-soft: color-mix(in srgb, #F3F5ED 16%, #26332F);
+    --color-hover: color-mix(in srgb, #F3F5ED 8%, transparent);
+    --color-focus: #D9EE92;
+    --color-error: #E8B98F;
+    --color-error-surface: color-mix(in srgb, #C9A47D 18%, #26332F);
+    --color-sky: color-mix(in srgb, #A8CBB9 30%, #26332F);
+    --color-sun: color-mix(in srgb, #C9A47D 30%, #26332F);
+    --color-lime: color-mix(in srgb, #D9EE92 26%, #26332F);
+    --color-leaf: color-mix(in srgb, #A8CBB9 22%, #26332F);
+    --color-clay: color-mix(in srgb, #C9A47D 24%, #26332F);
+    --color-moss: color-mix(in srgb, #A8CBB9 18%, #005044);
+    --color-card-ink: #F3F5ED;
+    --shadow-soft: 0 1px 2px rgb(0 0 0 / .2), 0 6px 18px rgb(0 0 0 / .18);
+    --shadow-raised: 0 2px 4px rgb(0 0 0 / .22), 0 14px 32px rgb(0 0 0 / .3);
+
+    /* Variables de styles.css (páginas editoriales y piezas compartidas) */
+    --ink: #F3F5ED;
+    --muted: color-mix(in srgb, #F3F5ED 74%, #26332F);
+    --paper: #26332F;
+    --line: color-mix(in srgb, #F3F5ED 18%, #26332F);
+    --lime: #005044;
+    --forest: #D9EE92;
+    --sage: #6F9384;
+    --earth: #C9A47D;
+    --card: color-mix(in srgb, #F3F5ED 6%, #26332F);
+    --tint: color-mix(in srgb, #F3F5ED 10%, #26332F);
+    --edge: color-mix(in srgb, #F3F5ED 26%, #26332F);
+}
+html { background: #26332F; }
+body { background: #26332F; color: #F3F5ED; }
+::selection { background: #D9EE92; color: #26332F; }
+
+/* El lima del intercambio («bosque») es para acentos sobre fondo oscuro. Donde el diseño original
+   usaba la lima como fondo de algo pequeño (marca, insignias), queda en bosque con texto claro. */
+img, video { color-scheme: light; }
+input, select, textarea { color-scheme: dark; }
+
+/* Zonas que en el diseño original eran verde bosque con texto claro (encabezado, pie, banner y
+   barra lateral del campus): conservan su paleta original, pero con el verde oscuro del sitio. */
+.site-header, .site-footer, .promo-banner, .top, .campus-side {
+    --natural-white: #F3F5ED;
+    --deep-charcoal: #26332F;
+    --forest-green: #1D2824;
+    --solar-lime: #D9EE92;
+    --sage-green: #A8CBB9;
+    --earth-brown: #C9A47D;
+    --paper: #F3F5ED;
+    --ink: #26332F;
+    --lime: #D9EE92;
+    --forest: #1D2824;
+    --sage: #A8CBB9;
+    --earth: #C9A47D;
+    color: #F3F5ED;
+}
+.top, .site-header { background: #26332F; border-bottom: 1px solid color-mix(in srgb, #F3F5ED 14%, #26332F); }
+.site-footer, .campus-side { background: #1D2824; }
+.site-footer { border-top: 1px solid color-mix(in srgb, #F3F5ED 14%, #26332F); }
+.campus-nav a[aria-current="page"] { background: #D9EE92; color: #26332F; }
+
+/* Ventanas y paneles flotantes: un escalón más claro que el fondo, para que se distingan. */
+.ui dialog, dialog { background: color-mix(in srgb, #F3F5ED 7%, #26332F); color: #F3F5ED; }
+.ui dialog::backdrop, dialog::backdrop { background: rgb(10 16 14 / .72); }

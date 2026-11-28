@@ -20,12 +20,16 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="./ui.css">
-    <script type="module" src="./home.js"></script>
+    <link rel="stylesheet" href="./sales.css">
+    <link rel="stylesheet" href="./theme.css">
+    <script type="module" src="./sales.js"></script>
     <script type="module" src="./app.js"></script>
 </head>
-<body class="ui home-page home-ui" data-title-en="Solara Field School | Experiential education, nature and youth leadership">
-    <a class="skip" href="#cursos" data-en="Skip to the academy">Ir al catálogo</a>
-    <header class="top">
+<body class="ui sales-page home-ui" data-title-en="Solara Field School | Experiential education, nature and youth leadership">
+    <a class="skip" href="#main" data-en="Skip to content">Ir al contenido</a>
+
+    <!-- Encabezado del sitio: enlaces, buscar, idioma, acceso y carrito. -->
+    <header class="top sales-top" id="sales-header">
         <div class="wrap nav">
             <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✳</span><span>Solara<small>FIELD SCHOOL</small></span></a>
             <button class="button outline mobile-menu" id="navigation-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" data-en="Menu">Menú</button>
@@ -38,69 +42,143 @@
             <div class="nav-actions"><a class="button outline quick-search" href="#cursos" id="find-lessons" data-en="Search">Buscar</a><label class="sr-only" for="language" data-en="Language">Idioma</label><select id="language"><option value="es" lang="es">Español</option><option value="en" lang="en">English</option></select><button class="button outline" id="open-cart" type="button"><span data-en="Cart">Carrito</span> <span id="cart-count">0</span></button></div>
         </div>
     </header>
-    <section class="promo-banner" id="promo-banner" aria-labelledby="promo-title" hidden></section>
+
     <main id="main">
-        <div class="home-announcement">
-            <div class="wrap"><span data-en="Read the field journal for ideas to try on your next outing.">Encuentra ideas para tu próxima salida en la bitácora de campo.</span><a href="./blog.html" data-en="Read the blog">Leer el blog</a></div>
-        </div>
-        <section class="home-hero" aria-labelledby="hero-title">
-            <div class="wrap home-hero-grid">
-                <div class="home-hero-copy">
-                    <p class="eyebrow" data-en="OUTDOOR LEARNING AND VIDEO COURSES">EDUCACIÓN AL AIRE LIBRE Y CURSOS EN VIDEO</p>
-                    <h1 id="hero-title" data-en="Learn beyond the classroom">Aprende más allá del aula</h1>
-                    <p class="intro" data-en="Discover Solara’s field programs for schools, families and young people, and explore the video academy at your own pace.">Descubre los programas de campo de Solara para colegios, familias y jóvenes, y explora la academia en video a tu ritmo.</p>
-                    <div class="actions">
-                        <a class="button primary" href="#cursos" data-en="Explore courses">Explorar cursos</a>
-                        <a class="button glass" href="./programas.html" data-en="View field programs">Ver programas</a>
+        <!-- Hero -->
+        <section class="sales-hero" aria-labelledby="hero-title">
+            <div class="sales-wrap sales-grid">
+                <div class="sales-hero-copy">
+                    <p class="sales-eyebrow" data-en="Video path · 3 courses · Spanish">Ruta en video · 3 cursos · En español</p>
+                    <h1 id="hero-title" data-en="Turn every outing into real learning">Convierte cada salida en aprendizaje real</h1>
+                    <p class="sales-sub" data-en="Learn to prepare a field outing, observe biodiversity and read the landscape, with a field notebook your group can review in class. At your own pace, from your phone or computer.">Aprende a preparar una salida de campo, observar la biodiversidad y leer el paisaje, con un cuaderno de campo que tu grupo pueda revisar en clase. A tu ritmo, desde el celular o la computadora.</p>
+                    <div class="sales-cta-row">
+                        <a class="sales-btn is-primary" id="hero-cta" href="#precio" data-enroll-scroll><span data-en="Enroll now">Inscribirme ahora</span> <span class="sales-price-inline" data-price-total></span></a>
+                        <div class="sales-proof" id="hero-proof"></div>
                     </div>
+                    <ul class="sales-facts" aria-label="Datos de la ruta" data-en-label="Path facts">
+                        <li><strong data-lesson-count>6</strong> <span data-en="video lessons">clases en video</span></li>
+                        <li><strong data-total-duration>—</strong> <span data-en="of video">de video</span></li>
+                        <li><strong data-en="Certificate">Certificado</strong> <span data-en="of completion">de finalización</span></li>
+                    </ul>
                 </div>
-                <section class="discovery" aria-labelledby="picks-title">
-                    <div class="discovery-heading">
-                        <h2 id="picks-title" data-en="Find a topic">Explora por tema</h2>
-                        <div class="topic-buttons" id="topic-buttons" role="group" aria-label="Temas" data-en-label="Topics">
-                            <button type="button" data-topic="campo" aria-pressed="true" data-en="Fieldwork">Trabajo de campo</button>
-                            <button type="button" data-topic="biodiversidad" aria-pressed="false" data-en="Biodiversity">Biodiversidad</button>
-                            <button type="button" data-topic="sendero" aria-pressed="false" data-en="Landscape">Paisaje</button>
-                        </div>
+                <div class="sales-hero-media">
+                    <!-- Imagen: sendero de tierra entre árboles altos en un bosque templado, luz suave de la mañana entre los troncos. -->
+                    <button class="sales-video" id="video-open" type="button" aria-haspopup="dialog" aria-label="Ver la clase de muestra «Antes de salir» (video)" data-en-label="Watch the sample lesson “Before you go” (video)">
+                        <img src="./media/field.jpg" alt="" width="1600" height="1067" fetchpriority="high">
+                        <span class="sales-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+                        <span class="sales-video-caption"><strong data-en="Sample lesson">Clase de muestra</strong><span data-en="Before you go · field guide">Antes de salir · guía de campo</span><span class="sales-video-time" data-duration-src="./media/campo-1.mp4">—</span></span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Temario en acordeón con duración por módulo -->
+        <section class="sales-section" id="temario" aria-labelledby="curriculum-title">
+            <div class="sales-wrap sales-grid">
+                <div class="sales-section-head">
+                    <p class="sales-eyebrow" data-en="Curriculum">Temario</p>
+                    <h2 id="curriculum-title" data-en="Three modules, from preparation to the trail">Tres módulos, de la preparación al sendero</h2>
+                    <p class="sales-lead" data-en="Each module is a short course with its own lessons. The durations are read from the real videos.">Cada módulo es un curso corto con sus propias clases. Las duraciones se leen de los videos reales.</p>
+                    <p class="sales-total" id="curriculum-total"></p>
+                    <button class="sales-btn is-ghost is-small" id="curriculum-toggle" type="button" aria-controls="curriculum">Abrir todos</button>
+                </div>
+                <div class="sales-accordion" id="curriculum"></div>
+            </div>
+        </section>
+
+        <!-- Blog -->
+        <section class="sales-section is-band sales-blog" id="blog" aria-labelledby="journal-title">
+            <div class="sales-wrap">
+                <div class="sales-section-head is-wide is-row">
+                    <div><p class="sales-eyebrow" data-en="Field journal">Bitácora de campo</p>
+                        <h2 id="journal-title" data-en="From the Solara blog">Del blog de Solara</h2>
+                        <p class="sales-lead" data-en="Ideas, activities and guides to try on your next outing.">Ideas, actividades y guías para probar en tu próxima salida.</p></div>
+                    <a class="sales-btn is-ghost" href="./blog.html" data-en="View all articles">Ver todos los artículos</a>
+                </div>
+                <div class="editorial-grid sales-posts" id="home-posts"></div>
+            </div>
+        </section>
+
+        <!-- Catálogo: 6 cursos por página, con paginación numerada -->
+        <section class="sales-section sales-catalog" id="cursos" aria-labelledby="catalog-title">
+            <div class="sales-wrap">
+                <div class="sales-section-head is-wide">
+                    <p class="sales-eyebrow" data-en="Solara academy · Upcoming courses">Academia Solara · Cursos por venir</p>
+                    <h2 id="catalog-title" data-en="What would you like to learn?">¿Qué quieres aprender?</h2>
+                    <p class="sales-lead" data-en="Try our sample lessons while we prepare the full courses. Prices and purchases are for demonstration only.">Prueba las lecciones de muestra mientras preparamos los cursos completos. Los precios y las compras son de demostración.</p>
+                </div>
+                <div class="filters sales-filters">
+                    <label><span data-en="Search courses">Buscar cursos</span><input id="search" type="search" placeholder="Ej. biodiversidad" data-en-placeholder="e.g. biodiversity" autocomplete="off"></label>
+                    <label><span data-en="Level">Nivel</span><select id="level"><option value="" data-en="All levels">Todos los niveles</option><option value="Inicial" data-en="Beginner">Inicial</option><option value="Intermedio" data-en="Intermediate">Intermedio</option></select></label>
+                    <label><span data-en="Topic">Tema</span><select id="catalog-topic">
+                        <option value="" data-en="All topics">Todos los temas</option>
+                        <option value="field-studies" data-en="Field Studies &amp; Nature Exploration">Estudios de campo y exploración de la naturaleza</option>
+                        <option value="biodiversity" data-en="Nature, Biodiversity &amp; Environmental Education">Naturaleza, biodiversidad y educación ambiental</option>
+                        <option value="outdoor-skills" data-en="Outdoor Skills &amp; Adventure Education">Habilidades al aire libre y educación de aventura</option>
+                        <option value="experiential-education" data-en="Experiential &amp; Alternative Education">Educación experiencial y alternativa</option>
+                        <option value="youth-leadership" data-en="Youth Development &amp; Leadership">Desarrollo y liderazgo juvenil</option>
+                        <option value="camp-management" data-en="Camp Management &amp; Recreation Education">Gestión de campamentos y educación recreativa</option>
+                    </select></label>
+                    <button class="sales-btn is-ghost" id="clear-filters" type="button" data-en="Clear filters">Limpiar filtros</button>
+                </div>
+                <p id="results" class="sales-results" role="status"></p>
+                <div class="course-grid sales-course-grid" id="course-list"></div>
+                <nav class="sales-pages" id="course-pages" aria-label="Páginas de cursos" data-en-label="Course pages" hidden></nav>
+                <noscript data-en="Enable JavaScript to browse courses and watch lessons.">Activa JavaScript para explorar los cursos y reproducir las lecciones.</noscript>
+            </div>
+        </section>
+
+        <!-- Antes y después -->
+        <section class="sales-section is-band" id="resultados" aria-labelledby="results-title">
+            <div class="sales-wrap">
+                <div class="sales-section-head is-wide">
+                    <p class="sales-eyebrow" data-en="Results">Resultados</p>
+                    <h2 id="results-title" data-en="The same outing, before and after the path">La misma salida, antes y después de la ruta</h2>
+                    <p class="sales-lead" data-en="What changes is the notebook: from loose impressions to records you can compare and review with your group.">Lo que cambia es el cuaderno: de impresiones sueltas a registros que se pueden comparar y revisar con el grupo.</p>
+                </div>
+                <div class="sales-compare" id="compare">
+                    <div class="sales-compare-tabs" role="tablist" aria-label="Comparar" data-en-label="Compare">
+                        <button type="button" role="tab" id="tab-before" aria-controls="panel-before" aria-selected="false" tabindex="-1" data-en="Before">Antes</button>
+                        <button type="button" role="tab" id="tab-after" aria-controls="panel-after" aria-selected="true" data-en="After">Después</button>
                     </div>
-                    <article class="discovery-preview" id="featured-course"></article>
-                    <noscript><a href="./curso-campo.html" target="_blank" rel="noopener">Ver curso de muestra</a></noscript>
-                </section>
+                    <article class="sales-note is-before" id="panel-before" role="tabpanel" aria-labelledby="tab-before">
+                        <header><span class="sales-tag" data-en="Before">Antes</span><h3 data-en="Outing to the river">Salida al río</h3></header>
+                        <p class="sales-handwritten" data-en="We went to the river. We saw lots of birds and some trash. The kids enjoyed it.">Fuimos al río. Vimos muchos pájaros y algo de basura. A los chicos les gustó.</p>
+                        <ul class="sales-checks is-missing">
+                            <li data-en="No question to answer">Sin una pregunta que responder</li>
+                            <li data-en="No date, time or weather">Sin fecha, hora ni clima</li>
+                            <li data-en="Observation and opinion mixed">Observación y opinión mezcladas</li>
+                            <li data-en="Nothing to compare next time">Nada que comparar la próxima vez</li>
+                        </ul>
+                    </article>
+                    <article class="sales-note is-after" id="panel-after" role="tabpanel" aria-labelledby="tab-after">
+                        <header><span class="sales-tag is-accent" data-en="After">Después</span><h3 data-en="Outing to the river · 2nd visit">Salida al río · 2.ª visita</h3></header>
+                        <dl class="sales-record">
+                            <div><dt data-en="Question">Pregunta</dt><dd data-en="Are there more birds by the riverbank in the shade or in the sun?">¿Hay más aves en la orilla con sombra o en la soleada?</dd></div>
+                            <div><dt data-en="Conditions">Condiciones</dt><dd data-en="Tuesday, 7:40 a.m. · cloudy, light wind · river level medium">Martes, 7:40 a. m. · nublado, viento leve · río con caudal medio</dd></div>
+                            <div><dt data-en="Observed">Observado</dt><dd data-en="Shade: 9 birds, 3 kinds. Sun: 4 birds, 2 kinds. 10 minutes at each point.">Sombra: 9 aves, 3 tipos. Sol: 4 aves, 2 tipos. 10 minutos en cada punto.</dd></div>
+                            <div><dt data-en="Interpretation">Interpretación</dt><dd data-en="Maybe the shade is cooler. We will repeat at the same time next week.">Quizá la sombra es más fresca. Repetimos a la misma hora la próxima semana.</dd></div>
+                        </dl>
+                        <ul class="sales-checks">
+                            <li data-en="A question you can answer by observing">Una pregunta que se responde observando</li>
+                            <li data-en="Date, place and conditions first">Fecha, lugar y condiciones primero</li>
+                            <li data-en="What you see, apart from what you think">Lo que ves, aparte de lo que piensas</li>
+                            <li data-en="A record you can repeat and compare">Un registro que se puede repetir y comparar</li>
+                        </ul>
+                    </article>
+                </div>
+                <p class="sales-disclaimer" data-en="Illustrative example written by Solara to show the method. It is not the notebook of a real student.">Ejemplo ilustrativo escrito por Solara para mostrar el método. No es el cuaderno de un estudiante real.</p>
             </div>
         </section>
 
-        <div class="legacy-light">
-        <section class="wrap catalog" id="cursos" aria-labelledby="catalog-title">
-            <p class="eyebrow green" data-en="SOLARA ACADEMY · UPCOMING COURSES">ACADEMIA SOLARA · CURSOS POR VENIR</p>
-            <h2 id="catalog-title" data-en="What would you like to learn?">¿Qué quieres aprender?</h2>
-            <p data-en="Try our sample lessons while we prepare the full courses. Prices and purchases are for demonstration only.">Prueba las lecciones de muestra mientras preparamos los cursos completos. Los precios y las compras son de demostración.</p>
-            <div class="filters">
-                <label><span data-en="Search courses">Buscar cursos</span><input id="search" type="search" placeholder="Ej. biodiversidad" data-en-placeholder="e.g. biodiversity"></label>
-                <label><span data-en="Level">Nivel</span><select id="level"><option value="" data-en="All levels">Todos los niveles</option><option value="Inicial" data-en="Beginner">Inicial</option><option value="Intermedio" data-en="Intermediate">Intermedio</option></select></label>
-                <label><span data-en="Topic">Tema</span><select id="catalog-topic">
-                    <option value="" data-en="All topics">Todos los temas</option>
-                    <option value="field-studies" data-en="Field Studies &amp; Nature Exploration">Estudios de campo y exploración de la naturaleza</option>
-                    <option value="biodiversity" data-en="Nature, Biodiversity &amp; Environmental Education">Naturaleza, biodiversidad y educación ambiental</option>
-                    <option value="outdoor-skills" data-en="Outdoor Skills &amp; Adventure Education">Habilidades al aire libre y educación de aventura</option>
-                    <option value="experiential-education" data-en="Experiential &amp; Alternative Education">Educación experiencial y alternativa</option>
-                    <option value="youth-leadership" data-en="Youth Development &amp; Leadership">Desarrollo y liderazgo juvenil</option>
-                    <option value="camp-management" data-en="Camp Management &amp; Recreation Education">Gestión de campamentos y educación recreativa</option>
-                </select></label>
-                <button class="button outline" id="clear-filters" type="button" data-en="Clear filters">Limpiar filtros</button>
-            </div>
-            <p id="results" class="muted" role="status"></p>
-            <div class="course-grid" id="course-list"></div>
-            <noscript data-en="Enable JavaScript to browse courses and watch lessons.">Activa JavaScript para explorar los cursos y reproducir las lecciones.</noscript>
-        </section>
-        </div>
-
-        <!-- 06 · Historias -->
-        <section class="section" id="historias" aria-labelledby="stories-title">
-            <div class="container-section">
-                <div class="section-head">
+        <!-- Historias desde el campo: testimonios de EJEMPLO (data.js), en carrusel -->
+        <section class="sales-section sales-stories" id="historias" aria-labelledby="stories-title">
+            <div class="sales-wrap">
+                <div class="sales-section-head is-wide is-row">
                     <div>
-                        <h2 class="section-title" id="stories-title" data-en="Stories from the field">Historias desde el campo</h2>
-                        <p class="section-lead" data-en="Example cards: we will publish real testimonials once participants authorize them.">Tarjetas de ejemplo: publicaremos testimonios reales cuando las personas participantes los autoricen.</p>
+                        <p class="sales-eyebrow" data-en="Testimonials">Testimonios</p>
+                        <h2 id="stories-title" data-en="Stories from the field">Historias desde el campo</h2>
+                        <p class="sales-lead" data-en="Example cards: we will publish real testimonials once participants authorize them.">Tarjetas de ejemplo: publicaremos testimonios reales cuando las personas participantes los autoricen.</p>
                     </div>
                     <div class="carousel-controls">
                         <button class="icon-btn" id="stories-prev" type="button" aria-controls="stories-track" aria-label="Historia anterior" data-en-label="Previous story"></button>
@@ -111,133 +189,95 @@
             </div>
         </section>
 
-        <!-- 07–09 · Aprendizaje personalizado, enfoque y práctica -->
-        <section class="showcase" id="experiencia" aria-labelledby="showcase-title">
-            <h2 class="sr-only" id="showcase-title" data-en="How learning works at Solara">Cómo se aprende en Solara</h2>
-            <div class="showcase-steps" id="showcase-steps">
-                <div class="container showcase-sticky">
-                    <div class="feature-stack" id="feature-stack">
-                        <article class="feature-card tone-sky" data-step="0" data-active="true">
-                            <h3 data-en="A path that fits your goals">Un camino según tus metas</h3>
-                            <span class="chip" data-en="Personalized">Personalizado</span>
-                        </article>
-                        <article class="feature-card tone-lime" data-step="1">
-                            <h3 data-en="Focus from the first minute">Enfoque desde el primer minuto</h3>
-                            <span class="chip" data-en="Simple">Sencillo</span>
-                        </article>
-                        <article class="feature-card tone-sun" data-step="2">
-                            <h3 data-en="Learn by practicing">Aprende practicando</h3>
-                            <span class="chip" data-en="Interactive">Interactivo</span>
-                        </article>
-                    </div>
-                    <div class="app-frame">
-                        <div class="app-bar" aria-hidden="true"><i></i><i></i><i></i><span>solarafieldschool.com</span></div>
-                        <div class="app-screen">
-                            <div class="app-view" data-view="0" data-active="true">
-                                <h4 data-en="What do you want to achieve?">¿Qué quieres lograr?</h4>
-                                <div class="goal-picker" id="goal-picker" role="group" aria-label="Metas" data-en-label="Goals"></div>
-                                <ol class="path-list" id="path-preview"></ol>
-                            </div>
-                            <div class="app-view" data-view="1">
-                                <div class="focus-player">
-                                    <video id="focus-video" controls playsinline preload="metadata" poster="./media/field.jpg" aria-label="Clase de muestra" data-en-label="Sample lesson"></video>
-                                    <aside id="focus-lessons" aria-label="Clases del curso" data-en-label="Course lessons"></aside>
-                                </div>
-                                <div class="focus-progress"><span id="focus-label"></span><progress id="focus-progress" max="2" value="0"></progress></div>
-                            </div>
-                            <div class="app-view quiz" data-view="2">
-                                <form id="quiz-form">
-                                    <fieldset>
-                                        <legend id="quiz-question"></legend>
-                                        <div class="quiz-options" id="quiz-options"></div>
-                                    </fieldset>
-                                    <div class="quiz-actions">
-                                        <button class="btn btn-primary btn-small" type="submit" id="quiz-check" data-en="Check answer">Comprobar</button>
-                                        <button class="btn btn-outline btn-small" type="button" id="quiz-next" hidden data-en="Next question">Siguiente pregunta</button>
-                                        <p class="quiz-result" id="quiz-result" role="status"></p>
-                                    </div>
-                                </form>
+        <!-- Precio con garantía -->
+        <section class="sales-section is-band" id="precio" aria-labelledby="pricing-title">
+            <div class="sales-wrap sales-grid">
+                <div class="sales-section-head">
+                    <p class="sales-eyebrow" data-en="Pricing">Precio</p>
+                    <h2 id="pricing-title" data-en="One payment, the three courses">Un solo pago, los tres cursos</h2>
+                    <p class="sales-lead" data-en="Lifetime access in your campus, with your progress, notes and certificate.">Acceso en tu campus, con tu progreso, tus notas y tu certificado.</p>
+                </div>
+                <article class="sales-price-card" aria-labelledby="price-name">
+                    <div class="sales-guarantee" id="guarantee"></div>
+                    <h3 id="price-name" data-en="First steps in the field">Primeros pasos en el campo</h3>
+                    <p class="sales-price"><span class="sales-price-value" data-price-total>—</span> <span class="sales-price-note" data-en="single payment">pago único</span></p>
+                    <p class="sales-price-compare" id="price-compare"></p>
+                    <ul class="sales-includes" id="price-includes"></ul>
+                    <button class="sales-btn is-primary is-block" type="button" id="enroll" data-enroll data-en="Enroll and go to payment">Inscribirme e ir al pago</button>
+                    <p class="sales-status" id="enroll-status" role="status"></p>
+                    <p class="sales-fine" data-en="Demo checkout: PayPal is in preview and no payment is collected.">Pago de demostración: PayPal está en vista previa y no se cobra nada.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Preguntas que responden objeciones -->
+        <section class="sales-section" id="preguntas" aria-labelledby="faq-title">
+            <div class="sales-wrap sales-grid">
+                <div class="sales-section-head faq-aside">
+                    <p class="sales-eyebrow" data-en="FAQ">Preguntas</p>
+                    <h2 id="faq-title" data-en="Before you enroll">Antes de inscribirte</h2>
+                    <p class="sales-lead" data-en="The questions people ask us most before starting the path, answered plainly.">Las dudas que más nos hacen antes de empezar la ruta, respondidas sin rodeos.</p>
+                    <ul class="faq-facts">
+                        <li><span class="faq-fact-icon" aria-hidden="true">▶</span><span><strong data-en="Short video lessons">Clases cortas en video</strong><small data-en="Watch them in any order and pause whenever you want.">En el orden que quieras y con pausa cuando necesites.</small></span></li>
+                        <li><span class="faq-fact-icon" aria-hidden="true">✎</span><span><strong data-en="Your progress is saved">Tu avance queda guardado</strong><small data-en="Progress, notes and marks on each video, in your campus.">Progreso, notas y marcas en cada video, en tu campus.</small></span></li>
+                        <li><span class="faq-fact-icon" aria-hidden="true">✓</span><span><strong data-en="Certificate of completion">Certificado de finalización</strong><small data-en="One for each course you finish.">Uno por cada curso que termines.</small></span></li>
+                    </ul>
+                    <div class="faq-help">
+                        <!-- Imagen: sendero de tierra entre helechos en un bosque húmedo, con luz suave. -->
+                        <img src="./media/trail.jpg" alt="" width="1600" height="1067" loading="lazy">
+                        <div class="faq-help-body">
+                            <h3 data-en="Still have a question?">¿Tienes otra duda?</h3>
+                            <p data-en="Write to us or ask the site help: courses, groups, payments or certificates.">Escríbenos o pregúntale a la ayuda del sitio: cursos, grupos, pagos o certificados.</p>
+                            <div class="faq-help-actions">
+                                <a class="sales-btn is-primary is-small" href="./contacto.html" data-en="Write to us">Escríbenos</a>
+                                <button class="sales-btn is-ghost is-small" type="button" id="faq-open-help" data-en="Open the help">Abrir la ayuda</button>
                             </div>
                         </div>
                     </div>
-                    <div class="feature-description">
-                        <p id="feature-text"></p>
-                        <div class="feature-dots" aria-hidden="true"><span data-active="true"></span><span></span><span></span></div>
-                    </div>
+                </div>
+                <div class="sales-accordion is-faq" id="faq">
+                    <details open><summary data-en="I have no experience in the field. Is it for me?">No tengo experiencia en el campo. ¿Es para mí?</summary><p data-en="Yes. The path starts from scratch: what to prepare before going out and how to write your first record. The first two courses are beginner level and the third one is intermediate.">Sí. La ruta empieza desde cero: qué preparar antes de salir y cómo escribir tu primer registro. Los dos primeros cursos son de nivel inicial y el tercero es intermedio.</p></details>
+                    <details><summary data-en="I don’t have much time. How long does it take?">No tengo mucho tiempo. ¿Cuánto me toma?</summary><p data-en="The lessons are short and you can watch them in any order and pause them. Your progress and the minute where you stopped are saved in your campus.">Las clases son cortas y puedes verlas en el orden que quieras y pausarlas. Tu avance y el minuto donde quedaste se guardan en tu campus.</p></details>
+                    <details><summary data-en="Does it work if I lead groups of children or teenagers?">¿Sirve si trabajo con grupos de niños o adolescentes?</summary><p data-en="That is what it was written for: teachers, guides and camp staff who take groups out. The notebook format works for any age.">Para eso está pensada: docentes, guías y personal de campamentos que salen con grupos. El formato del cuaderno sirve para cualquier edad.</p></details>
+                    <details><summary data-en="What if it is not what I expected?">¿Y si no es lo que esperaba?</summary><p id="faq-guarantee"></p></details>
+                    <details><summary data-en="Is the certificate official?">¿El certificado es oficial?</summary><p data-en="It is a certificate of completion from Solara Field School. It is not an official professional accreditation.">Es un certificado de finalización de Solara Field School. No es una acreditación profesional oficial.</p></details>
+                    <details><summary data-en="How do I pay?">¿Cómo pago?</summary><p data-en="With PayPal or card through PayPal. Right now checkout is in preview: you can go through the steps, but no payment is collected.">Con PayPal o con tarjeta a través de PayPal. Por ahora el pago está en vista previa: puedes recorrer los pasos, pero no se cobra nada.</p></details>
+                    <details><summary data-en="What language are the lessons in?">¿En qué idioma están las clases?</summary><p data-en="The videos are in Spanish. The lesson texts and the campus are available in Spanish and English.">Los videos están en español. Los textos de las clases y el campus están en español y en inglés.</p></details>
                 </div>
             </div>
         </section>
 
-        <!-- 10 · Escuelas -->
-        <section class="section" id="escuelas" aria-labelledby="schools-title">
-            <div class="container-section">
-                <div class="section-head">
-                    <h2 class="section-title" id="schools-title" data-en="Choose what to learn today">Elige qué aprender hoy</h2>
-                    <div class="carousel-controls">
-                        <button class="icon-btn" id="schools-prev-ui" type="button" aria-controls="schools-track" aria-label="Escuelas anteriores" data-en-label="Previous schools"></button>
-                        <button class="icon-btn" id="schools-next-ui" type="button" aria-controls="schools-track" aria-label="Más escuelas" data-en-label="More schools"></button>
-                    </div>
+        <!-- Banda final -->
+        <section class="sales-final" aria-labelledby="final-title">
+            <div class="sales-wrap sales-final-row">
+                <div>
+                    <h2 id="final-title" data-en="Your next outing can be different">Tu próxima salida puede ser distinta</h2>
+                    <p data-en="Three courses, one field notebook and your progress saved in your campus.">Tres cursos, un cuaderno de campo y tu avance guardado en tu campus.</p>
                 </div>
-                <div class="carousel-track school-track" id="schools-track" tabindex="0" role="region" aria-label="Escuelas" data-en-label="Schools"></div>
-            </div>
-        </section>
-
-        <!-- 11–12 · Comunidad y actividades -->
-        <section class="section community" id="comunidad" aria-labelledby="community-title">
-            <div class="container-section">
-                <h2 class="section-title reveal" id="community-title" data-en="We grow together outdoors">Juntos crecemos al aire libre</h2>
-                <div class="mosaic reveal" aria-hidden="true">
-                    <div class="m-a"><img src="./media/forest.jpg" alt="" loading="lazy" width="600" height="400"></div>
-                    <div class="m-b"><img src="./media/field.jpg" alt="" loading="lazy" width="600" height="400"></div>
-                    <div class="m-c"><img src="./media/trail.jpg" alt="" loading="lazy" width="600" height="400"></div>
-                    <div class="m-d tone-sun" id="mosaic-shape"></div>
-                    <div class="m-e"><img src="./media/biodiversity.jpg" alt="" loading="lazy" width="600" height="400"></div>
-                </div>
-                <p class="community-lead reveal" data-en="That’s why there’s a place for you">Por eso te guardamos un lugar</p>
-                <div class="event-grid" id="event-grid"></div>
-            </div>
-        </section>
-
-        <!-- 13–14 · Metas y llamada final -->
-        <section class="goals" aria-labelledby="goals-title">
-            <div class="container-section">
-                <div class="goal-cloud" id="goal-cloud">
-                    <h2 id="goals-title" data-en="Turn your goals into your next achievement outdoors">Convierte tus metas en tu próximo logro al aire libre</h2>
-                </div>
-                <div class="final-cta reveal">
-                    <h2 data-en="Start making them happen today">Empieza a hacerlas realidad desde hoy</h2>
-                    <a class="btn btn-primary" href="./catalogo.html" data-en="Get started">Comenzar</a>
+                <div class="sales-final-actions">
+                    <button class="sales-btn is-primary" type="button" data-enroll><span data-en="Enroll now">Inscribirme ahora</span> <span class="sales-price-inline" data-price-total></span></button>
+                    <a class="sales-btn is-ghost" href="./curso-campo.html" data-en="Watch a free lesson first">Ver primero una clase gratis</a>
                 </div>
             </div>
         </section>
-
-        <!-- 32 · Planes -->
-        <section class="section" id="planes" aria-labelledby="plans-title">
-            <div class="container">
-                <div class="plans-head">
-                    <h2 id="plans-title" data-en="Choose the right option for you">Elige la opción ideal para ti</h2>
-                    <div class="audience-switch" role="tablist" aria-label="Tipo de plan" data-en-label="Plan type" id="home-audience"></div>
-                </div>
-                <div class="pricing-grid" id="home-plans" role="tabpanel"></div>
-                <p class="pricing-note" data-en="Sample prices in US dollars. No payment is collected.">Precios de muestra en dólares. No se realiza ningún cobro.</p>
-            </div>
-        </section>
-
-        <section class="section" aria-labelledby="journal-title">
-            <div class="container-section">
-                <div class="section-head">
-                    <div><p class="eyebrow-tag" data-en="Field journal">Bitácora de campo</p><h2 class="section-title" id="journal-title" data-en="From the Solara blog">Del blog de Solara</h2></div>
-                    <a class="btn btn-outline" href="./blog.html" data-en="View all articles">Ver todos los artículos</a>
-                </div>
-                <div class="editorial-grid" id="home-posts"></div>
-            </div>
-        </section>
-
     </main>
+
+    <!-- CTA fijo: aparece al pasar el hero y se esconde en el precio y en la banda final. -->
+    <div class="sales-sticky" id="sales-sticky" aria-hidden="true">
+        <div class="sales-wrap sales-sticky-row">
+            <div class="sales-sticky-info"><strong data-en="First steps in the field">Primeros pasos en el campo</strong><span><span data-price-total></span> · <span data-lesson-count>6</span> <span data-en="lessons">clases</span></span></div>
+            <a class="sales-btn is-primary is-small" href="#precio" data-enroll-scroll tabindex="-1" data-en="Enroll">Inscribirme</a>
+        </div>
+    </div>
 
     <footer class="site-footer" id="site-footer">
         <noscript><div class="container footer-legal"><a href="./catalogo.html">Catálogo</a><a href="./escuelas.html">Escuelas</a><a href="./precios.html">Precios</a><a href="./contacto.html">Contacto</a></div></noscript>
     </footer>
+
+    <dialog class="sales-video-dialog" id="video-dialog" aria-labelledby="video-dialog-title">
+        <div class="sales-video-dialog-head"><h2 id="video-dialog-title" data-en="Sample lesson · Before you go">Clase de muestra · Antes de salir</h2><button class="sales-icon-btn" id="video-close" type="button" aria-label="Cerrar" data-en-label="Close">✕</button></div>
+        <video id="video-player" controls playsinline preload="none" poster="./media/field.jpg"></video>
+    </dialog>
 
     <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
         <div class="dialog-heading"><h2 id="cart-title" data-en="Your cart">Tu carrito</h2><form method="dialog"><button class="button outline" aria-label="Cerrar carrito" data-en-label="Close cart" data-en="Close">Cerrar</button></form></div>
