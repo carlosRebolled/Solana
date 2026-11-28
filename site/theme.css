@@ -95,3 +95,24 @@ input, select, textarea { color-scheme: dark; }
 .help-close { border-color: color-mix(in srgb, #F3F5ED 45%, #1D2824); color: #F3F5ED; }
 .help-close:hover { background: color-mix(in srgb, #F3F5ED 10%, #1D2824); }
 .help-panel { background: #26332F; color: #F3F5ED; border-color: color-mix(in srgb, #F3F5ED 18%, #26332F); }
+
+/* Pie: datos de contacto en todas las páginas (también en el blog, que no carga ui.css) */
+.footer-contact { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 40px; margin-bottom: 8px; padding: 24px 0; border-top: 1px solid color-mix(in srgb, #F3F5ED 16%, #26332F); color: #F3F5ED; }
+.footer-contact h3 { margin: 0; color: color-mix(in srgb, #F3F5ED 86%, #26332F); font: 650 .875rem/20px system-ui, -apple-system, 'Segoe UI', sans-serif; letter-spacing: normal; }
+.footer-contact dl { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 0; }
+.footer-contact dl div { display: grid; gap: 2px; }
+.footer-contact dt { color: color-mix(in srgb, #F3F5ED 74%, #26332F); font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.footer-contact dd { margin: 0; font-size: .9rem; }
+.footer-contact a { color: #F3F5ED; text-underline-offset: 3px; }
+.footer-contact a:hover { color: #D9EE92; }
+.footer-pending { color: color-mix(in srgb, #F3F5ED 74%, #26332F); font-style: italic; }
+.footer-write { margin-left: auto; min-height: 40px; padding: 0 18px; border: 1px solid color-mix(in srgb, #F3F5ED 35%, #26332F); border-radius: 999px; background: transparent; color: #F3F5ED; font: 700 .88rem system-ui, -apple-system, 'Segoe UI', sans-serif; cursor: pointer; transition: background-color 160ms, border-color 160ms; }
+.footer-write:hover { border-color: #F3F5ED; background: color-mix(in srgb, #F3F5ED 10%, transparent); }
+.footer-write:active { transform: translateY(1px); }
+.footer-write:focus-visible { outline: 3px solid #D9EE92; outline-offset: 3px; }
+.footer:has(.footer-contact-wrap) { flex-wrap: wrap; }
+.footer-contact-wrap { flex-basis: 100%; }
+@media (max-width: 720px) {
+    .footer-contact { flex-direction: column; align-items: flex-start; }
+    .footer-write { margin-left: 0; }
+}

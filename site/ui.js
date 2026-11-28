@@ -1,5 +1,5 @@
 // Utilidades compartidas por las páginas con el sistema visual nuevo.
-import { courses, englishCourses, footerColumns, findCourse, teachersForCourse, pageHref, pageUrl, findSchool as findSchoolEntry } from './data.js';
+import { courses, englishCourses, footerColumns, contactInfo, findCourse, teachersForCourse, pageHref, pageUrl, findSchool as findSchoolEntry } from './data.js';
 const findSchoolId = (id) => findSchoolEntry(id)?.id;
 
 export const lang = () => (document.documentElement.lang === 'en' ? 'en' : 'es');
@@ -187,7 +187,31 @@ export function setupReveal(root = document) {
     items.forEach((item) => observer.observe(item));
 }
 
+// Bloque de contacto del pie (todas las páginas). Los datos vienen de `contactInfo` (data.js).
+function contactBlock() {
+    const pending = `<span class="footer-pending">${tr('Por confirmar', 'To be confirmed')}</span>`;
+    const digits = (value) => String(value).replace(/[^d+]/g, '');
+    const rows = [
+        [tr('Correo', 'Email'), contactInfo.email ? `<a href="mailto:${esc(contactInfo.email)}">${esc(contactInfo.email)}</a>` : pending],
+        [tr('Teléfono', 'Phone'), contactInfo.phone ? `<a href="tel:${esc(digits(contactInfo.phone))}">${esc(contactInfo.phone)}</a>` : pending],
+        ['WhatsApp', contactInfo.whatsapp ? `<a href="https://wa.me/${esc(digits(contactInfo.whatsapp).replace('+', ''))}" rel="noopener" target="_blank">${esc(contactInfo.whatsapp)}</a>` : pending],
+        [tr('Ubicación', 'Location'), esc(t(contactInfo.location))],
+        ...(contactInfo.hours ? [[tr('Horario', 'Hours'), esc(t(contactInfo.hours))]] : [])
+    ];
+    return `<section class="footer-contact" aria-labelledby="footer-contact-title">
+        <h3 id="footer-contact-title">${tr('Contacto', 'Contact')}</h3>
+        <dl>${rows.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('')}</dl>
+        <button class="footer-write" type="button" data-open-help>${tr('Escríbenos un mensaje', 'Send us a message')}</button>
+    </section>`;
+}
+document.addEventListener('click', (event) => {
+    if (!event.target.closest('[data-open-help]')) return;
+    const bubble = document.querySelector('.help-bubble');
+    if (bubble && bubble.getAttribute('aria-expanded') !== 'true') bubble.click();
+});
+
 export function renderFooter() {
+    for (const slot of document.querySelectorAll('[data-contact-slot]')) slot.innerHTML = contactBlock();
     const footer = $('site-footer');
     if (!footer) return;
     const year = new Date().getFullYear();
@@ -201,6 +225,7 @@ export function renderFooter() {
             <ul>${column.links.map(([label, href]) => `<li><a href="${localHref(href)}">${esc(t(label))}</a></li>`).join('')}</ul>
         </section>`).join('')}
     </div>
+    <div class="container">${contactBlock()}</div>
     <div class="container footer-legal">
         <span>© ${year} Solara Field School</span>
         <span>${tr('Catálogo, precios y compras de demostración. No se realiza ningún cobro.', 'Demo catalog, prices and checkout. No payment is collected.')}</span>

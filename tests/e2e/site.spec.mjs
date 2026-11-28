@@ -70,7 +70,7 @@ test('menú móvil: abre, enfoca el primer enlace y se cierra con Escape', async
 
 test('portada: encabezado del sitio, blog, catálogo de 6 cursos por página con números e historias', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#main-navigation a')).toHaveText(['Cursos', 'Escuelas', 'Programas', 'Público', 'Blog', 'Precios', 'Contacto']);
+    await expect(page.locator('#main-navigation a')).toHaveText(['Cursos', 'Programas', 'Público', 'Blog']);
     await expect(page.locator('#find-lessons')).toBeVisible();
     await expect(page.locator('#account-link')).toHaveText('Iniciar sesión');
     await expect(page.locator('#open-cart')).toBeVisible();
@@ -225,7 +225,7 @@ test('menú: cada enlace abre su propia página, sin anclas a la portada', async
         const hrefs = await page.$$eval('#main-navigation a, #site-footer a, .footer a', (links) => links.map((link) => link.getAttribute('href')));
         expect(hrefs.filter((href) => /^(\.\/)?#/.test(href)), route).toEqual([]);
     }
-    for (const [link, url, heading] of [['Programas', /programas\.html/, 'Programas y soluciones'], ['Público', /publico\.html/, 'Público'], ['Contacto', /contacto\.html/, 'Contacto']]) {
+    for (const [link, url, heading] of [['Programas', /programas\.html/, 'Programas y soluciones'], ['Público', /publico\.html/, 'Público'], ['Blog', /blog\.html/, 'Lo último del blog de Solara']]) {
         await page.goto('/');
         await page.locator('#main-navigation a', { hasText: link }).click();
         await expect(page).toHaveURL(url);
@@ -598,7 +598,7 @@ test('portada: venta de la ruta con temario, prueba social de ejemplo, CTA fijo 
     await page.goto('/');
     await expect(page.locator('h1')).toHaveText('Convierte cada salida en aprendizaje real');
     expect((await page.locator('h1').innerText()).split(/\s+/).length).toBeLessThanOrEqual(8);
-    await expect(page.locator('#main-navigation a')).toHaveCount(7);
+    await expect(page.locator('#main-navigation a')).toHaveCount(4);
     await expect(page.locator('#hero-proof')).toContainText('alumnos');
     await expect(page.locator('#hero-proof .is-demo')).toHaveText('Dato de ejemplo');
     await expect(page.locator('[data-price-total]').first()).toContainText('97');
@@ -704,4 +704,18 @@ test('portada: bloque «Escríbenos» debajo de las preguntas, también sin corr
     await expect(form.locator('.feedback-status')).toContainText('Es una demostración');
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('solara-demo-feedback')));
     expect(saved.at(-1)).toMatchObject({ kind: 'comentario', email: null });
+});
+
+test('menú y pie: sin Escuelas, Precios ni Contacto arriba, y datos de contacto en el pie de todas las páginas', async ({ page }) => {
+    for (const route of ['/', '/catalogo.html', '/publico.html', '/curso-campo.html', '/blog.html', '/articulo.html?post=cuaderno-de-campo']) {
+        await page.goto(route);
+        const hrefs = await page.$$eval('#main-navigation a', (links) => links.map((link) => link.getAttribute('href')));
+        expect(hrefs, route).toEqual(['./catalogo.html', './programas.html', './publico.html', './blog.html']);
+        const contact = page.locator('.footer-contact');
+        await expect(contact, route).toHaveCount(1);
+        await expect(contact.locator('dt'), route).toHaveText(['Correo', 'Teléfono', 'WhatsApp', 'Ubicación']);
+        await expect(contact.locator('dd').last()).toHaveText('Costa Rica');
+    }
+    await page.locator('.footer-contact [data-open-help]').click();
+    await expect(page.locator('.help-panel')).toBeVisible();
 });

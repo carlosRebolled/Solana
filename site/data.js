@@ -372,6 +372,17 @@ export const salesPage = {
     guarantee: { days: 14, demo: true }
 };
 
+// Datos de contacto que se muestran en el pie de todas las páginas.
+// POR CONFIRMAR: mientras un dato sea null se muestra «Por confirmar». No inventes datos: pon los
+// reales (correo, teléfono o WhatsApp con código de país, horario) cuando estén listos.
+export const contactInfo = {
+    email: null,
+    phone: null,
+    whatsapp: null,
+    location: ['Costa Rica', 'Costa Rica'],
+    hours: null
+};
+
 // Mensajes del formulario «Escríbenos» (preguntas, comentarios, quejas y ayuda).
 // Sin canal real todavía: con `endpoint: null` el formulario es de DEMOSTRACIÓN y no envía nada.
 // Para activarlo: una dirección propia que reciba POST con JSON (por ejemplo, un Worker con su

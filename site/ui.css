@@ -998,3 +998,4 @@ li[data-done="true"] .check-mark { border-color: var(--forest-green); background
 .campus-avatar[data-color="charcoal"] { background: var(--deep-charcoal); color: var(--natural-white); }
 .campus-avatar.has-photo { overflow: hidden; padding: 0; background: var(--color-surface); }
 .campus-avatar.has-photo img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
